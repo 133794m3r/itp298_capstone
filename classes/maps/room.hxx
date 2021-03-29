@@ -1,0 +1,12 @@
+
+
+#ifndef ITP298_CAPSTONE_ROOM_HXX
+#define ITP298_CAPSTONE_ROOM_HXX
+
+
+class Room {
+
+};
+
+
+#endif //ITP298_CAPSTONE_ROOM_HXX
