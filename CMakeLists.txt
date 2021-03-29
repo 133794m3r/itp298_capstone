@@ -19,6 +19,7 @@ else()
 endif()
 
 add_executable(test_fighters
+		includes.hxx
 		classes/fighters/actor.hxx
 		classes/fighters/player.hxx
 		classes/fighters/mob.hxx
@@ -26,6 +27,7 @@ add_executable(test_fighters
 		)
 
 add_executable(test_battle
+		includes.hxx
 		classes/battle/loottable.hxx
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
@@ -33,6 +35,7 @@ add_executable(test_battle
 		)
 
 add_executable(map_test
+		includes.hxx
 		classes/maps/room.hxx
 		classes/maps/room.cpp
 		classes/maps/map.hxx
@@ -41,6 +44,7 @@ add_executable(map_test
 		)
 
 add_executable(test_items
+		includes.hxx
 		classes/items/itembase.hxx
 		classes/items/weapon.cpp
 		classes/items/weapon.hxx
@@ -49,7 +53,8 @@ add_executable(test_items
 		main.cpp
 		)
 
-add_executable(itp298_capstone main.cpp
+add_executable(itp298_capstone
+		includes.hxx
 		classes/fighters/actor.cpp
 		classes/fighters/actor.hxx
 		classes/fighters/player.cpp
@@ -68,4 +73,5 @@ add_executable(itp298_capstone main.cpp
 		menus/battle.hxx
 		menus/map_movement.hxx
 		menus/shop.hxx
+		main.cpp
 		)
