@@ -17,26 +17,55 @@ else()
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 	endif()
 endif()
+
 add_executable(test_fighters
-		main.cpp
 		classes/fighters/actor.hxx
 		classes/fighters/player.hxx
 		classes/fighters/mob.hxx
+		tests/actor_test.cpp
 		)
 
 add_executable(test_battle
-		main.cpp
 		classes/battle/loottable.hxx
+		classes/battle/battle_system.hxx
+		menus/battle.hxx
+		tests/battle_test.cpp
+		)
+
+add_executable(map_test
+		classes/maps/room.hxx
+		classes/maps/room.cpp
+		classes/maps/map.hxx
+		classes/maps/map.cpp
+		tests/map_test.cpp
 		)
 
 add_executable(test_items
-		main.cpp
 		classes/items/itembase.hxx
-		classes/items/weapon.cpp classes/items/weapon.hxx classes/items/armor.cpp classes/items/armor.hxx)
+		classes/items/weapon.cpp
+		classes/items/weapon.hxx
+		classes/items/armor.cpp
+		classes/items/armor.hxx
+		main.cpp
+		)
 
 add_executable(itp298_capstone main.cpp
-		classes/fighters/actor.cpp classes/fighters/actor.hxx
-		classes/fighters/player.cpp classes/fighters/player.hxx
-		classes/battle/loottable.cpp classes/battle/loottable.hxx
-		classes/fighters/mob.cpp classes/fighters/mob.hxx
-		classes/items/itembase.cpp classes/items/itembase.hxx classes/items/weapon.cpp classes/items/weapon.hxx classes/items/armor.cpp classes/items/armor.hxx)
+		classes/fighters/actor.cpp
+		classes/fighters/actor.hxx
+		classes/fighters/player.cpp
+		classes/fighters/player.hxx
+		classes/battle/loottable.cpp
+		classes/battle/loottable.hxx
+		classes/fighters/mob.cpp
+		classes/fighters/mob.hxx
+		classes/items/itembase.cpp
+		classes/items/itembase.hxx
+		classes/items/weapon.cpp
+		classes/items/weapon.hxx
+		classes/items/armor.cpp
+		classes/items/armor.hxx
+		classes/shopkeeper.hxx
+		menus/battle.hxx
+		menus/map_movement.hxx
+		menus/shop.hxx
+		)
