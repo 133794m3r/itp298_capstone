@@ -1,3 +1,8 @@
+/*
+* ITP-298 Capstone Project
+* Group: Dangling Pointers
+* Macarthur Inbody && Nathaniel Mullins
+*/
 //This file will contain all of the testing functions/templates we might need.
 #ifndef ITP298_CAPSTONE_TEST_UTIL_HXX
 #define ITP298_CAPSTONE_TEST_UTIL_HXX

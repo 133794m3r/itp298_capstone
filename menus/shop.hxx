@@ -1,6 +1,8 @@
 /*
-* Created by macarthur on 3/29/21.
-* Copyright (c) 2021 
+* ITP-298 Capstone Project
+* Group: Dangling Pointers
+* Macarthur Inbody && Nathaniel Mullins
+*
 */
 
 #ifndef ITP298_CAPSTONE_SHOP_HXX

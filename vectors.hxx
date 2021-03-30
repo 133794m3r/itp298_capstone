@@ -1,3 +1,8 @@
+/*
+* ITP-298 Capstone Project
+* Group: Dangling Pointers
+* Macarthur Inbody && Nathaniel Mullins
+*/
 //This file will contain all of the vector related templates we need.
 #ifndef ITP298_CAPSTONE_VECTORS_HXX
 #define ITP298_CAPSTONE_VECTORS_HXX

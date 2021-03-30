@@ -1,9 +1,8 @@
-/**
- * ITP-298 Capstone Project
- * "Dangling Pointers" Group
- *
- * This file will handle the basic battle test.
- */
+/*
+* ITP-298 Capstone Project
+* Group: Dangling Pointers
+* Macarthur Inbody && Nathaniel Mullins
+*/
 
 
 void main(){
