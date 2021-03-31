@@ -10,6 +10,12 @@
 
 
 class Actor {
+	private:
+		std::string name;
+	public:
+		Actor(std::string name){
+		 	this->name = name;
+		}
 
 };
 
