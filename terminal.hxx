@@ -14,11 +14,11 @@
 		WINBOOL test = SetConsoleMode(GetStdHandle(static_cast<DWORD>(-11)), 7);
 
 #else
-//all other devices I have use to the crappy getchar() version but it works.
-void pause(){
-	std::cout << "Press Enter to continue ... " << std::endl;
-	std::getchar();
-}
+	//all other devices I have use to the crappy getchar() version but it works.
+	void pause(){
+		std::cout << "Press Enter to continue ... " << std::endl;
+		std::getchar();
+	}
 
 #endif //_WIN32
 

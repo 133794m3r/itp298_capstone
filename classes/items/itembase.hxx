@@ -8,7 +8,6 @@
 #ifndef ITP298_CAPSTONE_ITEMBASE_HXX
 #define ITP298_CAPSTONE_ITEMBASE_HXX
 
-
 class Item {
 
 };
