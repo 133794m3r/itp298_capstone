@@ -7,10 +7,25 @@
 */
 #ifndef ITP298_CAPSTONE_MOB_HXX
 #define ITP298_CAPSTONE_MOB_HXX
+
 #include "actor.hxx"
 
-class Mob: public Actor {
-
+class Mob : public Actor {
+private:
+	unsigned int _xp;
+	unsigned int _gold;
+public:
+	explicit Mob(uint32_t xp=0, uint32_t gold=0) {
+		this->_xp = xp;
+		this->_gold = gold;
+	}
+	/**
+	 *
+	 * @return a std::pair struct with all of the data set.
+	 */
+	std::pair<unsigned int, unsigned int> rewards() {
+		return std::make_pair(this->_xp, this->_gold);
+	}
 };
 
 
