@@ -22,16 +22,24 @@ class Actor {
 	unsigned int _str;
 	unsigned int _def;
   public:
-	explicit Actor(std::string name="", unsigned int hp = 10, unsigned int str=6, unsigned int def=2,char level=1){
+	explicit Actor(std::string name="Actor", unsigned int hp = 10, unsigned int str=6, unsigned int def=2,unsigned char level=1){
 		this->_name = std::move(name);
 		this->_lvl = level;
 		this->_base_hp = hp;
 		this->_base_str = str;
 		this->_base_def = def;
-		//temporary growth tables until I figure out better formulas.
-		this->_hp = std::lround((this->_base_hp * 0.25)*this->_lvl)+this->_base_hp;
-		this->_str = std::lround( ( (this->_base_str * 0.15) * this->_lvl)) + this->_base_str;
-		this->_def = std::lround( (this->_base_def * 0.15) * this->_lvl) + this->_base_def;
+		if(level > 1) {
+			level--;
+			//temporary growth tables until I figure out better formulas.
+			this->_hp = std::lround((hp * 0.25) * level) + hp;
+			this->_str = std::lround((str * 0.15) * level) + str;
+			this->_def = std::lround((def * 0.15) * level) + def;
+		}
+		else{
+			_hp = hp;
+			_str = str;
+			_def = def;
+		}
 	}
 
 	void level_up(){

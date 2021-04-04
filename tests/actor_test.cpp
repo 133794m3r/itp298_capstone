@@ -19,7 +19,7 @@ int main(){
 		std::cout << "Did " << damaged << " damage." << std::endl;
 	show_cur_stats(base_actor);
 	base_actor = Actor("Test");
-
+	Mob tmp_mob("Spawn of Death");
 	tmp_player.attack(base_actor);
 	show_all_stats(tmp_player);
 	show_cur_stats(base_actor);

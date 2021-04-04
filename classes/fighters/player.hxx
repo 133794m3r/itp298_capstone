@@ -14,7 +14,7 @@ class Player: public Actor {
   private:
 	unsigned int _gold;
   public:
-	explicit Player(std::string name, char level=1, unsigned int gold=0, unsigned int hp=50, unsigned int str=6, unsigned int def=3): Actor(std::move(name),hp,str,def,level){
+	explicit Player(std::string name, unsigned char level=1, unsigned int gold=0, unsigned int hp=50, unsigned int str=6, unsigned int def=3): Actor(std::move(name),hp,str,def,level){
 		this->_gold = gold;
 	}
 };
