@@ -50,7 +50,7 @@ add_executable(test_items
 		classes/items/weapon.hxx
 		classes/items/armor.cpp
 		classes/items/armor.hxx
-		main.cpp
+		tests/item_test.cpp
 		)
 
 add_executable(itp298_capstone

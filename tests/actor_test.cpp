@@ -40,4 +40,3 @@ int main(){
 	show_cur_stats(tmp_player);
     return 0;
 }
-
