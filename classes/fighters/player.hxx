@@ -22,6 +22,13 @@ class Player: public Actor {
 		this->_xp = xp;
 		//TODO: Figure out XP curve and set it to the relevant value with the level provided.
 	}
+	//level up actor with new stats
+	void level_up(){
+		//basic formulas until better ones are figured out.
+		this->_hp += std::lround(this->_base_hp * 0.25);
+		this->_str += std::lround(this->_base_str * 0.15);
+		this->_def += std::lround(this->_base_def * 0.15);
+	}
 };
 
 

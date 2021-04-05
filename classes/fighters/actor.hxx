@@ -14,7 +14,8 @@ class Actor {
 	//basic properties shared between all subclasses.
 	std::string _name;
 	char _lvl;
-	//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
+  protected:
+//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
 	unsigned int _base_hp;
 	unsigned int _base_str;
 	unsigned int _base_def;
@@ -46,13 +47,7 @@ class Actor {
 			_def = def;
 		}
 	}
-	//level up actor with new stats
-	void level_up(){
-		//basic formulas until better ones are figured out.
-		this->_hp += std::lround(this->_base_hp * 0.25);
-		this->_str += std::lround(this->_base_str * 0.15);
-		this->_def += std::lround(this->_base_def * 0.15);
-	}
+
 	/**
 	 *
 	 * @return The name of the Actor.
