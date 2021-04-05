@@ -12,6 +12,7 @@
 
 class Mob : public Actor {
 private:
+	//the xp to be awarded and gold be awarded upon death.
 	unsigned int _xp;
 	unsigned int _gold;
 public:
@@ -21,6 +22,7 @@ public:
 		this->_gold = gold;
 	}
 	/**
+	 * Returns the rewards upon death.
 	 *
 	 * @return a std::pair struct with all of the data set.
 	 */

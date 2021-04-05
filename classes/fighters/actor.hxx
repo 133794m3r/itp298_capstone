@@ -11,6 +11,7 @@
 
 class Actor {
   private:
+	//basic properties shared between all subclasses.
 	std::string _name;
 	char _lvl;
 	//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
