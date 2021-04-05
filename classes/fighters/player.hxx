@@ -17,7 +17,7 @@ class Player: public Actor {
 	unsigned int _gold;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
-	explicit Player(std::string name, unsigned char level=1, unsigned int gold=0, unsigned int hp=50, unsigned int str=6, unsigned int def=3,usnigned int xp=0): Actor(std::move(name),hp,str,def,level){
+	explicit Player(std::string name, unsigned char level=1, unsigned int gold=0, unsigned int hp=50, unsigned int str=6, unsigned int def=3,unsigned int xp=0): Actor(std::move(name),hp,str,def,level){
 		this->_gold = gold;
 		this->_xp = xp;
 		//TODO: Figure out XP curve and set it to the relevant value with the level provided.
