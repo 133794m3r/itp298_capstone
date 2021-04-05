@@ -5,6 +5,7 @@
 */
 
 
-void main(){
+int main(){
 	//something to be done here.
+	return 0;
 }
