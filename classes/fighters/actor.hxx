@@ -56,6 +56,7 @@ class Actor {
 	* @param  the amount of damage to be inflicted.
 	* @return  The total amount of damage delivered. 0 for none, and - value for overkill.
 	*/
+	//TODO: Change return type/value of damage to be unsigned types.
 	int damage(int dmg){
 		dmg -= this->_def;
 		if(dmg < 0)
