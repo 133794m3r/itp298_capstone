@@ -70,4 +70,4 @@ add_executable(itp298_capstone
 		menus/map_movement.hxx
 		menus/shop.hxx
 		main.cpp
-		)
+		menus/inputs.hxx)
