@@ -23,11 +23,14 @@ class Actor {
 	unsigned int _def;
   public:
 	explicit Actor(std::string name="Actor", unsigned int hp = 10, unsigned int str=6, unsigned int def=2,unsigned char level=1){
+		//set all properties.
+		//we're copying once so why not just move it.
 		this->_name = std::move(name);
 		this->_lvl = level;
 		this->_base_hp = hp;
 		this->_base_str = str;
 		this->_base_def = def;
+		//if they're higher than l1 set their stats acordingly.
 		if(level > 1) {
 			level--;
 			//temporary growth tables until I figure out better formulas.
@@ -36,19 +39,23 @@ class Actor {
 			this->_def = std::lround((def * 0.15) * level) + def;
 		}
 		else{
+			//set the current ones to the starter
 			_hp = hp;
 			_str = str;
 			_def = def;
 		}
 	}
-
+	//level up actor with new stats
 	void level_up(){
 		//basic formulas until better ones are figured out.
 		this->_hp += std::lround(this->_base_hp * 0.25);
 		this->_str += std::lround(this->_base_str * 0.15);
 		this->_def += std::lround(this->_base_def * 0.15);
 	}
-
+	/**
+	 *
+	 * @return The name of the Actor.
+	 */
 	std::string get_name(){
 		return this->_name;
 	}
@@ -76,7 +83,7 @@ class Actor {
 	int attack(Actor &target){
 		return target.damage(this->_str);
 	}
-
+	//the friend functions to print the stuff.
 	friend void show_all_stats(Actor &actor);
 	friend void show_cur_stats(Actor &actor);
 };
