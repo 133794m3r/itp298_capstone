@@ -55,13 +55,10 @@ add_executable(test_items
 
 add_executable(itp298_capstone
 		includes.hxx
-		classes/fighters/actor.cpp
 		classes/fighters/actor.hxx
-		classes/fighters/player.cpp
 		classes/fighters/player.hxx
 		classes/battle/loottable.cpp
 		classes/battle/loottable.hxx
-		classes/fighters/mob.cpp
 		classes/fighters/mob.hxx
 		classes/items/itembase.cpp
 		classes/items/itembase.hxx

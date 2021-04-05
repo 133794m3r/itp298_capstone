@@ -10,4 +10,6 @@
 #define ITP298_CAPSTONE_INCLUDES_HXX
 #include <iostream>
 #include <vector>
+#include <string>
+#include <cmath>
 #endif //ITP298_CAPSTONE_INCLUDES_HXX

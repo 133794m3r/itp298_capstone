@@ -84,10 +84,10 @@ template <typename T, typename U> U xorshift128(T low=0, U high=0){
 }
 
 //this is the C++ version because I'm using chrono. The C version using the same function.
-void s_xor_128(uint64 seed=0){
+void s_xorshift128(uint64 seed=0){
 	//if we've already seeded it, there's no reason to do it again, if the seed is 0 then they're just calling it to make
 	//sure that it's seeded. But if the seed is not
-	if(!XOR_SHIFT_128_SEEDED || seed != 0) {
+	if(!XOR_SHIFT_128_SEEDED || seed == 0) {
 		//make the seed be the current time since epoch in milliseconds.
 		seed = (seed == 0) ? static_cast<uint64>(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1))
 						   : seed;
@@ -104,7 +104,6 @@ void s_xor_128(uint64 seed=0){
 		}
 		XOR_SHIFT_128_SEEDED=true;
 	}
-
 }
 
 
@@ -113,11 +112,11 @@ void s_xor_128(uint64 seed=0){
 //non templated version for the full width uint64 always.
 //not recommenting this bit.
 //this is the C++ version because I'm using chrono. The C version using the same function.
-void s_xor_128(uint64 seed=0){
+void s_xor128shift(uint64 seed=0){
 
 	//if we've already seeded it, there's no reason to do it again, if the seed is 0 then they're just calling it to make
 	//sure that it's seeded. But if the seed is not
-	if(!XOR_SHIFT_128_SEEDED || seed != 0) {
+	if(!XOR_SHIFT_128_SEEDED || seed == 0) {
 		if(seed == 0){
 			struct timeval tv;
 			gettimeofday(&tv,NULL);
