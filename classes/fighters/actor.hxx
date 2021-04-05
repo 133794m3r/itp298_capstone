@@ -14,6 +14,7 @@ class Actor {
 	//basic properties shared between all subclasses.
 	std::string _name;
 	char _lvl;
+	bool _alive;
   protected:
 //the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
 	unsigned int _base_hp;
@@ -60,13 +61,15 @@ class Actor {
 	* @return  The total amount of damage delivered. 0 for none, and - value for overkill.
 	*/
 	//TODO: Change return type/value of damage to be unsigned types.
-	int damage(int dmg){
+	unsigned int damage(unsigned int dmg){
 		dmg -= this->_def;
 		if(dmg < 0)
 			return 0;
 		if(this->_hp < dmg){
+			dmg = this->_hp;
 			this->_hp = 0;
-			return dmg*-1;
+			this->_alive = false;
+			return dmg;
 		}
 		this->_hp -= dmg;
 		return dmg;
@@ -78,6 +81,10 @@ class Actor {
 	*/
 	int attack(Actor &target){
 		return target.damage(this->_str);
+	}
+
+	bool is_alive(){
+		return this->_alive;
 	}
 	//the friend functions to print the stuff.
 	friend void show_all_stats(Actor &actor);

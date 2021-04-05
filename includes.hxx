@@ -12,4 +12,5 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include "terminal.hxx"
 #endif //ITP298_CAPSTONE_INCLUDES_HXX

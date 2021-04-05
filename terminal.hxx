@@ -54,7 +54,7 @@ template <typename T> void proper_input(T &variable){
 	*/
 	while(!(std::cin >> variable)){
 		if(std::cin.eof()){
-			variable = -2;
+			variable = T();
 			std::cin.clear();
 			return;
 		}
