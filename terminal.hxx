@@ -3,6 +3,8 @@
 * By Macarthur Inbody <admin-contact@transcendental.us> 2020
 * Licensed AGPLv3
 */
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef _TERMINAL_SETUP_
 #ifdef _WIN32
 #include <windows.h>
@@ -30,7 +32,7 @@
 #include <cstdio>
 
 //text styles.
-enum TEXT_STYLES{RESET,BOLD,DIM,ITALIC,UNDERLINE,REVERSED,DOUBLE_UNDERLINE=21,UN_BOLD=22,UN_DIM=22,UN_ITALIC,UN_UNDERLINE,UN_REVERSED=27};
+enum TEXT_STYLES{RESET ,BOLD,DIM,ITALIC,UNDERLINE,REVERSED,DOUBLE_UNDERLINE=21,UN_BOLD=22,UN_DIM=22,UN_ITALIC,UN_UNDERLINE,UN_REVERSED=27};
 //the colors.
 enum TEXT_COLORS{RESET_COLOR,
 //foreground colors.
@@ -76,3 +78,4 @@ template <typename T> int proper_input(T &variable){
 //this'll be the C version of the function sometime in the future.
 #endif //__cplusplus
 #endif //_TERMINAL_SETUP_
+#pragma clang diagnostic pop

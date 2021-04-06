@@ -42,6 +42,10 @@ Then if they have an invalid option it'll be
 below the text box. For a message it'll be in that box.
 If enemy's HP is over 4 digits then we make it be ????.
 	 */
+	 std::cout << mob.get_name() << std::endl;
+	 std::cout << "Lvl XX" << "YYY/ZZZZ" << std::endl << std::endl;
+	 std::cout << player.get_name() << std::endl;
+	 std::cout << "Lvl XX " << "YYY/ZZZZ" << std::endl << std::endl;
 	// we only continue the battle as long as both participants are alive
 	while(player.is_alive() && mob.is_alive()) {
 
@@ -64,6 +68,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 		}
 		//reset the option to 0.
 		option = 0;
+		std::cout << "\x1b[1mSelection\x1b[22m: ";
 	}
 	//figure out who died
 	if(player.is_alive())
