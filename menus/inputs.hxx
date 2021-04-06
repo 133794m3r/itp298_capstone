@@ -24,5 +24,6 @@ unsigned int valid_option(unsigned int min,unsigned int max){
 		move_and_clear_terminal(4);
 		std::cout << "\x1b[1mSelection: \x1b[22m";
 	}
+	return option;
 }
 #endif //ITP298_CAPSTONE_INPUTS_HXX

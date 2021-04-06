@@ -22,8 +22,8 @@
 		std::cin.clear();
 //		//ignore everything else in the stream including the new line.
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		std::cout << "Press any key to continue... " << std::endl;
-		getchar();
+		std::cout << "Press Enter/Return key to continue... " << std::endl;
+		std::getchar();
 	}
 
 #endif //_WIN32
