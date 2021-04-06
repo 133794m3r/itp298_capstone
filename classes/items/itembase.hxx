@@ -1,15 +1,41 @@
 /*
-* ITP-298 Capstone Project
-* Group: Dangling Pointers
-* Macarthur Inbody && Nathaniel Mullins
-
-*
+ * ITP 298 Capstone Project (itembase.hxx)
+ * Programmers: Nathaniel Mullins && Macarthur Inbody
+ * Group: Dangling Pointers
+ * Date: 4/5/21
+ * Purpose: Base Item class (header) for our currently Untitled RPG. This is the building block for our weapon and armor classes
 */
 #ifndef ITP298_CAPSTONE_ITEMBASE_HXX
 #define ITP298_CAPSTONE_ITEMBASE_HXX
 
+#include <string>
+
+
+enum item_types {WEAPON = 0, ARMOR}; //allows the program to decide what type of item is being generated
+
 class Item {
 
+//Private variables
+private:
+    std::string name; //used to denote the name of an item
+    unsigned type; //used to denote the type of item upon creation
+    unsigned value; // used to denote the value of a generated item
+
+    //private functions
+    void generate(); //item generation function
+
+
+public:
+    Item(); //calls constructor
+    virtual ~Item(); //calls destructor
+
+    //Accessors
+    const std::string& getName(); //allows for other files to use the private name variable
+    const unsigned& getType();    //allows for other files to use the private type variable
+    const unsigned& getValue();   //allows for other files to use the private value variable
+
+    //public functions
+    const std::string toString() const;
 };
 
 
