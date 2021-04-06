@@ -25,9 +25,12 @@ class Player: public Actor {
 	//level up actor with new stats
 	void level_up(){
 		//basic formulas until better ones are figured out.
-		this->_hp += std::lround(this->_base_hp * 0.25);
-		this->_str += std::lround(this->_base_str * 0.15);
-		this->_def += std::lround(this->_base_def * 0.15);
+		this->_base_hp += std::lround(this->_bonus_hp * 0.25);
+		this->_base_str += std::lround(this->_bonus_str * 0.15);
+		this->_base_def += std::lround(this->_bonus_def * 0.15);
+		this->_hp = this->_base_hp;
+		this->_str = this->_base_str;
+		this->_def = this->_base_def;
 	}
 };
 
