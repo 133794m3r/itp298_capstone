@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 project(itp298_capstone)
-
+enable_testing()
 set(CMAKE_CXX_STANDARD 17)
 if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /W4")
@@ -26,13 +26,19 @@ add_executable(test_fighters
 		tests/actor_test.cpp
 		)
 
+add_executable(battle_demo
+		includes.hxx
+		classes/battle/loottable.hxx
+		classes/battle/battle_system.hxx
+		menus/battle.hxx
+		tests/battle_demo.cpp)
+
 add_executable(test_battle
 		includes.hxx
 		classes/battle/loottable.hxx
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
-		tests/battle_test.cpp
-		)
+		tests/battle_test.cpp)
 
 add_executable(map_test
 		includes.hxx
@@ -71,3 +77,6 @@ add_executable(itp298_capstone
 		menus/shop.hxx
 		main.cpp
 		menus/inputs.hxx)
+
+add_test(NAME "BattleTest"
+		COMMAND ./test_battle)

@@ -11,7 +11,29 @@
 #include "../classes/fighters/mob.hxx"
 #include "inputs.hxx"
 
+void show_battle_message(const std::string &message){
+	std::string new_str = message;
+	//the padding string we'll use to pad all inputs until the end.
+	std::string padding_string(53, ' ');
+	move_cursor(8,3);
+	size_t message_len = message.size();
+	if(message_len < 55){
+		std::cout << new_str << padding_string.substr(0,53-message_len);
+		move_cursor(9,3);
+		std::cout << padding_string;
+	}
+	else {
+		text_wrap(new_str, 53);
+		size_t new_line = new_str.find('\n');
+		std::cout << new_str.substr(0,new_line) << padding_string.substr(0,53-new_line);
+		move_cursor(9,3);
+		std::cout << new_str.substr(new_line+1) << padding_string.substr(0,53-(message_len - new_line));
+	}
+	move_cursor(11,1);
+}
+
 int battle(Player &player,Mob &mob){
+	clear_and_move_top();
 	std::array<std::string,5> options = {
 			"Attack",
 			"Defend",
@@ -47,33 +69,44 @@ below the text box. For a message it'll be in that box.
 If enemy's HP is over 4 digits then we make it be ????.
 	 */
 	char hp = 50;
-	std::cout << mob.get_name() << std::endl;
-	std::cout << "Lvl XX" << "YYY/ZZZZ" << std::endl << std::endl;
-	 //printf("%56s",player.get_name().c_str());
- 	std::cout << std::right << std::setw(56) << player.get_name() << std::endl;
- 	std::cout << std::setw(56) << "Lvl " + std::to_string(hp)
-	 + " " + std::to_string(200) + "/" + std::to_string(1255)
-	 << std::endl << std::endl;
- 	std::cout << "+------------------------------------------------------+"
-	 << std::endl << "|";
-	for(unsigned int i=1;i<=options.size();i++){
-		std::cout << " " << i << ") " << options[i-1];
-		if(i > 2 && i % 3 == 0){
-			std::cout << "|" <<std::endl;
-			if(i < options.size())
-				std::cout << "|";
-		}
-	}
-	if(options.size() > 4 && options.size() < 6) {
-		unsigned int padding = 54;
-		for (unsigned int i = 0; i <= options.size() % 4; i++) {
-			padding -= options[options.size() - i - 1].size() + 4;
-		}
-		std::cout << std::setw(padding) << " " << "|" << std::endl;
 
+	std::cout << "Lvl XXX " << mob.get_name() << std::endl;
+	std::cout << "YYY/ZZZZ" << std::endl << std::endl;
+	 //printf("%56s",player.get_name().c_str());
+ 	std::cout << std::right << std::setw(56) << "Lvl 255 " + player.get_name() << std::endl;
+ 	std::cout << std::setw(56) <<
+	 " " + std::to_string(200) + "/" + std::to_string(1255)
+	 << std::endl << std::endl;
+
+
+ 	std::string menu_string; //the menu string that's going to contain our options
+	//the message that we're going to send.
+	std::string message;
+	std::string padding_string(54, ' ');
+
+ 	std::cout << "+------------------------------------------------------+"
+	 << std::endl << "|" << padding_string << "|" << std::endl
+ 	 << "|" << padding_string << "|"
+ 	 << std::endl << "+------------------------------------------------------+" << std::endl;
+
+	for(unsigned int i=1;i<=options.size();i++){
+		menu_string += std::to_string(i) + ")" + options[i-1];
 	}
-	std::cout <<"+------------------------------------------------------+" << std::endl;
+
+//	if(options.size() > 4 && options.size() < 6) {
+//		unsigned int padding = 54;
+//		for (unsigned int i = 0; i <= options.size() % 4; i++) {
+//			padding -= options[options.size() - i - 1].size() + 4;
+//		}
+//		std::cout << std::setw(padding) << " " << "|" << std::endl;
+//	}
+//	std::cout <<"+------------------------------------------------------+" << std::endl;
+	move_cursor(8,2);
+	//print_wrap(menu_string,54);
+	show_battle_message(menu_string);
+	move_cursor(11,1);
 	std::cout << "\x1b[" << BOLD << "mSelection\x1b[" << UN_BOLD << "m: ";
+
 	// we only continue the battle as long as both participants are alive
 	while(player.is_alive() && mob.is_alive()) {
 		option = valid_option(1,options.size());
@@ -82,17 +115,23 @@ If enemy's HP is over 4 digits then we make it be ????.
 		//currently only doing the attack one
 		if(option == 1) {
 			dmg = player.attack(mob);
-			std::cout << player.get_name() << " did " << dmg << " damage!" << std::endl;
+			message = player.get_name() + " did " + std::to_string(dmg) + " damage!";
+//			std::cout << player.get_name() << " did " << dmg << " damage!" << std::endl;
+			show_battle_message(message);
+			pause();
 		}
 		//mobs can attack for now otherwise they do nothing that turn.
 		if(mob_opt == 0) {
 			dmg = mob.attack(player);
-			std::cout << mob.get_name() << " did " << dmg << " damage!" << std::endl;
+			//std::cout << mob.get_name() << " did " << dmg << " damage!" << std::endl;
+			message = mob.get_name() + " did "  + std::to_string(dmg) + " damage!";
+			show_battle_message(message);
+			pause();
 		}
 		//reset the option to 0.
 		option = 0;
-		pause();
-		move_and_clear_terminal(5);
+		//move_and_clear_terminal(5);
+		show_battle_message(menu_string);
 		std::cout << "\x1b[1mSelection\x1b[22m: ";
 	}
 	//figure out who died

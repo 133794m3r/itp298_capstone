@@ -6,6 +6,9 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef _TERMINAL_SETUP_
+void move_and_clear_terminal(unsigned int lines_up){
+	printf("\x1b[%dF\x1b[0J", lines_up);
+}
 #ifdef _WIN32
 #include <windows.h>
 		//windows has the system pause command.
@@ -24,6 +27,7 @@
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::cout << "Press Enter/Return key to continue... " << std::endl;
 		std::getchar();
+		move_and_clear_terminal(2);
 	}
 
 #endif //_WIN32
@@ -41,12 +45,12 @@ enum TEXT_COLORS{RESET_COLOR,
 	BLACK_BG = 40,RED_BG,GREEN_BG,YELLOW_BG,BLUE_BG,MAGENTA_BG,CYAN_BG,WHITE_BG
 };
 
-void move_and_clear_terminal(unsigned int lines_up){
-	printf("\x1b[%dF\x1b[0J", lines_up);
-}
-
 void clear_and_move_top(){
 	printf("\x1b[2J\x1b[1H");
+}
+
+void move_cursor(unsigned int column, unsigned int row){
+	printf("\x1b[%d;%dH",column,row);
 }
 
 #ifdef __cplusplus
