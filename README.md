@@ -1,5 +1,6 @@
 # ITP-298 Capstone Project "Danglign Pointers"
-This is a simple console-based RPG by @NathanielMullins and @133794m3r
+This is a simple console-based RPG by [@NathanielMullins](https://github.com/NathanielMullins) and [@133794m3r](https://github.com/133794m3r)
+
 
 ## About
 This project is the capstone for ITP-298. Nathaniel and I discussed via email about what project to do and settled on a text-based RPG wrote in C++. 
