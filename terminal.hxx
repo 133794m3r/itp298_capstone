@@ -9,7 +9,9 @@
 void move_and_clear_terminal(unsigned int lines_up){
 	printf("\x1b[%dF\x1b[0J", lines_up);
 }
-
+void clear_line(unsigned int line){
+	printf("\x1b[%dK",line);
+}
 #ifdef _WIN32
 #include <windows.h>
 		//windows has the system pause command.
@@ -50,8 +52,8 @@ void clear_and_move_top(){
 	printf("\x1b[2J\x1b[1H");
 }
 
-void move_cursor(unsigned int column, unsigned int row){
-	printf("\x1b[%d;%dH",column,row);
+void move_cursor(unsigned int row, unsigned int column){
+	printf("\x1b[%d;%dH",row,column);
 }
 
 #ifdef __cplusplus

@@ -30,8 +30,7 @@ void show_battle_message(const std::string &message){
 		std::cout << new_str.substr(new_line+1) << padding_string.substr(0,53-(message_len - new_line));
 	}
 	move_cursor(11,1);
-	std::cout << "               ";
-	move_cursor(11,1);
+	clear_line(11);
 }
 
 int battle(Player &player,Mob &mob){
