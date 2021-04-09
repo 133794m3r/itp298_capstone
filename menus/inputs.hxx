@@ -26,6 +26,7 @@ unsigned int valid_option(unsigned int min,unsigned int max){
 	}
 	return option;
 }
+
 void text_wrap(std::string &input,unsigned int position,char wrap_char=' '){
 	if(input.size() < position)
 		return;
@@ -35,6 +36,7 @@ void text_wrap(std::string &input,unsigned int position,char wrap_char=' '){
 		position += found;
 	}
 }
+
 void print_wrap(const std::string &input, unsigned int position,bool end_line=false){
 	std::string new_string = input;
 	if(input.size() < position)

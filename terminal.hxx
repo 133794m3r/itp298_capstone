@@ -9,6 +9,7 @@
 void move_and_clear_terminal(unsigned int lines_up){
 	printf("\x1b[%dF\x1b[0J", lines_up);
 }
+
 #ifdef _WIN32
 #include <windows.h>
 		//windows has the system pause command.
@@ -20,14 +21,14 @@ void move_and_clear_terminal(unsigned int lines_up){
 
 #else
 	//all other devices I have use to the crappy getchar() version but it works.
-	void pause(){
-//		//clear the rest of cin.
+	int pause(){
+		//clear the rest of cin.
 		std::cin.clear();
-//		//ignore everything else in the stream including the new line.
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::cout << "Press Enter/Return key to continue... " << std::endl;
-		std::getchar();
+		char c = std::getchar();
+		std::cin.clear();
 		move_and_clear_terminal(2);
+		return 0;
 	}
 
 #endif //_WIN32
@@ -76,6 +77,8 @@ template <typename T> int proper_input(T &variable){
 			std::cout << "\x1b[1mSelection\x1b[22m: ";
 		}
 	}
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+//	std::cin.clear();
 	return 0;
 }
 #else

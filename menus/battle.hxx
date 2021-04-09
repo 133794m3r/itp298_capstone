@@ -30,6 +30,8 @@ void show_battle_message(const std::string &message){
 		std::cout << new_str.substr(new_line+1) << padding_string.substr(0,53-(message_len - new_line));
 	}
 	move_cursor(11,1);
+	std::cout << "               ";
+	move_cursor(11,1);
 }
 
 int battle(Player &player,Mob &mob){
@@ -93,14 +95,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 		menu_string += std::to_string(i) + ")" + options[i-1];
 	}
 
-//	if(options.size() > 4 && options.size() < 6) {
-//		unsigned int padding = 54;
-//		for (unsigned int i = 0; i <= options.size() % 4; i++) {
-//			padding -= options[options.size() - i - 1].size() + 4;
-//		}
-//		std::cout << std::setw(padding) << " " << "|" << std::endl;
-//	}
-//	std::cout <<"+------------------------------------------------------+" << std::endl;
+
 	move_cursor(8,2);
 	//print_wrap(menu_string,54);
 	show_battle_message(menu_string);
@@ -116,21 +111,20 @@ If enemy's HP is over 4 digits then we make it be ????.
 		if(option == 1) {
 			dmg = player.attack(mob);
 			message = player.get_name() + " did " + std::to_string(dmg) + " damage!";
-//			std::cout << player.get_name() << " did " << dmg << " damage!" << std::endl;
 			show_battle_message(message);
+			std::cout.flush();
 			pause();
 		}
 		//mobs can attack for now otherwise they do nothing that turn.
 		if(mob_opt == 0) {
 			dmg = mob.attack(player);
-			//std::cout << mob.get_name() << " did " << dmg << " damage!" << std::endl;
 			message = mob.get_name() + " did "  + std::to_string(dmg) + " damage!";
 			show_battle_message(message);
-			pause();
+			std::cout.flush();
 		}
+		pause();
 		//reset the option to 0.
 		option = 0;
-		//move_and_clear_terminal(5);
 		show_battle_message(menu_string);
 		std::cout << "\x1b[1mSelection\x1b[22m: ";
 	}

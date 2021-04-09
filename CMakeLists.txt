@@ -17,7 +17,7 @@ else()
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 	endif()
 endif()
-
+#find_package(Threads REQUIRED)
 add_executable(test_fighters
 		includes.hxx
 		classes/fighters/actor.hxx
@@ -25,6 +25,7 @@ add_executable(test_fighters
 		classes/fighters/mob.hxx
 		tests/actor_test.cpp
 		)
+##target_link_libraries( test_fighters Threads::Threads)
 
 add_executable(battle_demo
 		includes.hxx
@@ -33,6 +34,7 @@ add_executable(battle_demo
 		menus/battle.hxx
 		tests/battle_demo.cpp)
 
+#target_link_libraries( battle_demo Threads::Threads)
 add_executable(test_battle
 		includes.hxx
 		classes/battle/loottable.hxx
@@ -40,6 +42,7 @@ add_executable(test_battle
 		menus/battle.hxx
 		tests/battle_test.cpp)
 
+#target_link_libraries( test_battle Threads::Threads)
 add_executable(map_test
 		includes.hxx
 		classes/maps/room.hxx
@@ -49,6 +52,7 @@ add_executable(map_test
 		tests/map_test.cpp
 		)
 
+#target_link_libraries( map_test Threads::Threads)
 add_executable(test_items
 		includes.hxx
 		classes/items/itembase.hxx
@@ -59,6 +63,7 @@ add_executable(test_items
 		tests/item_test.cpp
 		)
 
+#target_link_libraries( test_items Threads::Threads)
 add_executable(itp298_capstone
 		includes.hxx
 		classes/fighters/actor.hxx
@@ -78,5 +83,6 @@ add_executable(itp298_capstone
 		main.cpp
 		menus/inputs.hxx)
 
+#target_link_libraries(itp298_capstone Threads::Threads)
 add_test(NAME "BattleTest"
 		COMMAND ./test_battle)
