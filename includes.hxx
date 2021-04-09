@@ -12,4 +12,10 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+#include "terminal.hxx"
 #endif //ITP298_CAPSTONE_INCLUDES_HXX

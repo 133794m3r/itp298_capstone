@@ -13,6 +13,7 @@ class Actor {
   private:
 	//basic properties shared between all subclasses.
 	std::string _name;
+
 	//level can never be <0 so unsigned value.
 	unsigned char _lvl;
 
