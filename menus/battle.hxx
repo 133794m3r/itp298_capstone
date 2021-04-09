@@ -73,7 +73,6 @@ If enemy's HP is over 4 digits then we make it be ????.
 
 	std::cout << "Lvl XXX " << mob.get_name() << std::endl;
 	std::cout << "YYY/ZZZZ" << std::endl << std::endl;
-	 //printf("%56s",player.get_name().c_str());
  	std::cout << std::right << std::setw(56) << "Lvl 255 " + player.get_name() << std::endl;
  	std::cout << std::setw(56) <<
 	 " " + std::to_string(200) + "/" + std::to_string(1255)
@@ -84,7 +83,6 @@ If enemy's HP is over 4 digits then we make it be ????.
 	//the message that we're going to send.
 	std::string message;
 	std::string padding_string(54, ' ');
-
  	std::cout << "+------------------------------------------------------+"
 	 << std::endl << "|" << padding_string << "|" << std::endl
  	 << "|" << padding_string << "|"
@@ -93,7 +91,6 @@ If enemy's HP is over 4 digits then we make it be ????.
 	for(unsigned int i=1;i<=options.size();i++){
 		menu_string += std::to_string(i) + ")" + options[i-1];
 	}
-
 
 	move_cursor(8,2);
 	//print_wrap(menu_string,54);
@@ -112,14 +109,15 @@ If enemy's HP is over 4 digits then we make it be ????.
 			message = player.get_name() + " did " + std::to_string(dmg) + " damage!";
 			show_battle_message(message);
 			std::cout.flush();
-			pause();
 		}
+		pause();
 		//mobs can attack for now otherwise they do nothing that turn.
 		if(mob_opt == 0) {
 			dmg = mob.attack(player);
 			message = mob.get_name() + " did "  + std::to_string(dmg) + " damage!";
 			show_battle_message(message);
 			std::cout.flush();
+
 		}
 		pause();
 		//reset the option to 0.
