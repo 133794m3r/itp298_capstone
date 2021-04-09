@@ -8,7 +8,7 @@
 int main(){
 	//something to be done here.
 	Mob mob("Fish");
-	Player player("Jimmy");
+	Player player("Jimmy",1,0,100);
 	battle(player,mob);
 	return 0;
 }

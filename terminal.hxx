@@ -26,7 +26,7 @@ void clear_line(unsigned int line){
 	int pause(){
 		//clear the rest of cin.
 		std::cin.clear();
-		std::cout << "Press Enter/Return key to continue... " << std::endl;
+		std::cout << "Press Enter/Return key to continue... ";
 		std::getchar();
 		std::cin.clear();
 		move_and_clear_terminal(2);

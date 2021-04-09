@@ -11,6 +11,27 @@
 #include "../classes/fighters/mob.hxx"
 #include "inputs.hxx"
 
+void redraw_hp(const Actor &actor, bool player=false){
+	if(player) {
+		//move the cursor to the proper place before outputting.
+		move_cursor(5, 1);
+		std::cout << std::setw(56) <<
+		"HP " + std::to_string(actor.get_hp()) +
+		"/" + std::to_string(actor.get_base_hp());
+	}
+	else {
+		//move to proper place
+		move_cursor(2, 1);
+		//padding is here so that it redraws the whole line.
+		std::cout << std::left << std::setw(20) << "HP " + std::to_string(actor.get_hp())
+		+ "/" + std::to_string(actor.get_base_hp());
+		//reset to default padding mode
+		std::cout << std::right;
+	}
+	//move the cursor back where it belongs
+	move_cursor(11,1);
+}
+
 void show_battle_message(const std::string &message){
 	std::string new_str = message;
 	//the padding string we'll use to pad all inputs until the end.
@@ -33,7 +54,14 @@ void show_battle_message(const std::string &message){
 	clear_line(11);
 }
 
-int battle(Player &player,Mob &mob){
+/**
+ * Battle simulator function.
+ *
+ * @param player The player object we're operating on.
+ * @param mob The mob we're currently fighting.
+ * @return If the player is still alive after the battle.
+ */
+bool battle(Player &player,Mob &mob){
 	clear_and_move_top();
 	std::array<std::string,5> options = {
 			"Attack",
@@ -69,15 +97,13 @@ Then if they have an invalid option it'll be
 below the text box. For a message it'll be in that box.
 If enemy's HP is over 4 digits then we make it be ????.
 	 */
-	char hp = 50;
+	char player_hp_digits;
+	char mob_hp_digits;
 
-	std::cout << "Lvl XXX " << mob.get_name() << std::endl;
-	std::cout << "YYY/ZZZZ" << std::endl << std::endl;
- 	std::cout << std::right << std::setw(56) << "Lvl 255 " + player.get_name() << std::endl;
- 	std::cout << std::setw(56) <<
-	 " " + std::to_string(200) + "/" + std::to_string(1255)
-	 << std::endl << std::endl;
-
+	std::cout << "Lvl " << static_cast<int>(mob.get_lvl()) << " " << mob.get_name() << std::endl;
+	std::cout << "HP " << mob.get_hp() << "/" << mob.get_base_hp() << std::endl << std::endl;
+ 	std::cout << std::setw(56) << "Lvl "  + std::to_string(player.get_lvl()) + " " + player.get_name() << std::endl;
+	std::cout << std::setw(56) << "HP " + std::to_string(player.get_hp()) + "/" + std::to_string(player.get_base_hp()) << std::endl << std::endl;
 
  	std::string menu_string; //the menu string that's going to contain our options
 	//the message that we're going to send.
@@ -92,11 +118,14 @@ If enemy's HP is over 4 digits then we make it be ????.
 		menu_string += std::to_string(i) + ")" + options[i-1];
 	}
 
+	//move the cursor to within the text box.
 	move_cursor(8,2);
-	//print_wrap(menu_string,54);
+	//display message
 	show_battle_message(menu_string);
+	//move it back to it's original position
 	move_cursor(11,1);
-	std::cout << "\x1b[" << BOLD << "mSelection\x1b[" << UN_BOLD << "m: ";
+	//show the selection prompt
+	std::cout << "\x1b[1mmSelection\x1b[22m: ";
 
 	// we only continue the battle as long as both participants are alive
 	while(player.is_alive() && mob.is_alive()) {
@@ -109,15 +138,23 @@ If enemy's HP is over 4 digits then we make it be ????.
 			message = player.get_name() + " did " + std::to_string(dmg) + " damage!";
 			show_battle_message(message);
 			std::cout.flush();
+			if(dmg != 0)
+				redraw_hp(mob);
+
 		}
 		pause();
 		//mobs can attack for now otherwise they do nothing that turn.
+		//if it's dead time to break out of it as the mob can't act.
+		if(!mob.is_alive())
+			break;
+		//no AI right now really.
 		if(mob_opt == 0) {
 			dmg = mob.attack(player);
 			message = mob.get_name() + " did "  + std::to_string(dmg) + " damage!";
 			show_battle_message(message);
 			std::cout.flush();
-
+			if(dmg != 0)
+				redraw_hp(player,true);
 		}
 		pause();
 		//reset the option to 0.
@@ -126,10 +163,13 @@ If enemy's HP is over 4 digits then we make it be ????.
 		std::cout << "\x1b[1mSelection\x1b[22m: ";
 	}
 	//figure out who died
-	if(player.is_alive())
+	if(player.is_alive()) {
 		std::cout << player.get_name() << " defeated " << mob.get_name() << std::endl;
-	else
+		return true;
+	}
+	else {
 		std::cout << player.get_name() << " was defeated by " << mob.get_name() << std::endl;
-	return 0;
+		return false;
+	}
 }
 #endif //ITP298_CAPSTONE_BATTLE_HXX
