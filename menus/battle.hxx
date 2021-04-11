@@ -101,7 +101,44 @@ If enemy's HP is over 4 digits then we make it be ????.
 	 */
 
 	//draw the initial UI
-	std::cout << "Lvl " << static_cast<int>(mob.get_lvl()) << " " << mob.get_name() << std::endl;
+
+	switch(mob.get_tier()){
+		case 0:
+			//gray/trash
+			std::cout << "\x1b[90m";
+			break;
+		case 2:
+			//green/rare
+			std::cout << "\x1b[1;92m";
+			break;
+		case 3:
+			//blue/elite
+			std::cout << "\x1b[1;94m";
+			break;
+		case 4:
+			//purple rare elite
+			std::cout << "\x1b[1;95mElite ";
+			break;
+		case 5:
+			//yellow mini boss
+			std::cout << "\x1b[1;93m";
+			break;
+		case 6:
+			//red boss
+			std::cout << "\x1b[1;91mBoss ";
+			break;
+		default:
+			break;
+	}
+
+	std::cout <<  mob.get_name() << "\x1b[97;22m";
+	std::cout << " Lvl: ";
+	if(mob.get_tier() > 4)
+		std::cout << "???";
+	else
+		std::cout << mob.get_lvl();
+
+	std::cout << std::endl;
 	std::cout << "HP " << mob.get_hp() << "/" << mob.get_base_hp() << std::endl << std::endl;
  	std::cout << std::setw(56) << "Lvl "  + std::to_string(player.get_lvl()) + " " + player.get_name() << std::endl;
 	std::cout << std::setw(56) << "HP " + std::to_string(player.get_hp()) + "/" + std::to_string(player.get_base_hp()) << std::endl << std::endl;

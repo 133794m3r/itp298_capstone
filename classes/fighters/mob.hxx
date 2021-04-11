@@ -16,7 +16,7 @@ private:
 	unsigned int xp_;
 	unsigned int gold_;
 	//type is based upon the following list.
-	// 0 = trash-tier, 1 = normal, 2 = rare, 3 = elite, 4 = rare elite, 5 = mini-boss, 6 = boss, 7 = elite boss.
+	// 0 = trash-tier, 1 = normal, 2 = rare, 3 = elite, 4 = rare elite, 5 = mini-boss, 6 = boss
 	//they get a bonus to all stats based upon their tier(or reduced for trash).
 	// The stat bonus makes it as if they are of a higher level than they really are like so. Bosses use their own rules and thus don't use the normal formula below but isntead start as "boss" number.
 	// stats = set_stats(this->lvl_+ (TIER - 1))
@@ -65,7 +65,8 @@ private:
 public:
 
 	//initialize the Mob class. Explicit since it can be called with just 1 parameter. Also initialize properties with parent class' constructor.
-	explicit Mob(std::string name="Mob",unsigned short tier=1, unsigned short level=1, double bonus_hp=0.1, double bonus_str=0.0, double bonus_def=0.0):Actor(std::move(name),level,bonus_hp+((tier-1.0)/80),bonus_str+((tier-1.0)/120),bonus_def+((tier-1.0)/90)) {
+	explicit Mob(std::string name="Mob",unsigned short tier=1, unsigned short level=1, double bonus_hp=0.00, double bonus_str=0.0, double bonus_def=0.0)
+	:Actor(std::move(name),level,bonus_hp+((tier-1.0)/35),bonus_str+((tier-1.0)/100),bonus_def+((tier-1.0)/80)) {
 		unsigned int tmp = this->lvl_ + 1;
 		//based on other formulas this should make the curve OK.
 		//tier will modify the two formulas below eventually
@@ -77,9 +78,27 @@ public:
 
 
 
-	void set_level(unsigned char level) override{
-		level =std::lround(level * (1 + ( (this->tier_<5)?(this->tier_-1)/30.0:(this->tier_-1)/28.0 )));
-		Actor::set_level(level);
+	void set_level(unsigned short level){
+		double modifier =  (1 + ( (this->tier_<5)?(this->tier_-1)/29.0:(this->tier_-1)/27.0 ));
+		double dif = 0.0;
+		//if it's the same just do nothing.
+		if(level == this->lvl_)
+			dif = this->lvl_ - 1;
+		else if(level > this->lvl_)
+			dif = level - this->lvl_;
+		else
+			dif = this->lvl_ - level;
+		//when they modify the level change the stats to the proper values.
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.0*modifier*dif)+(this->tier_-1);
+		this->base_str_ += std::lround( (this->bonus_str_+1.0)*4.0*modifier*dif);
+		this->base_def_ += std::lround( (this->bonus_def_+1.0)*3.0*modifier*dif);
+		//then set the current stats from the base.
+		this->hp_ = this->base_hp_;
+		this->str_ = this->base_str_;
+		this->def_ = this->base_def_;
+	}
+	unsigned short get_tier() const{
+		return this->tier_;
 	}
 	/**
 	 * Returns the rewards upon death.

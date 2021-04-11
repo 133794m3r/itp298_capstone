@@ -30,9 +30,9 @@ class Player: public Actor {
 		unsigned int old_str = this->base_str_;
 		unsigned int old_def = this->base_def_;
 		//basic formulas until better ones are figured out.
-		this->base_hp_ += std::lround( (this->bonus_hp_+1.1)*13.0);
-		this->base_str_ += std::lround( (this->bonus_str_+1.1)*4.0);
-		this->base_def_ += std::lround( (this->bonus_def_+1.1)*3.0);
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.05)*13.0);
+		this->base_str_ += std::lround( (this->bonus_str_+1.05)*4.0);
+		this->base_def_ += std::lround( (this->bonus_def_+1.05)*3.0);
 		this->hp_ = this->base_hp_;
 		this->str_ = this->base_str_;
 		this->def_ = this->base_def_;

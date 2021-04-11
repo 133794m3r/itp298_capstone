@@ -75,7 +75,7 @@ class Actor {
 	 *
 	 * @return The level of the actor
 	 */
-	unsigned char get_lvl() const{
+	unsigned short get_lvl() const{
 		return this->lvl_;
 	}
 
@@ -158,7 +158,8 @@ class Actor {
 	 *
 	 * @param level The level to change the actor to.
 	 */
-	virtual void set_level(unsigned char level){
+	virtual void set_level(unsigned short level){
+
 		int dif = 0;
 		//if it's the same just do nothing.
 		if(level == this->lvl_)
@@ -168,9 +169,9 @@ class Actor {
 		else
 			dif = this->lvl_ - level;
 		//when they modify the level change the stats to the proper values.
-		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.0)*dif;
-		this->base_str_ += std::lround( (this->bonus_str_+1.0)*4.0)*dif;
-		this->base_def_ += std::lround( (this->bonus_def_+1.0)*3.0)*dif;
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.0*dif);
+		this->base_str_ += std::lround( (this->bonus_str_+1.0)*4.0*dif);
+		this->base_def_ += std::lround( (this->bonus_def_+1.0)*3.0*dif);
 		//then set the current stats from the base.
 		this->hp_ = this->base_hp_;
 		this->str_ = this->base_str_;
