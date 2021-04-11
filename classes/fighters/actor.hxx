@@ -14,15 +14,12 @@ class Actor {
 	//basic properties shared between all subclasses.
 	std::string name_;
 
-	//level can never be <0 so unsigned value.
-	unsigned char lvl_;
-
   //these properties need to be accessible by child classes.
   protected:
-//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
-	unsigned int bonus_hp_;
-	unsigned int bonus_str_;
-	unsigned int bonus_def_;
+	//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
+	double bonus_hp_;
+	double bonus_str_;
+	double bonus_def_;
 	//this contains the actual hp/str/def of the actor at it's current level. The base is the "maximum".
 	unsigned int base_hp_;
 	unsigned int base_str_;
@@ -31,37 +28,38 @@ class Actor {
 	unsigned int hp_;
 	unsigned int str_;
 	unsigned int def_;
-  //the constructors, public methods, and getters.
+	//level can never be <0 so unsigned value.
+	unsigned short lvl_ = 0;
+	//the constructors, public methods, and getters.
   public:
-	explicit Actor(std::string name="Actor", unsigned int hp = 10, unsigned int str=6, unsigned int def=2,unsigned char level=1){
+	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15, unsigned int str = 5, unsigned int def = 3){
 		//set all properties.
 		//we're copying once so why not just move it.
 		this->name_ = std::move(name);
-		this->lvl_ = level;
+		this->base_hp_ = hp;
+		this->base_str_ = str;
+		this->base_def_ = def;
 		//these are used when leveling up to give a bonus upon that levelup beyond just their level.
-		this->bonus_hp_ = hp;
-		this->bonus_str_ = str;
-		this->bonus_def_ = def;
-		//if they're higher than l1 set their stats accordingly.
-		if(level > 1) {
-			level--;
-			//temporary growth tables until I figure out better formulas.
-			//TODO: Make a growth modifier instead of just calculating from the starting stats.
-			this->base_hp_ = std::lround((hp * 0.25) * level) + hp;
-			this->base_str_ = std::lround((str * 0.15) * level) + str;
-			this->base_def_ = std::lround((def * 0.15) * level) + def;
+		this->bonus_hp_ = bonus_hp;
+		this->bonus_str_ = bonus_str;
+		this->bonus_def_ = bonus_def;
 
-		}
-		else{
-			//set the base ones as the values given since they're level 1.
-			this->base_hp_ = hp;
-			this->base_str_ = str;
-			this->base_def_ = def;
-		}
-		//set the current values to the base after construction.
-		this->hp_ = this->base_hp_;
-		this->str_ = this->base_str_;
-		this->def_ = this->base_def_;
+		//if they're higher than l1 set their stats accordingly.
+//		if(level > 1) {
+//			//temporary growth tables until I figure out better formulas.
+////			this->base_hp_ = std::lround((hp * 0.25) * level) + 20;
+////			this->base_str_ = std::lround((str * 0.15) * level) + str;
+////			this->base_def_ = std::lround((def * 0.15) * level) + def;
+//
+//			this->set_level(level-1);
+//		}
+//		else{
+//			//set the current values to the base after construction.
+//			this->hp_ = this->base_hp_;
+//			this->str_ = this->base_str_;
+//			this->def_ = this->base_def_;
+//		}
+		this->lvl_ = level;
 	}
 
 	//All of the getters.
@@ -134,16 +132,16 @@ class Actor {
 	 * @param  the amount of damage to be inflicted.
 	 * @return  The total amount of damage delivered. 0 for none, and - value for overkill.
 	 */
-	//TODO: Change return type/value of damage to be unsigned types.
-	int damage(int dmg){
-		dmg -= this->def_;
-		if(dmg < 0)
+	unsigned int damage(unsigned int dmg){
+		if(dmg < this->def_)
 			return 0;
-		if(this->hp_ < dmg){
+
+		dmg -= this->def_;
+		if(this->hp_ < dmg)
 			this->hp_ = 0;
-			return dmg*-1;
-		}
-		this->hp_ -= dmg;
+		else
+			this->hp_ -= dmg;
+
 		return dmg;
 	}
 
@@ -160,19 +158,19 @@ class Actor {
 	 *
 	 * @param level The level to change the actor to.
 	 */
-	void set_level(unsigned char level){
+	virtual void set_level(unsigned char level){
+		int dif = 0;
 		//if it's the same just do nothing.
 		if(level == this->lvl_)
-			return;
-		int dif;
-		if(level > this->lvl_)
+			dif = this->lvl_ - 1;
+		else if(level > this->lvl_)
 			dif = level - this->lvl_;
 		else
 			dif = this->lvl_ - level;
 		//when they modify the level change the stats to the proper values.
-		this->base_hp_ += std::lround((this->bonus_hp_ * 0.25) * dif);
-		this->base_str_ += std::lround((this->bonus_str_ * 0.15) * dif);
-		this->base_def_ += std::lround((this->bonus_def_ * 0.15) * dif);
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.0)*dif;
+		this->base_str_ += std::lround( (this->bonus_str_+1.0)*4.0)*dif;
+		this->base_def_ += std::lround( (this->bonus_def_+1.0)*3.0)*dif;
 		//then set the current stats from the base.
 		this->hp_ = this->base_hp_;
 		this->str_ = this->base_str_;
