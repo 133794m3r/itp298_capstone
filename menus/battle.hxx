@@ -219,7 +219,12 @@ If enemy's HP is over 4 digits then we make it be ????.
 	}
 	//figure out who died
 	if(player.is_alive()) {
+		//this is just a place-holder message will eventually go somewhere.
 		std::cout << player.get_name() << " defeated " << mob.get_name() << std::endl;
+		std::pair<int,int> rewards = mob.rewards();
+		std::cout << "You received " << rewards.first << "xp and " << rewards.second << "g for defeating the enemy!" << std::endl;
+		player.add_xp(rewards.first);
+		player.add_gold(rewards.second);
 		return true;
 	}
 	else {

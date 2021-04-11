@@ -14,6 +14,7 @@ int main(){
 	show_all_stats(boss);
 	show_all_stats(mob);
 	show_all_stats(player);
-	battle(player,boss);
+	battle(player,mob);
+	show_all_stats(player);
 	return 0;
 }

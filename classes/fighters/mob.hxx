@@ -97,9 +97,11 @@ public:
 		this->str_ = this->base_str_;
 		this->def_ = this->base_def_;
 	}
+
 	unsigned short get_tier() const{
 		return this->tier_;
 	}
+
 	/**
 	 * Returns the rewards upon death.
 	 *

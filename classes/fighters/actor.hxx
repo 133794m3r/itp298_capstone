@@ -11,11 +11,11 @@
 
 class Actor {
   private:
-	//basic properties shared between all subclasses.
-	std::string name_;
+	//nothing just for this class atm.
 
   //these properties need to be accessible by child classes.
   protected:
+	std::string name_;
 	//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
 	double bonus_hp_;
 	double bonus_str_;

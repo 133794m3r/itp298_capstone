@@ -67,8 +67,16 @@ class Player: public Actor {
 			return false;
 		}
 	}
+	friend void show_all_stats(Player &);
 
 };
-
+void show_all_stats(Player &player){
+	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
+			  << player.base_str_ << " def:" << player.base_def_ << " level:" << std::to_string(player.lvl_) <<
+			  std::endl << "base hp:" << player.bonus_hp_ << " base str:" <<
+			  player.bonus_str_ << " base def:" << player.bonus_def_
+			  << " xp:" << player.xp_ << " gold: " << player.gold_
+			  << std::endl;
+}
 
 #endif //ITP298_CAPSTONE_PLAYER_HXX
