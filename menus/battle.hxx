@@ -53,7 +53,7 @@ void show_battle_message(const std::string &message){
 	move_cursor(11,1);
 	clear_line(11);
 }
-
+//might make this whole thing be abstracted away into the Battle class and then have the printing and such be done via the "complete_turn" method to make testing easier but that's later me's problem.
 /**
  * Battle simulator function.
  *
@@ -63,17 +63,19 @@ void show_battle_message(const std::string &message){
  */
 bool battle(Player &player,Mob &mob){
 	clear_and_move_top();
-	std::array<std::string,5> options = {
+	std::array<std::string,3> options = {
 			"Attack",
 			"Defend",
 			"Item",
-			"Wait",
-			"Something",
+//			"Wait",
+//			"Something",
 //			"Else",
 	};
+
 	for(unsigned char i=0;i<options.size();i++){
 		options[i].append(14-options[i].size(),' ');
 	}
+	//the forward declaration of the options.
 	unsigned int option = 0;
 	unsigned int mob_opt;
 	unsigned int dmg;
@@ -97,9 +99,8 @@ Then if they have an invalid option it'll be
 below the text box. For a message it'll be in that box.
 If enemy's HP is over 4 digits then we make it be ????.
 	 */
-	char player_hp_digits;
-	char mob_hp_digits;
 
+	//draw the initial UI
 	std::cout << "Lvl " << static_cast<int>(mob.get_lvl()) << " " << mob.get_name() << std::endl;
 	std::cout << "HP " << mob.get_hp() << "/" << mob.get_base_hp() << std::endl << std::endl;
  	std::cout << std::setw(56) << "Lvl "  + std::to_string(player.get_lvl()) + " " + player.get_name() << std::endl;
@@ -109,11 +110,13 @@ If enemy's HP is over 4 digits then we make it be ????.
 	//the message that we're going to send.
 	std::string message;
 	std::string padding_string(54, ' ');
+	//draw the text-box.
  	std::cout << "+------------------------------------------------------+"
 	 << std::endl << "|" << padding_string << "|" << std::endl
  	 << "|" << padding_string << "|"
  	 << std::endl << "+------------------------------------------------------+" << std::endl;
 
+ 	//generate the menu string
 	for(unsigned int i=1;i<=options.size();i++){
 		menu_string += std::to_string(i) + ")" + options[i-1];
 	}
@@ -125,7 +128,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 	//move it back to it's original position
 	move_cursor(11,1);
 	//show the selection prompt
-	std::cout << "\x1b[1mmSelection\x1b[22m: ";
+	std::cout << "\x1b[1mSelection\x1b[22m: ";
 
 	// we only continue the battle as long as both participants are alive
 	while(player.is_alive() && mob.is_alive()) {
@@ -133,29 +136,44 @@ If enemy's HP is over 4 digits then we make it be ????.
 		//have the mob randomly select one for now.
 		mob_opt = xorshift128(0, 3);
 		//currently only doing the attack one
-		if(option == 1) {
-			dmg = player.attack(mob);
-			message = player.get_name() + " did " + std::to_string(dmg) + " damage!";
-			show_battle_message(message);
-			std::cout.flush();
-			if(dmg != 0)
-				redraw_hp(mob);
+		switch(option){
+			case 1:
+				dmg = player.attack(mob);
+				message = player.get_name() + " did " + std::to_string(dmg) + " damage!";
+				if(dmg != 0)
+					redraw_hp(mob);
+				else
+					message  = player.get_name() + " missed completely!";
 
+				break;
+			case 2:
+				message = player.get_name() + " is thinking of their next move.";
+				break;
 		}
+		show_battle_message(message);
 		pause();
 		//mobs can attack for now otherwise they do nothing that turn.
 		//if it's dead time to break out of it as the mob can't act.
 		if(!mob.is_alive())
 			break;
-		//no AI right now really.
+
+		//no AI right now really. mob options will be the same as the player for simplicity
 		if(mob_opt == 0) {
 			dmg = mob.attack(player);
 			message = mob.get_name() + " did "  + std::to_string(dmg) + " damage!";
-			show_battle_message(message);
-			std::cout.flush();
+
 			if(dmg != 0)
 				redraw_hp(player,true);
+			else
+				message = mob.get_name() + " missed completely!";
+
+
 		}
+		else{
+			message = mob.get_name() + " stands there and seems to be thinking of something...";
+		}
+		show_battle_message(message);
+
 		pause();
 		//reset the option to 0.
 		option = 0;

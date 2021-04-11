@@ -3,8 +3,6 @@
 * By Macarthur Inbody <admin-contact@transcendental.us> 2020
 * Licensed AGPLv3
 */
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef _TERMINAL_SETUP_
 void move_and_clear_terminal(unsigned int lines_up){
 	printf("\x1b[%dF\x1b[0J", lines_up);
@@ -29,7 +27,7 @@ void clear_line(unsigned int line){
 		std::cout << "Press Enter/Return key to continue... ";
 		std::getchar();
 		std::cin.clear();
-		move_and_clear_terminal(2);
+		move_and_clear_terminal(1);
 		return 0;
 	}
 
@@ -87,4 +85,3 @@ template <typename T> int proper_input(T &variable){
 //this'll be the C version of the function sometime in the future.
 #endif //__cplusplus
 #endif //_TERMINAL_SETUP_
-#pragma clang diagnostic pop

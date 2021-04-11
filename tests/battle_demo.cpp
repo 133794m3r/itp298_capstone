@@ -7,8 +7,12 @@
 #include "../menus/battle.hxx"
 int main(){
 	//something to be done here.
-	Mob mob("Fish");
-	Player player("Jimmy",1,0,100);
+	Mob mob("Fish",1,1);
+	Player player("Jimmy",1);
+	Mob boss("Boss",8,2);
+	show_all_stats(boss);
+	show_all_stats(mob);
+	show_all_stats(player);
 	battle(player,mob);
 	return 0;
 }
