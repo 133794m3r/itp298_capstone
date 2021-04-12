@@ -10,14 +10,15 @@ typedef unsigned long long uint64;
 #endif
 bool XOR_SHIFT_128_SEEDED=false;
 
+//values are non-zero just so that it can be used unseeded.
+uint64 XOR_SHIFT_128_STATE[2]={4486865458633715202ULL,15772110107473307123ULL};
 
-uint64 XOR_SHIFT_128_STATE[2]={0LL,0LL};
 //not going to explain the math behind this. It's up to you figure out on your own.
 //i'm done commenting.
 unsigned long long splitmix64(uint64 seed){
-	uint64 z=(seed+0x9E3779B97F4A7C15LL);
-	z=(z^(z>>30))*0xBF58476D1CE4E5B9LL;
-	z=(z^(z >> 27))*0x94D049BB133111EBLL;
+	uint64 z=(seed+0x9E3779B97F4A7C15ULL);
+	z=(z^(z>>30))*0xBF58476D1CE4E5B9ULL;
+	z=(z^(z >> 27))*0x94D049BB133111EBULL;
 	return z ^ (z >> 32);
 }
 
@@ -58,7 +59,7 @@ template <typename T> T xorshift128(T low=0, T high=0){
 		low=0;
 	}
 	else if(high == 0 && low == 0){
-		high = (T)UINT64_MAX;
+		high = static_cast<T>(UINT64_MAX);
 	}
 	return low+((high-low)*((double)result/ UINT64_MAX));
 }
@@ -85,9 +86,8 @@ template <typename T, typename U> U xorshift128(T low=0, U high=0){
 
 //this is the C++ version because I'm using chrono. The C version using the same function.
 void s_xorshift128(uint64 seed=0){
-	//if we've already seeded it, there's no reason to do it again, if the seed is 0 then they're just calling it to make
-	//sure that it's seeded. But if the seed is not
-	if(!XOR_SHIFT_128_SEEDED || seed == 0) {
+	//make sure that it's not already been seeded
+	if(!XOR_SHIFT_128_SEEDED) {
 		//make the seed be the current time since epoch in milliseconds.
 		seed = (seed == 0) ? static_cast<uint64>(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1))
 						   : seed;

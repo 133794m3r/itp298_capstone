@@ -3,8 +3,6 @@
 * By Macarthur Inbody <admin-contact@transcendental.us> 2020
 * Licensed AGPLv3
 */
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef _TERMINAL_SETUP_
 void move_and_clear_terminal(unsigned int lines_up){
 	printf("\x1b[%dF\x1b[0J", lines_up);
@@ -26,10 +24,10 @@ void clear_line(unsigned int line){
 	int pause(){
 		//clear the rest of cin.
 		std::cin.clear();
-		std::cout << "Press Enter/Return key to continue... " << std::endl;
+		std::cout << "Press Enter/Return key to continue... ";
 		std::getchar();
 		std::cin.clear();
-		move_and_clear_terminal(2);
+		move_and_clear_terminal(1);
 		return 0;
 	}
 
@@ -42,10 +40,14 @@ void clear_line(unsigned int line){
 enum TEXT_STYLES{RESET ,BOLD,DIM,ITALIC,UNDERLINE,REVERSED,DOUBLE_UNDERLINE=21,UN_BOLD=22,UN_DIM=22,UN_ITALIC,UN_UNDERLINE,UN_REVERSED=27};
 //the colors.
 enum TEXT_COLORS{RESET_COLOR,
-//foreground colors.
+	//foreground colors.
 	BLACK_TXT = 30,RED_TXT,GREEN_TXT,YELLOW_TXT,BLUE_TXT,MAGENTA_TXT,CYAN_TXT,WHITE_TXT,
-//background colors.
-	BLACK_BG = 40,RED_BG,GREEN_BG,YELLOW_BG,BLUE_BG,MAGENTA_BG,CYAN_BG,WHITE_BG
+	//"bright" variants
+	GRAY_TXT=90,BRIGHT_RED_TXT, BRIGHT_GREEN_TXT, BRIGHT_YELLOW_TXT, BRIGHT_BLUE_TXT, BRIGHT_MAGENTA_TXT, BRIGHT_CYAN_TXT, BRIGHT_WHITE_TXT,
+	//background colors.
+	BLACK_BG = 40,RED_BG,GREEN_BG,YELLOW_BG,BLUE_BG,MAGENTA_BG,CYAN_BG,WHITE_BG,
+	//"bright" variants
+	GRAY_BG = 100, BRIGHT_RED_BG, BRIGHT_GREEN_BG, BRIGHT_YELLOW_BG, BRIGHT_BLUE_BG, BRIGHT_MAGENTA_BG, BRIGHT_CYAN_BG, BRIGHT_WHITE_BG
 };
 
 void clear_and_move_top(){
@@ -87,4 +89,3 @@ template <typename T> int proper_input(T &variable){
 //this'll be the C version of the function sometime in the future.
 #endif //__cplusplus
 #endif //_TERMINAL_SETUP_
-#pragma clang diagnostic pop
