@@ -6,7 +6,7 @@
  * Purpose: Base Item class for our currently Untitled RPG. This is the building block for our weapon and armor classes
 */
 
-#include <sstream>
+
 #include "itembase.hxx"
 
 //Private functions
@@ -18,15 +18,20 @@ void Item::generate()
 
 
 //Constructors / Destructors
-Item::Item()
+Item:: Item(std::string name,
+            unsigned int type
+            unsigned int tier,
+            unsigned int value);
 {
     std::string name;
-    unsigned type;
-    unsigned value;
+    unsigned int type;
+    unsigned int value;
+    unsigned int tier;
 
-    this->name = ""; //assigns the initial value of name to null
-    this->type = 0;  //assigns the initial value of type to 0
-    this->value = 0; //assigns the initial value of value to 0
+    this->name = name; //assigns the given value of name
+    this->type = type;  //assigns the given value of type
+    this->value = value; //assigns the given value of value
+    this -> tier = tier; //assigns the given value of tier.
 }
 
 Item::~Item()
@@ -35,17 +40,17 @@ Item::~Item()
 }
 
 //Accessors
-const std::string& getName()
+const std::string& get_name()
 {
-    //return this->name; //assigns a generated item its name
+    return this->name; //assigns a generated item its name
 }
-const unsigned& getType()
+const unsigned int& get_type()
 {
-    //return this->type; //assigns a generated item its type
+    return this->type; //assigns a generated item its type
 }
-const unsigned& getValue()
+const unsigned int& get_value()
 {
-    //return this->value; //assigns a generated item its value
+    return this->value; //assigns a generated item its value
 }
 
 //functions
@@ -53,7 +58,7 @@ const std::string Item::toString() const //this function lines 51-58 tells the p
 {
     std::stringstream ss;
 
-    ss << " - Name: " << this->name
+    ss << " | Name: " << this->name
         << " | Type: " << this->type
         << " | Value: " << this->value
         << "\n";

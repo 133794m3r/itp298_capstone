@@ -9,30 +9,40 @@
 #define ITP298_CAPSTONE_ITEMBASE_HXX
 
 #include <string>
-
+#include <sstream>
 
 enum item_types {WEAPON = 0, ARMOR}; //allows the program to decide what type of item is being generated
+enum item_tiers {COMMON = 0, UNCOMMON, RARE, EPIC, LEGENDARY};
 
 class Item {
 
 //Private variables
 private:
-    std::string name; //used to denote the name of an item
-    unsigned type; //used to denote the type of item upon creation
-    unsigned value; // used to denote the value of a generated item
+    std::string name; //used to denote the name of an item.
+    unsigned int type; //used to denote the type of item upon creation.
+    unsigned int value; // used to denote the value of a generated item.
+    unsigned int tier; // used to denote the tier (rarity) of an item.
+    unsigned int level;  //used to determine the level of an item.
 
     //private functions
     void generate(); //item generation function
 
 
 public:
-    Item(); //calls constructor
+    Item(
+         std::string name;
+         unsigned int type,
+         unsigned int tier,
+         unsigned int value
+         unsigned int level);
+
     virtual ~Item(); //calls destructor
 
     //Accessors
-    const std::string& getName(); //allows for other files to use the private name variable
-    const unsigned& getType();    //allows for other files to use the private type variable
-    const unsigned& getValue();   //allows for other files to use the private value variable
+    const std::string& get_name(); //allows for other files to use the private name variable
+    const unsigned int& get_type(); //allows for other files to use the private type variable
+    const unsigned int& get_value(); //allows for other files to use the private value variable
+    const unsigned int& get_tier(); // allows for other files to access the private tier variable
 
     //public functions
     const std::string toString() const;
