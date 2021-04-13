@@ -19,9 +19,9 @@ void Item::generate()
 
 //Constructors / Destructors
 Item:: Item(std::string name,
-            unsigned int type
+            unsigned int type,
             unsigned int tier,
-            unsigned int value
+            unsigned int value,
             unsigned int level);
 {
     std::string name;
@@ -45,23 +45,23 @@ Item::~Item()
 //Accessors
 const std::string& get_name()
 {
-    return name; //assigns a generated item its name
+    //return this->name; //assigns a generated item its name
 }
 const unsigned int& get_type()
 {
-    return type; //assigns a generated item its type
+    //return this->type; //assigns a generated item its type
 }
 const unsigned int& get_value()
 {
-    return value; //assigns a generated item its value
+    //return this->value; //assigns a generated item its value
 }
 const unsigned int& get_level()
 {
-    return level; //assigns level to generated items
+    //return this->level; //assigns level to generated items
 }
 const unsigned int& get_tier()
 {
-    return tier; //assigns tier(rarity) to generated items
+    //return this->tier; //assigns tier(rarity) to generated items
 }
 
 //functions
