@@ -29,10 +29,10 @@ private:
 
 
 public:
-    Item(std::string name;
+    Item(std::string name,
          unsigned int type,
          unsigned int tier,
-         unsigned int value
+         unsigned int value,
          unsigned int level);
 
     virtual ~Item(); //calls destructor
