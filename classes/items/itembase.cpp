@@ -22,17 +22,13 @@ Item(std::string name,
 unsigned int type,
 unsigned int tier,
 unsigned int value,
-unsigned int level){
-this->
-name = name; //assigns the given value of name
-this->
-type = type;  //assigns the given value of type
-this->
-value = value; //assigns the given value of value
-this->
-tier = tier; //assigns the given value of tier
-this->
-level = level; //assigns the given value of level
+unsigned int level)
+{
+this->name = name; //assigns the given value of name
+this->type = type;  //assigns the given value of type
+this->value = value; //assigns the given value of value
+this->tier = tier; //assigns the given value of tier
+this->level = level; //assigns the given value of level
 }
 
 Item::~Item()
