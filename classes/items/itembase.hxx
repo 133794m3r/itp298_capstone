@@ -33,7 +33,7 @@ public:
          unsigned int type,
          unsigned int tier,
          unsigned int value,
-         unsigned int level)
+         unsigned int level);
 
     virtual ~Item(); //calls destructor
 
