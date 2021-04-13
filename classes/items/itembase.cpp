@@ -22,8 +22,8 @@ Item(std::string name,
 unsigned int type,
 unsigned int tier,
 unsigned int value,
-unsigned int level);{
-
+unsigned int level;)
+{
 this->
 name = name; //assigns the given value of name
 this->
