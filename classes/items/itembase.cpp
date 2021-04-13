@@ -18,20 +18,13 @@ void Item::generate()
 
 
 //Constructors / Destructors
-Item::Item()
+Item()
 {       std::string name,
         unsigned int type,
         unsigned int tier,
         unsigned int value,
         unsigned int level
 };
-
-    this->name = name; //assigns the given value of name
-    this->type = type;  //assigns the given value of type
-    this->value = value; //assigns the given value of value
-    this->tier = tier; //assigns the given value of tier.
-    this->level = level;
-
 
 Item::~Item()
 {
@@ -43,19 +36,19 @@ const std::string Item::get_name()
 {
      this->name; //assigns a generated item its name
 }
-const unsigned int& Item::get_type()
+const unsigned int Item::get_type()
 {
      this->type; //assigns a generated item its type
 }
-const unsigned int& Item::get_value()
+const unsigned int Item::get_value()
 {
      this->value; //assigns a generated item its value
 }
-const unsigned int& Item::get_level()
+const unsigned int Item::get_level()
 {
      this->level; //assigns level to generated items
 }
-const unsigned int& Item::get_tier()
+const unsigned int Item::get_tier()
 {
     return this->tier; //assigns tier(rarity) to generated items
 }

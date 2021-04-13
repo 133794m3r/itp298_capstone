@@ -35,13 +35,20 @@ public:
          unsigned int value,
          unsigned int level);
 
+    this->name = name; //assigns the given value of name
+    this->type = type;  //assigns the given value of type
+    this->value = value; //assigns the given value of value
+    this->tier = tier; //assigns the given value of tier
+    this->level = level; //assigns the given value of level
+
     virtual ~Item(); //calls destructor
 
     //Accessors
-    const std::string& get_name(); //allows for other files to use the private name variable
-    const unsigned int& get_type(); //allows for other files to use the private type variable
-    const unsigned int& get_value(); //allows for other files to use the private value variable
-    const unsigned int& get_tier(); // allows for other files to access the private tier variable
+    const std::string get_name(); //allows for other files to use the private name variable
+    const unsigned int get_type(); //allows for other files to use the private type variable
+    const unsigned int get_value(); //allows for other files to use the private value variable
+    const unsigned int get_tier(); // allows for other files to access the private tier variable
+    const unsigned int get_level(); //allows for other files to access the level variable
 
     //public functions
     const std::string toString() const;
