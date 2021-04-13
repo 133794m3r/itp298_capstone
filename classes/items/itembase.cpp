@@ -18,11 +18,7 @@ void Item::generate()
 
 
 //Constructors / Destructors
-Item::Item(std::string name,
-            unsigned int type,
-            unsigned int tier,
-            unsigned int value,
-            unsigned int level);
+Item::Item(name, type, tier, value, level);
 
     std::string name;
     unsigned int type;
