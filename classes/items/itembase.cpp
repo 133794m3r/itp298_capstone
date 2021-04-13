@@ -18,12 +18,12 @@ void Item::generate()
 
 
 //Constructors / Destructors
-Item:: Item(std::string name,
+Item::Item(std::string name,
             unsigned int type,
             unsigned int tier,
             unsigned int value,
             unsigned int level);
-{
+
     std::string name;
     unsigned int type;
     unsigned int value;
@@ -35,7 +35,7 @@ Item:: Item(std::string name,
     this->value = value; //assigns the given value of value
     this->tier = tier; //assigns the given value of tier.
     this->level = level;
-}
+
 
 Item::~Item()
 {
