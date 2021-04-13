@@ -29,8 +29,7 @@ private:
 
 
 public:
-    Item(
-         std::string name;
+    Item(std::string name;
          unsigned int type,
          unsigned int tier,
          unsigned int value

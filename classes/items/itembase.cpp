@@ -21,17 +21,20 @@ void Item::generate()
 Item:: Item(std::string name,
             unsigned int type
             unsigned int tier,
-            unsigned int value);
+            unsigned int value
+            unsigned int level);
 {
     std::string name;
     unsigned int type;
     unsigned int value;
     unsigned int tier;
+    unsigned int level;
 
     this->name = name; //assigns the given value of name
     this->type = type;  //assigns the given value of type
     this->value = value; //assigns the given value of value
-    this -> tier = tier; //assigns the given value of tier.
+    this->tier = tier; //assigns the given value of tier.
+    this->level = level;
 }
 
 Item::~Item()
@@ -42,15 +45,23 @@ Item::~Item()
 //Accessors
 const std::string& get_name()
 {
-    return this->name; //assigns a generated item its name
+    return name; //assigns a generated item its name
 }
 const unsigned int& get_type()
 {
-    return this->type; //assigns a generated item its type
+    return type; //assigns a generated item its type
 }
 const unsigned int& get_value()
 {
-    return this->value; //assigns a generated item its value
+    return value; //assigns a generated item its value
+}
+const unsigned int& get_level()
+{
+    return level; //assigns level to generated items
+}
+const unsigned int& get_tier()
+{
+    return tier; //assigns tier(rarity) to generated items
 }
 
 //functions
@@ -61,6 +72,8 @@ const std::string Item::toString() const //this function lines 51-58 tells the p
     ss << " | Name: " << this->name
         << " | Type: " << this->type
         << " | Value: " << this->value
+        << " | Level: " << this->level
+        << " | Tier: " << this->tier
         << "\n";
 
     return ss.str();
