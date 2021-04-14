@@ -68,7 +68,7 @@ class Player: public Actor {
 		}
 	}
 	friend void show_all_stats(Player &);
-
+	friend std::ostream& operator<<(std::ostream &, Player &);
 };
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
@@ -79,4 +79,10 @@ void show_all_stats(Player &player){
 			  << std::endl;
 }
 
+std::ostream& operator<<(std::ostream &os, Player &a){
+	os << a.name_ << " hp:" <<a.hp_ << "/" << a.base_hp_ << " str:" << a.str_ << "/"
+	<< a.base_str_ << " def:" << a.def_ << "/" << a.base_def_
+	<< " xp:" << a.xp_ << " g:" << a.gold_;
+	return os;
+}
 #endif //ITP298_CAPSTONE_PLAYER_HXX

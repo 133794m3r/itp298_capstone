@@ -18,4 +18,6 @@
 #include <unistd.h>
 #endif
 #include "terminal.hxx"
+#include <string>
+#include <iostream>
 #endif //ITP298_CAPSTONE_INCLUDES_HXX

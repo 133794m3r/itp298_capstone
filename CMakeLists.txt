@@ -29,7 +29,7 @@ add_executable(test_fighters
 
 add_executable(battle_demo
 		includes.hxx
-		classes/battle/loottable.hxx
+		classes/inventory.hxx
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
 		tests/battle_demo.cpp)
@@ -37,7 +37,7 @@ add_executable(battle_demo
 #target_link_libraries( battle_demo Threads::Threads)
 add_executable(test_battle
 		includes.hxx
-		classes/battle/loottable.hxx
+		classes/inventory.hxx
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
 		tests/battle_test.cpp)
@@ -63,12 +63,19 @@ add_executable(test_items
 		tests/item_test.cpp
 		)
 
+add_executable(test_inventory
+		includes.hxx
+		classes/items/itembase.cpp
+		classes/items/weapon.cpp
+		classes/items/armor.cpp
+		classes/inventory.hxx
+		tests/inventory_test.cpp)
 #target_link_libraries( test_items Threads::Threads)
 add_executable(itp298_capstone
 		includes.hxx
 		classes/fighters/actor.hxx
 		classes/fighters/player.hxx
-		classes/battle/loottable.hxx
+		classes/inventory.hxx
 		classes/fighters/mob.hxx
 		classes/items/itembase.cpp
 		classes/items/itembase.hxx
