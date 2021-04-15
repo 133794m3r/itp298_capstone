@@ -41,19 +41,19 @@ const std::string Item::get_name()
 {
      this->name; //assigns a generated item its name
 }
-const unsigned int Item::get_type()
+ unsigned int Item::get_type()
 {
      this->type; //assigns a generated item its type
 }
-const unsigned int Item::get_value()
+ unsigned int Item::get_value()
 {
      this->value; //assigns a generated item its value
 }
-const unsigned int Item::get_level()
+ unsigned int Item::get_level()
 {
      this->level; //assigns level to generated items
 }
-const unsigned int Item::get_tier()
+ unsigned int Item::get_tier()
 {
     return this->tier; //assigns tier(rarity) to generated items
 }
