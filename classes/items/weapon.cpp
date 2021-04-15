@@ -5,7 +5,6 @@
  * Date: 4/5/21
  * Purpose: Weapon class for our currently Untitled RPG.This subclass inherits properties from Item in order to produce weapons
 */
-*/
 #include "weapon.hxx"
 
 Weapon::Weapon(
