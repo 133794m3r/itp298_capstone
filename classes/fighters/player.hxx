@@ -17,7 +17,9 @@ class Player: public Actor {
 	unsigned int gold_;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
-	explicit Player(std::string name, unsigned short level=1,double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0): Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,5,4){
+	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0, double bonus_str=0.0, double bonus_def=0.0): Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,5,4){
+		//player will always have a set id that's way higher than the rest of the objects in the world.
+		this->id = 65535;
 		this->gold_ = 0;
 		this->xp_ = 0;
 		//TODO: Figure out XP curve and set it to the relevant value with the level provided.

@@ -28,8 +28,8 @@ class Inventory {
 		this->num_items = items.size();
 	}
 
-	void add_item(Item *item, uint_fast32_t quantity){
-		this->items.push_back(item);
+	void add_item(Item &item, uint_fast32_t quantity){
+		this->items.push_back(&item);
 		this->item_quantity.push_back(quantity);
 		this->num_items++;
 	}

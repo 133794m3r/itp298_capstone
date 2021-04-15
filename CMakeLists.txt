@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.17)
 project(itp298_capstone)
 enable_testing()
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /W4")
 	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O2")
@@ -29,7 +29,7 @@ add_executable(test_fighters
 
 add_executable(battle_demo
 		includes.hxx
-		classes/inventory.hxx
+		#classes/inventory.hxx
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
 		tests/battle_demo.cpp)

@@ -10,15 +10,16 @@
 #include "../items/itembase.hxx"
 #include "../items/weapon.hxx"
 #include "../items/armor.hxx"
-
+#include <sstream>
 
 class Actor {
   private:
 	//nothing just for this class atm.
-
+	static unsigned short __next_id;
   //these properties need to be accessible by child classes.
   protected:
-
+	//it would be best to make this const since it'll never be modified but it's too complex for me to get up and working.
+	unsigned short id;
 	std::string name_;
 	//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
 	double bonus_hp_;
@@ -35,11 +36,11 @@ class Actor {
 	//level can never be <0 so unsigned value.
 	unsigned short lvl_ = 0;
 
-	Weapon weapon_held;
-	Armor armor_equipped;
+	Weapon *weapon_held;
+	Armor *armor_equipped;
 	//the constructors, public methods, and getters.
   public:
-	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15, unsigned int str = 5, unsigned int def = 3){
+	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15, unsigned int str = 5, unsigned int def = 3):id(__next_id++){
 		//set all properties.
 		//we're copying once so why not just move it.
 		this->name_ = std::move(name);
@@ -185,6 +186,8 @@ class Actor {
 	friend void show_cur_stats(Actor &actor);
 	friend std::ostream &operator<< (std::ostream &, const Actor &);
 };
+
+unsigned short Actor::__next_id = 0;
 
 void show_all_stats(Actor &actor){
 	std::cout << "Name:'" << actor.name_ + "' hp:" << actor.base_hp_ << " str: "
