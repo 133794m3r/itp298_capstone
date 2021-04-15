@@ -38,7 +38,6 @@ const std::string Armor::toString() const; //returns attributes on item (armor)
         << " | Defence: " << this->defence
         << " | Value: " << this->get_value()
         << " | Tier: " << this->get_tier();
-       << "\n";
 
        return ss.str();
 }
