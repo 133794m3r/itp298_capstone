@@ -34,7 +34,7 @@ const std::string Weapon::toString() const //returns attributes on item (weapon)
         << " | Type: " << this->get_type()
         << " | Damage: " << this->damage_min << " - " << this->damage_max;
         << " | Value: " << this->get_value()
-        << " | Tier: " << this->get_tier();
+        << " | Tier: " << this->get_tier()
         << "\n";
 
     return ss.str();
