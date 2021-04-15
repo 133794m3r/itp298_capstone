@@ -24,11 +24,11 @@ unsigned int tier,
 unsigned int value,
 unsigned int level){
 
-this->name = ""; //assigns the given value of name
-this->type = 0;  //assigns the given value of type
-this->value = 0; //assigns the given value of value
-this->tier = 0; //assigns the given value of tier
-this->level = 0;} //assigns the given value of level
+this->name = name; //assigns the given value of name
+this->type = type;  //assigns the given value of type
+this->value = value; //assigns the given value of value
+this->tier = tier; //assigns the given value of tier
+this->level = level;} //assigns the given value of level
 
 
 Item::~Item()
@@ -37,23 +37,23 @@ Item::~Item()
 }
 
 //Accessors
-std::string Item::get_name()
+std::string get_name()
 {
      return this->name; //assigns a generated item its name
 }
-unsigned int Item::get_type()
+unsigned int get_type()
 {
      return this->type; //assigns a generated item its type
 }
-unsigned int Item::get_value()
+unsigned int get_value()
 {
     return this->value; //assigns a generated item its value
 }
-unsigned int Item::get_level()
+unsigned int get_level()
 {
      return this->level; //assigns level to generated items
 }
-unsigned int Item::get_tier()
+unsigned int get_tier()
 {
     return this->tier; //assigns tier(rarity) to generated items
 }
