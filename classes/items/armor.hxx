@@ -19,19 +19,19 @@ private:
 public:
     Armor(
             int defence,
-            std::string name,
-            unsigned int tier,
-            unsigned int value
-            unsigned int level);
+            const std::string name,
+            const unsigned int tier,
+            const unsigned int value
+            const unsigned int level);
 
     virtual ~Armor(); //destructor
 
     //accessors
-    inline const int& get_defence() const { return this ->defence; }
+    inline const int& get_defence() const { return this->defence; }
 
     //functions
     Armor*clone() const; //function to clone armor
-    const std::string toString() const;
+    std::string toString() const;
 };
 
 

@@ -33,7 +33,7 @@ public:
 
     //functions
     Weapon* clone() const;
-    const std::string toString() const;
+    std::string toString() const;
 
 
 };

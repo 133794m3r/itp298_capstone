@@ -38,14 +38,14 @@ public:
     virtual ~Item(); //calls destructor
 
     //Accessors
-    const std::string get_name(); //allows for other files to use the private name variable
-    unsigned int get_type(); //allows for other files to use the private type variable
-    unsigned int get_value(); //allows for other files to use the private value variable
-    unsigned int get_tier(); // allows for other files to access the private tier variable
-    unsigned int get_level(); //allows for other files to access the level variable
+     std::string get_name() const; //allows for other files to use the private name variable
+     unsigned int get_type() const; //allows for other files to use the private type variable
+     unsigned int get_value() const; //allows for other files to use the private value variable
+     unsigned int get_tier() const; // allows for other files to access the private tier variable
+     unsigned int get_level() const; //allows for other files to access the level variable
 
     //public functions
-    const std::string toString() const;
+    std::string toString() const;
 };
 
 

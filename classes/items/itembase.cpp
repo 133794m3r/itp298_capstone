@@ -39,21 +39,21 @@ Item::~Item()
 //Accessors
 const std::string Item::get_name()
 {
-     this->name; //assigns a generated item its name
+     return this->name; //assigns a generated item its name
 }
- unsigned int Item::get_type()
+const unsigned int Item::get_type()
 {
-     this->type; //assigns a generated item its type
+     return this->type; //assigns a generated item its type
 }
- unsigned int Item::get_value()
+ const unsigned int Item::get_value()
 {
-     this->value; //assigns a generated item its value
+    return this->value; //assigns a generated item its value
 }
- unsigned int Item::get_level()
+ const unsigned int Item::get_level()
 {
-     this->level; //assigns level to generated items
+     return this->level; //assigns level to generated items
 }
- unsigned int Item::get_tier()
+ const unsigned int Item::get_tier()
 {
     return this->tier; //assigns tier(rarity) to generated items
 }
