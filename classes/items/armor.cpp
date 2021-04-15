@@ -13,12 +13,12 @@ Armor::Armor(
         int defence,
         std::string name,
         unsigned int tier,
-        unsigned int value
-        unsigned int level); //armor constructor
-
-        :Item(name, tier, value, level) //calls base item constructor
+        unsigned int type,
+        unsigned int value,
+        unsigned int level)
+        : Item(name, type, tier, value, level) //calls base item constructor
 {
-    this->defence = defence; //sets the initial value of variable defence
+this->defence = defence; //sets the initial value of variable defence
 }
 
 Armor::~Armor() //destructor
@@ -30,16 +30,17 @@ Armor * Armor::clone() const //function to clone armor
 {
     return new Armor(*this);
 }
- std::string Armor::toString() const; //returns attributes on item (armor)
+
+std::string Armor::toString() const //returns attributes on item (armor)
 {
-    std::stringstream ss;
+std::stringstream ss;
 
-    ss << "| Name: " << this->get_name()
-        << " | Type: " << this->get_type()
-        << " | Defence: " << this->defence
-        << " | Value: " << this->get_value()
-        << " | Level: " << this->get_level()
-        << " | Tier: " << this->get_tier();
+ss << "| Name: " << this->get_name()
+<< " | Type: " << this->get_type()
+<< " | Defence: " << this->defence
+<< " | Value: " << this->get_value()
+<< " | Level: " << this->get_level()
+<< " | Tier: " << this->get_tier();
 
-       return ss.str();
+return ss.str();
 }

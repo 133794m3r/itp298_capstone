@@ -5,24 +5,25 @@
  * Date: 4/5/21
  * Purpose: Armor class (header) for our currently Untitled RPG. This subclass inherits properties from Item in order to produce Armor
 */
-*/
 #ifndef ITP298_CAPSTONE_ARMOR_HXX
 #define ITP298_CAPSTONE_ARMOR_HXX
 #include "itembase.hxx"
 
-class Armor:
-
-        public Item {
+class Armor: public Item {
 private:
+
     int defence; //private variable to denote defence
 
 public:
     Armor(
             int defence,
-            const std::string name,
-            const unsigned int tier,
-            const unsigned int value
-            const unsigned int level);
+            std::string name,
+            unsigned int tier,
+            unsigned int type,
+            unsigned int value,
+            unsigned int level);
+
+
 
     virtual ~Armor(); //destructor
 
