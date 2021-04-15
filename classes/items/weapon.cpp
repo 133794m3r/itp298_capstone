@@ -31,7 +31,7 @@ const std::string Weapon::toString() const //returns attributes on item (weapon)
 {
     std::stringstream ss;
 
-    ss << " | Name: " this->get_name()
+    ss << " | Name: " << this->get_name()
         << " | Type: " << this->get_type()
         << " | Damage: " << this->damage_min << " - " << this->damage_max;
         << " | Value: " << this->get_value()
