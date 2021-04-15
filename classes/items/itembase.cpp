@@ -19,6 +19,7 @@ void Item::generate()
 
 //Constructors / Destructors
 Item::Item(std::string name,
+           unsigned short id,
            unsigned int type,
            unsigned int tier,
            unsigned int value,
@@ -29,6 +30,7 @@ Item::Item(std::string name,
     this->type = type;  //assigns the given value of type
     this->value = value; //assigns the given value of value
     this->tier = tier; //assigns the given value of tier
+    this->id =id;
     this->level = level;} //assigns the given value of level
 
 
@@ -58,6 +60,11 @@ unsigned int Item::get_tier() const
 {
     return this->tier; //assigns tier(rarity) to generated items
 }
+unsigned short Item::get_id() const
+{
+
+}
+
 
 //functions
 std::string Item::toString() const //this function lines 51-58 tells the program to display all item information.

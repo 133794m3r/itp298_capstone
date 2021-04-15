@@ -18,6 +18,7 @@ class Item {
 
 //Private variables
 private:
+    unsigned short id;
     std::string name; //used to denote the name of an item.
     unsigned int type; //used to denote the type of item upon creation.
     unsigned int value; // used to denote the value of a generated item.
@@ -30,6 +31,7 @@ private:
 
 public:
     Item(std::string name ="name",
+         unsigned short id =0,
          unsigned int type =0,
          unsigned int tier=0,
          unsigned int value=0,
@@ -43,6 +45,7 @@ public:
     unsigned int get_value() const; //allows for other files to use the private value variable
     unsigned int get_tier() const; // allows for other files to access the private tier variable
     unsigned int get_level() const; //allows for other files to access the level variable
+    unsigned short get_id() const;
 
     //public functions
     std::string toString() const;
