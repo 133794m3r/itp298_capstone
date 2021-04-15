@@ -24,11 +24,11 @@ Item::Item(std::string name,
            unsigned int value,
            unsigned int level){
 
-    this->name = ""; //assigns the given value of name
-    this->type = 0;  //assigns the given value of type
-    this->value = 0; //assigns the given value of value
-    this->tier = 0; //assigns the given value of tier
-    this->level = 1;} //assigns the given value of level
+    this->name = name; //assigns the given value of name
+    this->type = type;  //assigns the given value of type
+    this->value = value; //assigns the given value of value
+    this->tier = tier; //assigns the given value of tier
+    this->level = level;} //assigns the given value of level
 
 
 Item::~Item()
