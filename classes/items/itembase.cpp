@@ -37,29 +37,29 @@ Item::~Item()
 }
 
 //Accessors
-const std::string Item::get_name()
+std::string Item::get_name()
 {
      return this->name; //assigns a generated item its name
 }
-const unsigned int Item::get_type()
+unsigned int Item::get_type()
 {
      return this->type; //assigns a generated item its type
 }
- const unsigned int Item::get_value()
+unsigned int Item::get_value()
 {
     return this->value; //assigns a generated item its value
 }
- const unsigned int Item::get_level()
+unsigned int Item::get_level()
 {
      return this->level; //assigns level to generated items
 }
- const unsigned int Item::get_tier()
+unsigned int Item::get_tier()
 {
     return this->tier; //assigns tier(rarity) to generated items
 }
 
 //functions
-const std::string Item::toString() const //this function lines 51-58 tells the program to display all item information.
+std::string Item::toString() const //this function lines 51-58 tells the program to display all item information.
 {
     std::stringstream ss;
 
