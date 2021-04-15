@@ -9,33 +9,43 @@
 #define ITP298_CAPSTONE_ITEMBASE_HXX
 
 #include <string>
-
+#include <sstream>
 
 enum item_types {WEAPON = 0, ARMOR}; //allows the program to decide what type of item is being generated
+enum item_tiers {COMMON = 0, UNCOMMON, RARE, EPIC, LEGENDARY};
 
 class Item {
 
 //Private variables
 private:
-    std::string name; //used to denote the name of an item
-    unsigned type; //used to denote the type of item upon creation
-    unsigned value; // used to denote the value of a generated item
+    std::string name; //used to denote the name of an item.
+    unsigned int type; //used to denote the type of item upon creation.
+    unsigned int value; // used to denote the value of a generated item.
+    unsigned int tier; // used to denote the tier (rarity) of an item.
+    unsigned int level;  //used to determine the level of an item.
 
     //private functions
     void generate(); //item generation function
 
 
 public:
-    Item(); //calls constructor
+    Item(std::string name ="name",
+         unsigned int type =0,
+         unsigned int tier=0,
+         unsigned int value=0,
+         unsigned int level=1);
+
     virtual ~Item(); //calls destructor
 
     //Accessors
-    const std::string& getName(); //allows for other files to use the private name variable
-    const unsigned& getType();    //allows for other files to use the private type variable
-    const unsigned& getValue();   //allows for other files to use the private value variable
+    std::string get_name() const; //allows for other files to use the private name variable
+    unsigned int get_type() const; //allows for other files to use the private type variable
+    unsigned int get_value() const; //allows for other files to use the private value variable
+    unsigned int get_tier() const; // allows for other files to access the private tier variable
+    unsigned int get_level() const; //allows for other files to access the level variable
 
     //public functions
-    const std::string toString() const;
+    std::string toString() const;
 };
 
 

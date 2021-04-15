@@ -6,7 +6,7 @@
  * Purpose: Base Item class for our currently Untitled RPG. This is the building block for our weapon and armor classes
 */
 
-#include <sstream>
+
 #include "itembase.hxx"
 
 //Private functions
@@ -18,16 +18,19 @@ void Item::generate()
 
 
 //Constructors / Destructors
-Item::Item()
-{
-    std::string name;
-    unsigned type;
-    unsigned value;
+Item::Item(std::string name,
+           unsigned int type,
+           unsigned int tier,
+           unsigned int value,
+           unsigned int level){
 
-    this->name = ""; //assigns the initial value of name to null
-    this->type = 0;  //assigns the initial value of type to 0
-    this->value = 0; //assigns the initial value of value to 0
-}
+
+    this->name = name; //assigns the given value of name
+    this->type = type;  //assigns the given value of type
+    this->value = value; //assigns the given value of value
+    this->tier = tier; //assigns the given value of tier
+    this->level = level;} //assigns the given value of level
+
 
 Item::~Item()
 {
@@ -35,28 +38,38 @@ Item::~Item()
 }
 
 //Accessors
-const std::string& getName()
+std::string Item::get_name() const
 {
-    //return this->name; //assigns a generated item its name
+    return this->name; //assigns a generated item its name
 }
-const unsigned& getType()
+unsigned int Item::get_type() const
 {
-    //return this->type; //assigns a generated item its type
+    return this->type; //assigns a generated item its type
 }
-const unsigned& getValue()
+unsigned int Item::get_value() const
 {
-    //return this->value; //assigns a generated item its value
+    return this->value; //assigns a generated item its value
+}
+unsigned int Item::get_level() const
+{
+    return this->level; //assigns level to generated items
+}
+unsigned int Item::get_tier() const
+{
+    return this->tier; //assigns tier(rarity) to generated items
 }
 
 //functions
-const std::string Item::toString() const //this function lines 51-58 tells the program to display all item information.
+std::string Item::toString() const //this function lines 51-58 tells the program to display all item information.
 {
     std::stringstream ss;
 
-    ss << " - Name: " << this->name
-        << " | Type: " << this->type
-        << " | Value: " << this->value
-        << "\n";
+    ss << " | Name: " << this->name
+       << " | Type: " << this->type
+       << " | Value: " << this->value
+       << " | Level: " << this->level
+       << " | Tier: " << this->tier
+       << "\n";
 
     return ss.str();
 }
