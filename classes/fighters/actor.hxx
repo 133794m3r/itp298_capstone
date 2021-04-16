@@ -14,12 +14,13 @@
 
 class Actor {
   private:
-	//nothing just for this class atm.
-	static unsigned short __next_id;
+	//only the __next_id_ property is private as no child classes should be allowed to access it/modify it.
+	static unsigned short __next_id_;
   //these properties need to be accessible by child classes.
   protected:
 	//it would be best to make this const since it'll never be modified but it's too complex for me to get up and working.
-	unsigned short id;
+	unsigned short id_;
+	//the name of the actor
 	std::string name_;
 	//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
 	double bonus_hp_;
@@ -35,12 +36,13 @@ class Actor {
 	unsigned int def_;
 	//level can never be <0 so unsigned value.
 	unsigned short lvl_ = 0;
-
+	//Equipment that the Actor currently has equipped. They are pointers as there's no reason to hold an extra copy of the Item.
 	Weapon *weapon_held;
 	Armor *armor_equipped;
 	//the constructors, public methods, and getters.
   public:
-	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15, unsigned int str = 5, unsigned int def = 3):id(__next_id++){
+	//marked explicit since it can be called with 0 arguments. Also sets the id and increments the next id.
+	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0, unsigned int hp = 15, unsigned int str = 5, unsigned int def = 3):id_(__next_id_++){
 		//set all properties.
 		//we're copying once so why not just move it.
 		this->name_ = std::move(name);
@@ -51,8 +53,7 @@ class Actor {
 		this->bonus_hp_ = bonus_hp;
 		this->bonus_str_ = bonus_str;
 		this->bonus_def_ = bonus_def;
-
-
+		//the level of the actor: used for calculating stats
 		this->lvl_ = level;
 	}
 
@@ -127,15 +128,18 @@ class Actor {
 	 * @return  The total amount of damage delivered. 0 for none, and - value for overkill.
 	 */
 	unsigned int damage(unsigned int dmg){
+		//if the damage is less than this Actor's defense no damage is done so return 0.
 		if(dmg < this->def_)
 			return 0;
-
+		//otherwise subtract from the damage their defense.
 		dmg -= this->def_;
+		//check to see if the newly calculated damage is greater than their HP if so kill the Actor.
 		if(this->hp_ < dmg)
 			this->hp_ = 0;
 		else
+			//otherwise subtract from their HP the amount of damage done.
 			this->hp_ -= dmg;
-
+		//return the amount of damage done.
 		return dmg;
 	}
 
@@ -176,19 +180,44 @@ class Actor {
 	bool is_alive(){
 		return this->hp_ > 0;
 	}
+	
+	//String cast operator so that doing a (std::string) on any Actor will turn it into a string representation.
 	operator std::string() const{
 		std::stringstream ss;
-		ss << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;
+		ss << "id:" << this->id_ " " << this->name_ << " lvl:" << this->lvl_ <<  " hp:" <<this->hp_ <<
+			"/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" <<
+			this->def_ << "/" << this->base_def_;
 		return ss.str();
 	}
+	
+	/**
+	 *
+	 *@return the id of the Actor.
+	 */
+	unsigned short get_id(){
+		return this->id_;
+	}
+	
+	/**
+	 *@return the next id of the class itself.
+	 */
+	unsigned short get_next_id(){
+		return this->__next_id_;
+	}
+	
 	//the friend functions to print the stuff.
 	friend void show_all_stats(Actor &actor);
 	friend void show_cur_stats(Actor &actor);
 	friend std::ostream &operator<< (std::ostream &, const Actor &);
 };
 
-unsigned short Actor::__next_id = 0;
+//the static property of next id. Initialized to 0.
+unsigned short Actor::__next_id_ = 0;
 
+/**
+ *
+ * @param The actor we're goin to show the stats of.
+ */
 void show_all_stats(Actor &actor){
 	std::cout << "Name:'" << actor.name_ + "' hp:" << actor.base_hp_ << " str: "
 			  << actor.base_str_ << " def:" << actor.base_def_ << " level:" << std::to_string(actor.lvl_) <<
@@ -196,12 +225,22 @@ void show_all_stats(Actor &actor){
 			  actor.bonus_str_ << " base def:" << actor.bonus_def_ << std::endl;
 }
 
+/**
+ *
+ * This function only writes out the actor's name and hp. Maybe the other primary stats also later on.
+ */
 void show_cur_stats(Actor &actor){
-	std::cout << "name: '" << actor.name_ << "' " << "hp:" << actor.base_hp_ << std::endl;
+	std::cout << "name: '" << actor.name_ << "' " << "hp:" << actor.hp_ << std::endl;
 }
 
+/**
+ * The stream operator's specialization for the actor class. 
+ *
+ * @param The output stream.
+ * @param The actor we're goin to write the data of.
+ */
 std::ostream& operator<<(std::ostream &os, const Actor &a){
-	os << a.name_ << " hp:" <<a.hp_ << "/" << a.base_hp_ << " str:" << a.str_ << "/" << a.base_str_ << " def:" << a.def_ << "/" << a.base_def_;
+	os << <<"Actor id:" << a.id_ << " " << a.name_ << " hp:" << a.hp_ << "/" << a.base_hp_ << " str:" << a.str_ << "/" << a.base_str_ << " def:" << a.def_ << "/" << a.base_def_;
 	return os;
 }
 #endif //ITP298_CAPSTONE_ACTOR_HXX
