@@ -14,25 +14,22 @@ class Weapon: public Item
 {
 private:
     int damage; //private weapon variable for damage
-
-
-public:
-    Weapon(
-            int damage,
-            std::string name,
-            unsigned int type,
-            unsigned int tier,
-            unsigned int value,
-            unsigned int level);
+    public:
+    Weapon(std::string name ="Weapon",
+            int damage = 0,
+            unsigned int type=1,
+            unsigned int tier=5,
+            unsigned int value=0,
+            unsigned int level=5);
 
     virtual ~Weapon();
 
     //Accessors
-    inline const int get_damage() const { return this->damage;}
+    inline const int get_damage() const { return this->damage;} //gets the damage value of a weapon
 
 
     //functions
-    Weapon* clone() const;
+    Weapon* clone() const; //creates a clone of a weapon
     std::string toString() const;
 
 

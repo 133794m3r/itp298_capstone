@@ -8,15 +8,15 @@
 #include "weapon.hxx"
 
 Weapon::Weapon(
-        int damage,
         std::string name,
+        int damage,
         unsigned int type,
         unsigned int tier,
         unsigned int value,
         unsigned int level)
-        : Item(name, type, tier, value, level) //base item constructor
+        :Item(name, type, tier, value, level) //base item constructor
 {
-    damage = level * 2.95 + level;
+    damage = (level * 3 + level);
     this->damage = damage; //sets max damage value
 }
 

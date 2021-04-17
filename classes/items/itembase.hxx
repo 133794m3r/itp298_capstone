@@ -11,9 +11,6 @@
 #include <string>
 #include <sstream>
 
-enum item_types {WEAPON = 0, ARMOR}; //allows the program to decide what type of item is being generated
-enum item_tiers {COMMON = 0, UNCOMMON, RARE, EPIC, LEGENDARY}; //allows the program to determine what the rarity of an item
-
 class Item {
 
 //Private variables

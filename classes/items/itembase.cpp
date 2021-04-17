@@ -23,9 +23,9 @@ Item::Item(std::string name,
            unsigned int tier,
            unsigned int value,
            unsigned int level){
-    
+
 value = level *6 + 25 + level;
-this->name = name; //assigns the given value of name
+this->name = std::move(name); //assigns the given value of name
 this->type = type;  //assigns the given value of type
 this->value = value; //assigns the given value of value
 this->tier = tier; //assigns the given value of tier
