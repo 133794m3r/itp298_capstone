@@ -12,18 +12,24 @@
 #include <sstream>
 
 enum item_types {WEAPON = 0, ARMOR}; //allows the program to decide what type of item is being generated
-enum item_tiers {COMMON = 0, UNCOMMON, RARE, EPIC, LEGENDARY};
+enum item_tiers {COMMON = 0, UNCOMMON, RARE, EPIC, LEGENDARY}; //allows the program to determine what the rarity of an item
 
 class Item {
 
 //Private variables
 private:
-    unsigned short id;
+
+    static unsigned short next_id; //initializes the next_id variable
+
+protected:
+    unsigned short id; // initializes the id variable
     std::string name; //used to denote the name of an item.
     unsigned int type; //used to denote the type of item upon creation.
     unsigned int value; // used to denote the value of a generated item.
     unsigned int tier; // used to denote the tier (rarity) of an item.
     unsigned int level;  //used to determine the level of an item.
+
+
 
     //private functions
     void generate(); //item generation function
@@ -31,11 +37,12 @@ private:
 
 public:
     Item(std::string name ="name",
-         unsigned short id =0,
-         unsigned int type =0,
+         unsigned int type=0,
          unsigned int tier=0,
          unsigned int value=0,
          unsigned int level=1);
+
+
 
     virtual ~Item(); //calls destructor
 
@@ -45,10 +52,10 @@ public:
     unsigned int get_value() const; //allows for other files to use the private value variable
     unsigned int get_tier() const; // allows for other files to access the private tier variable
     unsigned int get_level() const; //allows for other files to access the level variable
-    unsigned short get_id() const;
+    unsigned short get_id() const; //allows for other files to access the id variable
 
     //public functions
-    std::string toString() const;
+    std::string Item::toString() const;
 };
 
 

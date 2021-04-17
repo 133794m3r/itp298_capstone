@@ -19,20 +19,20 @@ void Item::generate()
 
 //Constructors / Destructors
 Item::Item(std::string name,
-           unsigned short id,
            unsigned int type,
            unsigned int tier,
            unsigned int value,
            unsigned int level){
+    
+value = level *6 + 25 + level;
+this->name = name; //assigns the given value of name
+this->type = type;  //assigns the given value of type
+this->value = value; //assigns the given value of value
+this->tier = tier; //assigns the given value of tier
+this->id = next_id++; //increments item id
+this->level = level;}//assigns the given value of level
 
-
-    this->name = name; //assigns the given value of name
-    this->type = type;  //assigns the given value of type
-    this->value = value; //assigns the given value of value
-    this->tier = tier; //assigns the given value of tier
-    this->id =id;
-    this->level = level;} //assigns the given value of level
-
+unsigned short Item::next_id =0; //sets the variable next_id to 0
 
 Item::~Item()
 {
@@ -62,7 +62,7 @@ unsigned int Item::get_tier() const
 }
 unsigned short Item::get_id() const
 {
-
+    return this->id;
 }
 
 

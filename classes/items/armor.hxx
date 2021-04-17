@@ -12,11 +12,11 @@
 class Armor: public Item {
 private:
 
-    int defence; //private variable to denote defence
+    int defense; //private variable to denote defence
 
 public:
     Armor(
-            int defence,
+            int defense,
             std::string name,
             unsigned int tier,
             unsigned int type,
@@ -28,7 +28,7 @@ public:
     virtual ~Armor(); //destructor
 
     //accessors
-    inline const int& get_defence() const { return this->defence; }
+    inline const int& get_defense() const { return this->defense; }
 
     //functions
     Armor*clone() const; //function to clone armor

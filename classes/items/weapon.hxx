@@ -7,18 +7,18 @@
 */
 #ifndef ITP298_CAPSTONE_WEAPON_HXX
 #define ITP298_CAPSTONE_WEAPON_HXX
+
 #include "itembase.hxx"
 
 class Weapon: public Item
 {
 private:
-    int damage_max; //private weapon variable for max damage
-    int damage_min; //private weapon variable for minimum damage
+    int damage; //private weapon variable for damage
+
 
 public:
     Weapon(
-            int damage_min,
-            int damage_max,
+            int damage,
             std::string name,
             unsigned int type,
             unsigned int tier,
@@ -28,12 +28,12 @@ public:
     virtual ~Weapon();
 
     //Accessors
-    inline const int& get_damage_max() const { return this->damage_max;}
-    inline const int& get_damage_min() const { return this->damage_min;}
+    inline const int get_damage() const { return this->damage;}
+
 
     //functions
     Weapon* clone() const;
-    const std::string toString() const;
+    std::string toString() const;
 
 
 };
