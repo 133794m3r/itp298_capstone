@@ -15,6 +15,7 @@ private:
 	//the xp to be awarded and gold be awarded upon death.
 	unsigned int xp_;
 	unsigned int gold_;
+	const static std::string tier_str[7];
 	//type is based upon the following list.
 	// 0 = trash-tier, 1 = normal, 2 = rare, 3 = elite, 4 = rare elite, 5 = mini-boss, 6 = boss
 	//they get a bonus to all stats based upon their tier(or reduced for trash).
@@ -110,7 +111,15 @@ public:
 	std::pair<unsigned int, unsigned int> rewards() {
 		return std::make_pair(this->xp_, this->gold_);
 	}
+	operator std::string(){
+		std::stringstream ss;
+		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
+		   " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"
+		   << this->base_def_ << " xp:" << this->xp_ << " g:" << this->gold_ << " tier: " << this->tier_
+		   << " / " << tier_str[this->tier_];
+		return ss.str();
+	}
 };
-
+const std::string Mob::tier_str[7] =  {"trash", "normal", "rare", "elite", "rare elite", "mini-boss", "boss"};
 
 #endif //ITP298_CAPSTONE_MOB_HXX

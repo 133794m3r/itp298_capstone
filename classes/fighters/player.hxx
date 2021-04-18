@@ -69,6 +69,13 @@ class Player: public Actor {
 			return false;
 		}
 	}
+	operator std::string() const{
+		std::stringstream ss;
+		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
+			" str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"
+			<< this->base_def_ << " xp:" << this->xp_ << " g:" << this->gold_;
+		return ss.str();
+	}
 	friend void show_all_stats(Player &);
 	friend std::ostream& operator<<(std::ostream &, Player &);
 };
