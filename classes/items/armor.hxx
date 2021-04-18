@@ -18,10 +18,10 @@ public:
     Armor(
           std::string name = "Armor",
           int defense = 0,
-          unsigned int tier = 2,
-          unsigned int type =4,
-          unsigned int value =5,
-          unsigned int level =10);
+          unsigned int tier = 0,
+          unsigned int type =0,
+          unsigned int value =0,
+          unsigned int level =1);
 
 
 

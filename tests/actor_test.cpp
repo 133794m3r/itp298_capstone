@@ -11,7 +11,7 @@
 int main(){
 	//create a basic actor
 	Actor base_actor("Test");
-	//create a baisc player
+	//create a basic player
 	Player tmp_player("Player");
 	//test this method to make sure the actor was created right.
 	show_all_stats(base_actor);
