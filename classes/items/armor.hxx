@@ -32,7 +32,7 @@ public:
 
     //functions
     Armor*clone() const; //function to clone armor
-    std::string Armor::toString() const;
+    std::string toString() const;
 };
 
 
