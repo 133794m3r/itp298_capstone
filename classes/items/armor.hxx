@@ -19,7 +19,7 @@ public:
           std::string name = "Armor",
           int defense = 0,
           unsigned int tier = 0,
-          unsigned int type =0,
+          unsigned int type =2,
           unsigned int value =0,
           unsigned int level =1);
 
