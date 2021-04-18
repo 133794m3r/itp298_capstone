@@ -10,15 +10,16 @@
 #include <sstream>
 
 Armor::Armor(
-        int defence,
         std::string name,
+        int defense,
         unsigned int tier,
         unsigned int type,
         unsigned int value,
         unsigned int level)
-        : Item(name, type, tier, value, level) //calls base item constructor
+       :Item(name, tier, type, value, level) //calls base constructor
 {
-this->defence = defence; //sets the initial value of variable defence
+    defense = (level*2 + level);
+    this->defense = defense; //sets the initial value of variable defence
 }
 
 Armor::~Armor() //destructor
@@ -37,7 +38,7 @@ std::stringstream ss;
 
 ss << "| Name: " << this->get_name()
 << " | Type: " << this->get_type()
-<< " | Defence: " << this->defence
+<< " | Defence: " << this->defense
 << " | Value: " << this->get_value()
 << " | Level: " << this->get_level()
 << " | Tier: " << this->get_tier();

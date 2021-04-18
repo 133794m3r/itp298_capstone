@@ -8,17 +8,16 @@
 #include "weapon.hxx"
 
 Weapon::Weapon(
-        int damage_min,
-        int damage_max,
         std::string name,
+        int damage,
         unsigned int type,
         unsigned int tier,
         unsigned int value,
         unsigned int level)
-        : Item(name, type, tier, value, level) //base item constructor
+        :Item(name, type, tier, value, level) //base item constructor
 {
-    this->damage_max = damage_max; //sets max damage value
-    this->damage_min = damage_min; //sets minimum damage value
+    damage = (level * 3 + level);
+    this->damage = damage; //sets max damage value
 }
 
 Weapon::~Weapon() //destructor
@@ -26,15 +25,15 @@ Weapon::~Weapon() //destructor
 
 }
 
-const std::string Weapon::toString() const //returns attributes on item (weapon)
+std::string Weapon::toString() const //returns attributes on item (weapon)
 {
     std::stringstream ss;
 
     ss << " | Name: " << this->get_name()
        << " | Type: " << this->get_type()
-       << " | Damage: " << this->damage_min << " - " << this->damage_max
+       << " | Damage: " << this->get_damage()
        << " | Value: " << this->get_value()
-                    << " | Tier: " << this->get_tier()
+       << " | Tier: " << this->get_tier()
        << "\n";
 
     return ss.str();
