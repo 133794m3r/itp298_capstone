@@ -44,11 +44,8 @@ class Actor {
 		//set all properties.
 		//we're copying once so why not just move it.
 		this->name_ = std::move(name);
-		this->hp_ = hp;
 		this->base_hp_ = hp;
-		this->str_ = str;
 		this->base_str_ = str;
-		this->def_ = def;
 		this->base_def_ = def;
 		//these are used when leveling up to give a bonus upon that levelup beyond just their level.
 		this->bonus_hp_ = bonus_hp;
@@ -179,9 +176,9 @@ class Actor {
 	bool is_alive(){
 		return this->hp_ > 0;
 	}
-	virtual operator std::string() const{
+	operator std::string() const{
 		std::stringstream ss;
-		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;
+		ss << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;
 		return ss.str();
 	}
 	//the friend functions to print the stuff.
