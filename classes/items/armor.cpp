@@ -32,7 +32,7 @@ Armor * Armor::clone() const //function to clone armor
     return new Armor(*this);
 }
 
-std::string Armor:toString() //returns attributes on item (armor)
+std::string Armor::toString() const //returns attributes on item (armor)
 {
 std::stringstream ss;
 
