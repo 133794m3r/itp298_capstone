@@ -17,8 +17,8 @@ private:
     public:
     Weapon(std::string name ="Weapon",
             int damage = 0,
-            unsigned int type=0,
-            unsigned int tier=1,
+            unsigned int type=1,
+            unsigned int tier=0,
             unsigned int value=0,
             unsigned int level=1);
 
