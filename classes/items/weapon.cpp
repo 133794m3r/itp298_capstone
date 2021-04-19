@@ -9,12 +9,11 @@
 
 Weapon::Weapon(
         std::string name,
-        int damage,
-        unsigned int type,
-        unsigned int value,
-        unsigned int tier,
-        unsigned int level)
-        :Item(name, type, tier, value, level) //base item constructor
+        int damage = 0,
+        unsigned int value = 0,
+        unsigned int tier = 0,
+        unsigned int level = 1)
+        :Item(name, 1, tier, value, level) //base item constructor
 {
     damage = (level * 3 + level);
     this->damage = damage; //sets max damage value
@@ -30,7 +29,7 @@ std::string Weapon::toString() //returns attributes on item (weapon)
     std::stringstream ss;
     ss << "id = "<<this->get_id()
        << " Name = "<<this->get_name()
-       << " Type = "<<this->get_type()
+       << " Type = "<< this->type
        << " Damage = "<<this->get_damage()
        << " Value = "<<this->get_value()
        << " Tier = "<<this->get_tier()

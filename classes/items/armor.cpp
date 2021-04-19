@@ -11,12 +11,11 @@
 
 Armor::Armor(
         std::string name,
-        int defense,
-        unsigned int type,
-        unsigned int tier,
-        unsigned int value,
-        unsigned int level)
-       :Item(name, tier, type, value, level) //calls base constructor
+        int defense = 0,
+        unsigned int tier = 0,
+        unsigned int value = 0,
+        unsigned int level = 1)
+       :Item(name, 2, tier, value, level) //calls base constructor
 {
     defense = (level*2 + level);
     this->defense = defense; //sets the initial value of variable defence
@@ -38,7 +37,7 @@ std::string Armor::toString() //returns attributes on item (armor)
     ss << "id = "<<this->get_id()
        << " Name = "<<this->get_name()
        << " Defense = "<<this->defense
-       << " Type = "<<this->get_type()
+       << " Type = "<< this->type
        << " Tier = "<<this->get_tier()
        << " Value = "<<this->get_value()
        << " Level = "<<this->get_level();

@@ -19,10 +19,10 @@ void Item::generate()
 
 //Constructors / Destructors
 Item::Item(std::string name,
-           unsigned int type,
-           unsigned int tier,
-           unsigned int value,
-           unsigned int level){
+           unsigned int type = 0,
+           unsigned int tier = 0,
+           unsigned int value =0,
+           unsigned int level =1){
 
 value = level *6 + 25 + level;
 this->id = next_id++; //increments item id
