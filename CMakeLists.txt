@@ -56,6 +56,7 @@ add_executable(map_test
 add_executable(test_items
 		includes.hxx
 		classes/items/itembase.hxx
+                classes/items/itembase.cpp
 		classes/items/weapon.cpp
 		classes/items/weapon.hxx
 		classes/items/armor.cpp

@@ -1,8 +1,45 @@
 /*
-* ITP-298 Capstone Project
-* Group: Dangling Pointers
-* Macarthur Inbody && Nathaniel Mullins
-
-*
+ * ITP 298 Capstone Project (armor.cpp)
+ * Programmers: Nathaniel Mullins && Macarthur Inbody
+ * Group: Dangling Pointers
+ * Date: 4/5/21
+ * Purpose:Armor class for our currently Untitled RPG. This subclass inherits properties from Item in order to produce Armor
 */
 #include "armor.hxx"
+#include <string>
+#include <sstream>
+
+Armor::Armor(
+        std::string name,
+        int defense = 0,
+        unsigned int tier = 0,
+        unsigned int value = 0,
+        unsigned int level = 1)
+       :Item(name, 2, tier, value, level) //calls base constructor
+{
+    defense = (level*2 + level);
+    this->defense = defense; //sets the initial value of variable defence
+}
+
+Armor::~Armor() //destructor
+{
+
+}
+
+Armor * Armor::clone() const //function to clone armor
+{
+    return new Armor(*this);
+}
+
+std::string Armor::toString() //returns attributes on item (armor)
+{
+    std::stringstream ss;
+    ss << "id = "<<this->get_id()
+       << " Name = "<<this->get_name()
+       << " Defense = "<<this->defense
+       << " Type = "<< this->type
+       << " Tier = "<<this->get_tier()
+       << " Value = "<<this->get_value()
+       << " Level = "<<this->get_level();
+return ss.str();
+}

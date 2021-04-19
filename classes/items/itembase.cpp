@@ -6,7 +6,7 @@
  * Purpose: Base Item class for our currently Untitled RPG. This is the building block for our weapon and armor classes
 */
 
-#include <sstream>
+
 #include "itembase.hxx"
 
 //Private functions
@@ -18,16 +18,22 @@ void Item::generate()
 
 
 //Constructors / Destructors
-Item::Item()
-{
-    std::string name;
-    unsigned type;
-    unsigned value;
+Item::Item(std::string name,
+           unsigned int type = 0,
+           unsigned int tier = 0,
+           unsigned int value =0,
+           unsigned int level =1){
 
-    this->name = ""; //assigns the initial value of name to null
-    this->type = 0;  //assigns the initial value of type to 0
-    this->value = 0; //assigns the initial value of value to 0
-}
+value = level *6 + 25 + level;
+this->id = next_id++; //increments item id
+this->name = std::move(name); //assigns the given value of name
+this->type = type;  //assigns the given value of type
+this->value = value; //assigns the given value of value
+this->tier = tier; //assigns the given value of tier
+this->level = level;}//assigns the given value of level
+
+unsigned short Item::next_id = 0; //sets the variable next_id to 0
+
 
 Item::~Item()
 {
@@ -35,28 +41,42 @@ Item::~Item()
 }
 
 //Accessors
-const std::string& getName()
+std::string Item::get_name() const
 {
-    //return this->name; //assigns a generated item its name
+    return this->name; //assigns a generated item its name
 }
-const unsigned& getType()
+unsigned int Item::get_type() const
 {
-    //return this->type; //assigns a generated item its type
+    return this->type; //assigns a generated item its type
 }
-const unsigned& getValue()
+unsigned int Item::get_value() const
 {
-    //return this->value; //assigns a generated item its value
+    return this->value; //assigns a generated item its value
 }
+unsigned int Item::get_level() const
+{
+    return this->level; //assigns level to generated items
+}
+unsigned int Item::get_tier() const
+{
+    return this->tier; //assigns tier(rarity) to generated items
+}
+unsigned short Item::get_id() const
+{
+    return this->id;
+}
+
+
 
 //functions
-const std::string Item::toString() const //this function lines 51-58 tells the program to display all item information.
-{
+    std::string Item::toString() {
     std::stringstream ss;
-
-    ss << " - Name: " << this->name
-        << " | Type: " << this->type
-        << " | Value: " << this->value
-        << "\n";
+    ss << "id = " <<this->id
+       << " Name = " <<this->name
+       << " Type = " <<this->type
+       << " Tier = " <<this->tier
+       << " Value = " <<this->value
+       << " Level = " <<this->level;
 
     return ss.str();
 }

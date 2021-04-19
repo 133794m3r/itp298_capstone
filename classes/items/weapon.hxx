@@ -1,13 +1,36 @@
 /*
-* ITP-298 Capstone Project
-* Group: Dangling Pointers
-* Macarthur Inbody && Nathaniel Mullins
+ * ITP 298 Capstone Project (weapon.hxx)
+ * Programmers: Nathaniel Mullins && Macarthur Inbody
+ * Group: Dangling Pointers
+ * Date: 4/5/21
+ * Purpose: Weapon class (header) for our currently Untitled RPG. This subclass inherits properties from Item in order to produce weapons
 */
 #ifndef ITP298_CAPSTONE_WEAPON_HXX
 #define ITP298_CAPSTONE_WEAPON_HXX
+
 #include "itembase.hxx"
 
-class Weapon: public Item {
+class Weapon: public Item
+{
+private:
+    int damage; //private weapon variable for damage
+    public:
+    Weapon(std::string name,
+            int damage,
+            unsigned int value,
+            unsigned int tier,
+            unsigned int level);
+
+    virtual ~Weapon();
+
+    //Accessors
+    inline const int get_damage() const { return this->damage;} //gets the damage value of a weapon
+
+
+    //functions
+    Weapon* clone() const; //creates a clone of a weapon
+    std::string toString();
+
 
 };
 
