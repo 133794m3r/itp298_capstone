@@ -19,20 +19,21 @@ void Item::generate()
 
 //Constructors / Destructors
 Item::Item(std::string name,
-           unsigned int type,
-           unsigned int tier,
-           unsigned int value,
-           unsigned int level){
+           unsigned int type = 0,
+           unsigned int tier = 0,
+           unsigned int value =0,
+           unsigned int level =1){
 
 value = level *6 + 25 + level;
+this->id = next_id++; //increments item id
 this->name = std::move(name); //assigns the given value of name
 this->type = type;  //assigns the given value of type
 this->value = value; //assigns the given value of value
 this->tier = tier; //assigns the given value of tier
-this->id = next_id++; //increments item id
 this->level = level;}//assigns the given value of level
 
-unsigned short Item::next_id =0; //sets the variable next_id to 0
+unsigned short Item::next_id = 0; //sets the variable next_id to 0
+
 
 Item::~Item()
 {
@@ -66,17 +67,16 @@ unsigned short Item::get_id() const
 }
 
 
-//functions
-std::string Item::toString() const //this function lines 51-58 tells the program to display all item information.
-{
-    std::stringstream ss;
 
-    ss << " | Name: " << this->name
-       << " | Type: " << this->type
-       << " | Value: " << this->value
-       << " | Level: " << this->level
-       << " | Tier: " << this->tier
-       << "\n";
+//functions
+    std::string Item::toString() {
+    std::stringstream ss;
+    ss << "id = " <<this->id
+       << " Name = " <<this->name
+       << " Type = " <<this->type
+       << " Tier = " <<this->tier
+       << " Value = " <<this->value
+       << " Level = " <<this->level;
 
     return ss.str();
 }

@@ -15,12 +15,11 @@ class Weapon: public Item
 private:
     int damage; //private weapon variable for damage
     public:
-    Weapon(std::string name ="Weapon",
-            int damage = 0,
-            unsigned int type=1,
-            unsigned int tier=0,
-            unsigned int value=0,
-            unsigned int level=1);
+    Weapon(std::string name,
+            int damage,
+            unsigned int value,
+            unsigned int tier,
+            unsigned int level);
 
     virtual ~Weapon();
 
@@ -30,7 +29,7 @@ private:
 
     //functions
     Weapon* clone() const; //creates a clone of a weapon
-    std::string toString() const;
+    std::string toString();
 
 
 };

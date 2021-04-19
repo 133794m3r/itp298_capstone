@@ -33,11 +33,11 @@ protected:
 
 
 public:
-    Item(std::string name ="name",
-         unsigned int type=0,
-         unsigned int tier=0,
-         unsigned int value=0,
-         unsigned int level=1);
+    Item(std::string name,
+         unsigned int type,
+         unsigned int tier,
+         unsigned int value,
+         unsigned int level);
 
 
 
@@ -52,7 +52,7 @@ public:
     unsigned short get_id() const; //allows for other files to access the id variable
 
     //public functions
-    std::string toString() const;
+     std::string toString();
 };
 
 
