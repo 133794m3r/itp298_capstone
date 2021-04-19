@@ -16,7 +16,7 @@ int main(){
 	//have to do this since I couldn't figure out a good way of doing this without adding
 	//another property to the actor
 	base_actor.set_level(1);
-	//create a baisc player
+	//create a basic player
 	Player tmp_player("Player");
 	//create a basic mob.
 	Mob tmp_mob("Spawn of Death");
