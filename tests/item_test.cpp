@@ -16,8 +16,8 @@ std::string weapon_stats = "id = 1 Name = Master Sword Type = 1 Damage = 20 Valu
 std::string armor_stats = "id = 2 Name = Plate Defense = 60 Type = 2 Tier = 1 Value = 165 Level = 20";
 int main(){
 Item temp_item("oil lamp",0,4,0,10);
-Weapon temp_weapon("Master Sword", 0,1,0,0,5);
-Armor temp_armor("Plate", 0,1,2,0,20);
+Weapon temp_weapon("Master Sword", 0,0,0,5);
+Armor temp_armor("Plate", 0,1,0,20);
 std::cout << temp_item.toString() << std::endl;
 std::cout << item_stats << std::endl;
 std::cout << temp_weapon.toString() << std::endl;
