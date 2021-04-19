@@ -11,8 +11,8 @@ Weapon::Weapon(
         std::string name,
         int damage,
         unsigned int type,
-        unsigned int tier,
         unsigned int value,
+        unsigned int tier,
         unsigned int level)
         :Item(name, type, tier, value, level) //base item constructor
 {
@@ -25,16 +25,16 @@ Weapon::~Weapon() //destructor
 
 }
 
-std::string Weapon::toString() const //returns attributes on item (weapon)
+std::string Weapon::toString() //returns attributes on item (weapon)
 {
     std::stringstream ss;
-
-    ss << " | Name: " << this->get_name()
-       << " | Type: " << this->get_type()
-       << " | Damage: " << this->get_damage()
-       << " | Value: " << this->get_value()
-       << " | Tier: " << this->get_tier()
-       << "\n";
+    ss << "id = "<<this->get_id()
+       << " Name = "<<this->get_name()
+       << " Type = "<<this->get_type()
+       << " Damage = "<<this->get_damage()
+       << " Value = "<<this->get_value()
+       << " Tier = "<<this->get_tier()
+       << " Level = "<<this->get_level();
 
     return ss.str();
 }

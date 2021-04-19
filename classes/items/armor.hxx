@@ -18,8 +18,8 @@ public:
     Armor(
           std::string name = "Armor",
           int defense = 0,
+          unsigned int type = 2,
           unsigned int tier = 0,
-          unsigned int type =2,
           unsigned int value =0,
           unsigned int level =1);
 
@@ -32,7 +32,7 @@ public:
 
     //functions
     Armor*clone() const; //function to clone armor
-    std::string toString() const;
+    std::string toString();
 };
 
 

@@ -52,7 +52,7 @@ public:
     unsigned short get_id() const; //allows for other files to access the id variable
 
     //public functions
-    std::string toString() const;
+     std::string toString();
 };
 
 

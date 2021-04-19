@@ -12,8 +12,8 @@
 Armor::Armor(
         std::string name,
         int defense,
-        unsigned int tier,
         unsigned int type,
+        unsigned int tier,
         unsigned int value,
         unsigned int level)
        :Item(name, tier, type, value, level) //calls base constructor
@@ -32,16 +32,15 @@ Armor * Armor::clone() const //function to clone armor
     return new Armor(*this);
 }
 
-std::string Armor::toString() const //returns attributes on item (armor)
+std::string Armor::toString() //returns attributes on item (armor)
 {
-std::stringstream ss;
-
-ss << "| Name: " << this->get_name()
-<< " | Type: " << this->get_type()
-<< " | Defence: " << this->defense
-<< " | Value: " << this->get_value()
-<< " | Level: " << this->get_level()
-<< " | Tier: " << this->get_tier();
-
+    std::stringstream ss;
+    ss << "id = "<<this->get_id()
+       << " Name = "<<this->get_name()
+       << " Defense = "<<this->defense
+       << " Type = "<<this->get_type()
+       << " Tier = "<<this->get_tier()
+       << " Value = "<<this->get_value()
+       << " Level = "<<this->get_level();
 return ss.str();
 }
