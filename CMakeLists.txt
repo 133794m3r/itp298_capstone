@@ -70,6 +70,7 @@ add_executable(test_inventory
 		classes/items/armor.cpp
 		classes/inventory.hxx
 		tests/inventory_test.cpp)
+
 #target_link_libraries( test_items Threads::Threads)
 add_executable(itp298_capstone
 		includes.hxx
@@ -91,5 +92,15 @@ add_executable(itp298_capstone
 		menus/inputs.hxx)
 
 #target_link_libraries(itp298_capstone Threads::Threads)
-add_test(NAME "BattleTest"
-		COMMAND ./test_battle)
+if(MSVC)
+	#may not actually work but who knows.
+	add_test( NAME "Battle Test"
+			COMMAND test_battle.exe)
+else()
+	#Test the battle system
+	add_test(NAME "Battle_Module_Test"
+			COMMAND ./test_battle)
+	#Test the Actor class and children classes.
+	add_test(NAME "Actor_Module_Tests"
+			COMMAND ./test_fighters)
+endif()

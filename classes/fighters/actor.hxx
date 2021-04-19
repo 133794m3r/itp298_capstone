@@ -178,7 +178,7 @@ class Actor {
 	}
 	operator std::string() const{
 		std::stringstream ss;
-		ss << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;
+		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;
 		return ss.str();
 	}
 	//the friend functions to print the stuff.

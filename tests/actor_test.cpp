@@ -13,6 +13,9 @@ int main(){
 
 	//create a basic actor
 	Actor base_actor("Test");
+	//have to do this since I couldn't figure out a good way of doing this without adding
+	//another property to the actor
+	base_actor.set_level(1);
 	//create a baisc player
 	Player tmp_player("Player");
 	//create a basic mob.
@@ -22,7 +25,7 @@ int main(){
 	unsigned int tmp_mob_hp = tmp_mob.get_hp();
 
 	if( "id: 0 Test hp:15/15 str:5/5 def:3/3" != (std::string) base_actor){
-		std::cout << "Base actor test failed." << std::endl;
+		std::cout << "Base actor test failed. got " << (std::string) base_actor << std::endl;
 		tests_failed++;
 	}
 	else
@@ -76,6 +79,15 @@ int main(){
 	else{
 		std::cout << "passed." << std::endl;
 	}
+	//test the tiers and scaling.
+	Mob boss("Bossman",6,5);
+	std::cout << "Boss creation/scaling/tier test ";
+	if((std::string) boss != "id: 3 Bossman hp:90/90 str:25/25 def:18/18 xp:36 g:30 tier: 6 / boss"){
+		std::cout << "failed. Expected 'id: 3 Bossman hp:90/90 str:25/25 def:18/18 xp:36 g:30 tier: 6 / boss' but we got '" << (std::string) boss << "'" << std::endl;
+		tests_failed++;
+	}
+	else
+		std::cout << "passed." << std::endl;
 
 	std::cout << "Passed " << 6 - tests_failed << "/6" << std::endl;
 	if(tests_failed != 0){
