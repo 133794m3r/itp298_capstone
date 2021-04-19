@@ -7,14 +7,19 @@
 #ifndef ITP298_CAPSTONE_ACTOR_HXX
 #define ITP298_CAPSTONE_ACTOR_HXX
 #include "../../includes.hxx"
-
+#include "../items/itembase.hxx"
+#include "../items/weapon.hxx"
+#include "../items/armor.hxx"
+#include <sstream>
 
 class Actor {
   private:
 	//nothing just for this class atm.
-
+	static unsigned short __next_id;
   //these properties need to be accessible by child classes.
   protected:
+	//it would be best to make this const since it'll never be modified but it's too complex for me to get up and working.
+	unsigned short id;
 	std::string name_;
 	//the base stats are the stats at level 1 and also are utilized to calculate the changes when leveled up.
 	double bonus_hp_;
@@ -30,9 +35,12 @@ class Actor {
 	unsigned int def_;
 	//level can never be <0 so unsigned value.
 	unsigned short lvl_ = 0;
+
+	Weapon *weapon_held;
+	Armor *armor_equipped;
 	//the constructors, public methods, and getters.
   public:
-	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15, unsigned int str = 5, unsigned int def = 3){
+	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15, unsigned int str = 5, unsigned int def = 3):id(__next_id++){
 		//set all properties.
 		//we're copying once so why not just move it.
 		this->name_ = std::move(name);
@@ -44,21 +52,7 @@ class Actor {
 		this->bonus_str_ = bonus_str;
 		this->bonus_def_ = bonus_def;
 
-		//if they're higher than l1 set their stats accordingly.
-//		if(level > 1) {
-//			//temporary growth tables until I figure out better formulas.
-////			this->base_hp_ = std::lround((hp * 0.25) * level) + 20;
-////			this->base_str_ = std::lround((str * 0.15) * level) + str;
-////			this->base_def_ = std::lround((def * 0.15) * level) + def;
-//
-//			this->set_level(level-1);
-//		}
-//		else{
-//			//set the current values to the base after construction.
-//			this->hp_ = this->base_hp_;
-//			this->str_ = this->base_str_;
-//			this->def_ = this->base_def_;
-//		}
+
 		this->lvl_ = level;
 	}
 
@@ -182,11 +176,18 @@ class Actor {
 	bool is_alive(){
 		return this->hp_ > 0;
 	}
-
+	operator std::string() const{
+		std::stringstream ss;
+		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;
+		return ss.str();
+	}
 	//the friend functions to print the stuff.
 	friend void show_all_stats(Actor &actor);
 	friend void show_cur_stats(Actor &actor);
+	friend std::ostream &operator<< (std::ostream &, const Actor &);
 };
+
+unsigned short Actor::__next_id = 0;
 
 void show_all_stats(Actor &actor){
 	std::cout << "Name:'" << actor.name_ + "' hp:" << actor.base_hp_ << " str: "
@@ -197,5 +198,10 @@ void show_all_stats(Actor &actor){
 
 void show_cur_stats(Actor &actor){
 	std::cout << "name: '" << actor.name_ << "' " << "hp:" << actor.base_hp_ << std::endl;
+}
+
+std::ostream& operator<<(std::ostream &os, const Actor &a){
+	os << a.name_ << " hp:" <<a.hp_ << "/" << a.base_hp_ << " str:" << a.str_ << "/" << a.base_str_ << " def:" << a.def_ << "/" << a.base_def_;
+	return os;
 }
 #endif //ITP298_CAPSTONE_ACTOR_HXX

@@ -11,6 +11,9 @@ int main(){
 	Mob mob("Fish",1,1);
 	Player player("Jimmy",2);
 	Mob boss("Fishmonger",6,2);
+	std::cout << player << std::endl << mob << std::endl;
+	std::cout << (std::string) player << std::endl;
+	pause();
 	show_all_stats(boss);
 	show_all_stats(mob);
 	show_all_stats(player);
