@@ -18,6 +18,7 @@ class Actor {
 	static unsigned short __next_id;
   //these properties need to be accessible by child classes.
   protected:
+	const unsigned short type;
 	//it would be best to make this const since it'll never be modified but it's too complex for me to get up and working.
 	unsigned short id;
 	std::string name_;
@@ -40,7 +41,10 @@ class Actor {
 	Armor *armor_equipped;
 	//the constructors, public methods, and getters.
   public:
-	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0, double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15, unsigned int str = 5, unsigned int def = 3):id(__next_id++){
+	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0,
+				double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15,
+				unsigned int str = 5, unsigned int def = 3,unsigned short type=0)
+				:type(type),id(__next_id++){
 		//set all properties.
 		//we're copying once so why not just move it.
 		this->name_ = std::move(name);
@@ -52,8 +56,14 @@ class Actor {
 		this->bonus_str_ = bonus_str;
 		this->bonus_def_ = bonus_def;
 
+		this->weapon_held = nullptr;
+		this->armor_equipped = nullptr;
 
 		this->lvl_ = level;
+
+		if(type == 0){
+			this->set_level(level);
+		}
 	}
 
 	//All of the getters.
@@ -176,6 +186,25 @@ class Actor {
 	bool is_alive(){
 		return this->hp_ > 0;
 	}
+
+	void equip_weapon(Weapon &weapon){
+		this->weapon_held = &weapon;
+		this->str_ += weapon.get_damage();
+	}
+
+	void unequip_weapon(){
+		this->str_ = this->base_str_;
+	}
+
+	void unequip_armor(){
+		this->def_ = this->base_def_;
+	}
+
+	void equip_armor(Armor &armor){
+		this->armor_equipped = &armor;
+		this->def_ += armor.get_defense();
+	}
+
 	operator std::string() const{
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;

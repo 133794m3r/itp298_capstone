@@ -11,10 +11,10 @@
 
 Armor::Armor(
         std::string name,
-        int defense = 0,
-        unsigned int tier = 0,
-        unsigned int value = 0,
-        unsigned int level = 1)
+        int defense,
+        unsigned int tier,
+        unsigned int value,
+        unsigned int level)
        :Item(name, 2, tier, value, level) //calls base constructor
 {
     defense = (level*2 + level);

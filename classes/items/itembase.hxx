@@ -33,11 +33,11 @@ protected:
 
 
 public:
-    Item(std::string name,
-         unsigned int type,
-         unsigned int tier,
-         unsigned int value,
-         unsigned int level);
+    explicit Item(std::string name,
+         unsigned int type=0,
+         unsigned int tier=0,
+         unsigned int value=0,
+         unsigned int level=1);
 
 
 

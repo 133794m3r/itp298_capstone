@@ -15,7 +15,7 @@ int main(){
 	Actor base_actor("Test");
 	//have to do this since I couldn't figure out a good way of doing this without adding
 	//another property to the actor
-	base_actor.set_level(1);
+//	base_actor.set_level(1);
 	//create a basic player
 	Player tmp_player("Player");
 	//create a basic mob.
@@ -38,8 +38,9 @@ int main(){
 	else
 		std::cout << "Player creation test Passed" << std::endl;
 
-	if( "id: 2 Spawn of Death hp:15/15 str:5/5 def:3/3 xp:6 g:4 tier: 1 / normal" != (std::string) tmp_mob){
+	if( "id: 2 Spawn of Death hp:16/16 str:5/5 def:3/3 xp:6 g:4 tier: 1 / normal" != (std::string) tmp_mob){
 		std::cout << "mob creation test failed " << std::endl;
+		std::cout << (std::string) tmp_mob << std::endl;
 		tests_failed++;
 	}
 	else
@@ -82,8 +83,8 @@ int main(){
 	//test the tiers and scaling.
 	Mob boss("Bossman",6,5);
 	std::cout << "Boss creation/scaling/tier test ";
-	if((std::string) boss != "id: 3 Bossman hp:90/90 str:25/25 def:18/18 xp:36 g:30 tier: 6 / boss"){
-		std::cout << "failed. Expected 'id: 3 Bossman hp:90/90 str:25/25 def:18/18 xp:36 g:30 tier: 6 / boss' but we got '" << (std::string) boss << "'" << std::endl;
+	if((std::string) boss != "id: 3 Bossman hp:91/91 str:25/25 def:18/18 xp:36 g:30 tier: 6 / boss"){
+		std::cout << "failed. Expected 'id: 3 Bossman hp:91/91 str:25/25 def:18/18 xp:36 g:30 tier: 6 / boss' but we got '" << (std::string) boss << "'" << std::endl;
 		tests_failed++;
 	}
 	else

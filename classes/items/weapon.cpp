@@ -9,10 +9,10 @@
 
 Weapon::Weapon(
         std::string name,
-        int damage = 0,
-        unsigned int value = 0,
-        unsigned int tier = 0,
-        unsigned int level = 1)
+        int damage,
+        unsigned int value,
+        unsigned int tier,
+        unsigned int level)
         :Item(name, 1, tier, value, level) //base item constructor
 {
     damage = (level * 3 + level);

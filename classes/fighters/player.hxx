@@ -10,14 +10,20 @@
 #include <utility>
 
 #include "actor.hxx"
+#include "../containers/inventory.hxx"
+
 class Player: public Actor {
   private:
 	//player has their current xp and gold properties atm.
 	unsigned int xp_;
 	unsigned int gold_;
+	Inventory player_inventory;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
-	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0, double bonus_str=0.0, double bonus_def=0.0): Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,5,4){
+	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0,
+				 double bonus_str=0.0, double bonus_def=0.0)
+				 :Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,
+			5,4,255){
 		//player will always have a set id that's way higher than the rest of the objects in the world.
 		this->id = 65535;
 		this->gold_ = 0;
@@ -69,6 +75,8 @@ class Player: public Actor {
 			return false;
 		}
 	}
+
+
 	operator std::string() const{
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<

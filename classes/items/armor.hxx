@@ -15,16 +15,17 @@ private:
     int defense; //private variable to denote defence
 
 public:
-    Armor(
+    explicit Armor(
           std::string name,
-          int defense,
-          unsigned int tier,
-          unsigned int value,
-          unsigned int level);
+		  int defense = 0,
+		  unsigned int tier = 0,
+		  unsigned int value = 0,
+		  unsigned int level = 1);
 
 
 
-    virtual ~Armor(); //destructor
+
+	virtual ~Armor(); //destructor
 
     //accessors
     inline const int& get_defense() const { return this->defense;}
