@@ -5,7 +5,7 @@
 * Created on 4/12/21.
 *
 */
-#include "../classes/inventory.hxx"
+#include "../classes/fighters/containers/inventory.hxx"
 int main(){
 	Inventory test;
 	return 0;
