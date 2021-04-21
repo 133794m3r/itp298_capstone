@@ -11,7 +11,7 @@
 #include <vector>
 #include <sstream>
 #include <unordered_map>
-#include "items/itembase.hxx"
+#include "../items/itembase.hxx"
 
 class Inventory {
   private:

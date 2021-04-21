@@ -17,27 +17,51 @@ else()
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 	endif()
 endif()
+
+add_library(includes_lib OBJECT
+		includes.hxx)
+
+add_library(items_lib OBJECT
+		classes/items/itembase.hxx
+		classes/items/itembase.cpp
+		classes/items/weapon.hxx
+		classes/items/weapon.cpp
+		classes/items/armor.hxx
+		classes/items/armor.cpp)
+
+add_library(inventory_lib OBJECT
+		classes/containers/inventory.hxx
+		)
+
+add_library(actors_lib OBJECT
+		classes/fighters/actor.hxx
+		classes/fighters/mob.hxx
+		classes/fighters/player.hxx
+		)
+
 #find_package(Threads REQUIRED)
 add_executable(test_fighters
-		includes.hxx
-		classes/fighters/actor.hxx
-		classes/fighters/player.hxx
-		classes/fighters/mob.hxx
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
 		tests/actor_test.cpp
 		)
 ##target_link_libraries( test_fighters Threads::Threads)
 
 add_executable(battle_demo
-		includes.hxx
-		#classes/inventory.hxx
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
 		tests/battle_demo.cpp)
 
 #target_link_libraries( battle_demo Threads::Threads)
 add_executable(test_battle
-		includes.hxx
-		classes/inventory.hxx
+
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
 		tests/battle_test.cpp)
@@ -54,37 +78,23 @@ add_executable(map_test
 
 #target_link_libraries( map_test Threads::Threads)
 add_executable(test_items
-		includes.hxx
-		classes/items/itembase.hxx
-                classes/items/itembase.cpp
-		classes/items/weapon.cpp
-		classes/items/weapon.hxx
-		classes/items/armor.cpp
-		classes/items/armor.hxx
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
 		tests/item_test.cpp
 		)
 
 add_executable(test_inventory
-		includes.hxx
-		classes/items/itembase.cpp
-		classes/items/weapon.cpp
-		classes/items/armor.cpp
-		classes/inventory.hxx
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
 		tests/inventory_test.cpp)
 
 #target_link_libraries( test_items Threads::Threads)
 add_executable(itp298_capstone
-		includes.hxx
-		classes/fighters/actor.hxx
-		classes/fighters/player.hxx
-		classes/inventory.hxx
-		classes/fighters/mob.hxx
-		classes/items/itembase.cpp
-		classes/items/itembase.hxx
-		classes/items/weapon.cpp
-		classes/items/weapon.hxx
-		classes/items/armor.cpp
-		classes/items/armor.hxx
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
 		classes/shopkeeper.hxx
 		menus/battle.hxx
 		menus/map_movement.hxx
@@ -93,15 +103,18 @@ add_executable(itp298_capstone
 		menus/inputs.hxx)
 
 #target_link_libraries(itp298_capstone Threads::Threads)
-if(MSVC)
-	#may not actually work but who knows.
-	add_test( NAME "Battle Test"
-			COMMAND test_battle.exe)
-else()
+#have to make sure this works on windows first.
+#if(MSVC)
+#	#may not actually work but who knows.
+#	add_test( NAME "Battle Test"
+#			COMMAND test_battle.exe)
+#else()
 	#Test the battle system
-	add_test(NAME "Battle_Module_Test"
+	add_test(NAME "Battle_Module"
 			COMMAND ./test_battle)
 	#Test the Actor class and children classes.
-	add_test(NAME "Actor_Module_Tests"
+	add_test(NAME "Actor_Module"
 			COMMAND ./test_fighters)
-endif()
+	add_test(NAME "Inventory_Module"
+			COMMAND ./test_inventory)
+#endif()
