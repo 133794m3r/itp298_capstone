@@ -205,7 +205,7 @@ class Actor {
 		this->def_ += armor.get_defense();
 	}
 
-	operator std::string() const{
+	virtual operator std::string() const{
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;
 		return ss.str();

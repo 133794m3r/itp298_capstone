@@ -76,8 +76,15 @@ class Player: public Actor {
 		}
 	}
 
+	void remove_item(unsigned short item_id, unsigned int num = 1){
 
-	operator std::string() const{
+	}
+
+	void add_item(){
+
+	}
+
+	operator std::string() const override{
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
 			" str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"

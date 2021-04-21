@@ -16,12 +16,19 @@ private:
 	unsigned int xp_;
 	unsigned int gold_;
 	const static std::string tier_str[7];
-	//type is based upon the following list.
-	// 0 = trash-tier, 1 = normal, 2 = rare, 3 = elite, 4 = rare elite, 5 = mini-boss, 6 = boss
-	//they get a bonus to all stats based upon their tier(or reduced for trash).
-	// The stat bonus makes it as if they are of a higher level than they really are like so. Bosses use their own rules and thus don't use the normal formula below but isntead start as "boss" number.
-	// stats = set_stats(this->lvl_+ (TIER - 1))
-	// plus the bonuses when creating the mob are modified to gain (TIER-1)*0.1. So the bonus_hp_ value would be increased by 1.2 for an elite mob. For a trash mob their stats would all be reduced by 10%. Plus their level would be one less than the currently set one.
+	/*
+	 * type is based upon the following list.
+	 * 0 = trash-tier, 1 = normal, 2 = rare, 3 = elite, 4 = rare elite, 5 = mini-boss, 6 = boss
+	 * they get a bonus to all stats based upon their tier(or reduced for trash).
+	 * The stat bonus makes it as if they are of a higher level than they really are like so.
+	 * Bosses use their own rules and thus don't use the normal formula below but isntead start as "boss" number.
+	 * stats = set_stats(this->lvl_+ (TIER - 1))
+	 * plus the bonuses when creating the mob are modified to gain (TIER-1)*0.1.
+	 * So the bonus_hp_ value would be increased by 1.2 for an elite mob. For a trash mob their
+	 * stats would all be reduced by 10%. Plus their level would be one less than the
+	 * currently set one.
+	 */
+
 	//a short to make C++ not try to make it be a string when doing stream operations.
 	unsigned short tier_;
 	//might make the gold calculator a static method but unsure as of yet.
@@ -29,6 +36,9 @@ private:
 //
 //	}
 
+	/**
+	 * Sets the amount of gold that this mob should reward upon it's death.
+	 */
 	void set_gold(){
 		unsigned int dl = this->lvl_ + 1;
 		double gm = 1.9;
@@ -80,8 +90,11 @@ public:
 	}
 
 
-
-	void set_level(unsigned short level){
+	/**
+	 * Sets all stats for the object based upon the level we set.
+	 * @param level The level that we're going to be basing scaling on.
+	 */
+	void set_level(unsigned short level) override{
 		double modifier =  (1 + ( (this->tier_<5)?(this->tier_-1)/29.0:(this->tier_-1)/27.0 ));
 		double dif = 0.0;
 		//if it's the same just do nothing.
@@ -101,6 +114,10 @@ public:
 		this->def_ = this->base_def_;
 	}
 
+	/**
+	 * Gets the tier of the mob.
+	 * @return The tier of the mob.
+	 */
 	unsigned short get_tier() const{
 		return this->tier_;
 	}
@@ -114,6 +131,11 @@ public:
 		return std::make_pair(this->xp_, this->gold_);
 	}
 
+	/**
+	 * Converts the object into a string.
+	 *
+	 * @return The object stringified.
+	 */
 	operator std::string(){
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
@@ -123,6 +145,7 @@ public:
 		return ss.str();
 	}
 };
+//the tiers but in string form.
 const std::string Mob::tier_str[7] =  {"trash", "normal", "rare", "elite", "rare elite", "mini-boss", "boss"};
 
 #endif //ITP298_CAPSTONE_MOB_HXX
