@@ -15,6 +15,13 @@
 #include "../items/itembase.hxx"
 #include "../items/weapon.hxx"
 #include "../items/armor.hxx"
+
+struct InventoryMenuTuple{
+	std::string item_name;
+	uint_fast32_t item_quantity;
+	uint_fast32_t item_value;
+};
+
 class Inventory {
   private:
   protected:
@@ -60,10 +67,15 @@ class Inventory {
 		}
 	}
 
+	Item *get_item(uint_fast16_t item_id) const{
+		return this->items.at(item_id);
+	}
+
 	void add_at(unsigned short idx,uint_fast16_t num=1){
 		if(idx > this->num_items)
 			return;
 		uint_fast16_t item_id = this->item_indexes[idx];
+
 		this->item_quantity[item_id]+=num;
 	}
 
@@ -111,16 +123,33 @@ class Inventory {
 		}
 	}
 
+	bool remove_item(Item &item, uint_fast16_t num=1){
+		return this->remove_item(item.get_id(),num);
+	}
+
+	unsigned short get_item_id(unsigned short idx) const{
+		return this->item_indexes[idx];
+	}
+	unsigned int get_quantity(unsigned short item_id) const{
+		return this->item_quantity.at(item_id);
+	}
+	bool contains(unsigned short item_id){
+		return this->items.count(item_id) != 0;
+	}
+	std::deque<uint_fast16_t> get_item_ids() const{
+		return this->item_indexes;
+	}
+
 	/**
 	 *
 	 * @return The object transformed into a string.
 	 */
-	virtual operator std::string(){
+	virtual operator std::string() const{
 		std::stringstream ss;
 		ss << "Inventory [";
 		uint_fast32_t i=0;
 		for(auto el: this->items){
-			ss << "{" << el.second->get_name() << ", " << this->item_quantity[el.first] << "}";
+			ss << "{" << el.second->get_name() << ", " << this->item_quantity.at(el.first) << "}";
 			if(++i < this->num_items){
 				ss << ", ";
 			}
@@ -139,7 +168,7 @@ class Inventory {
 	 *
 	 * @return The number of items contained in the inventory.
 	 */
-	uint_fast16_t inventory_quantity(){
+	uint_fast16_t inventory_quantity() const{
 		return this->num_items;
 	}
 
@@ -148,7 +177,6 @@ class Inventory {
 		this->item_quantity.clear();
 		this->item_indexes.clear();
 	}
-
 	friend std::ostream& operator <<(std::ostream &os, Inventory &inv);
 };
 

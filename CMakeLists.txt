@@ -44,6 +44,7 @@ add_executable(test_fighters
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
 		tests/actor_test.cpp
 		)
 ##target_link_libraries( test_fighters Threads::Threads)
@@ -52,16 +53,17 @@ add_executable(battle_demo
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
 		tests/battle_demo.cpp)
 
 #target_link_libraries( battle_demo Threads::Threads)
 add_executable(test_battle
-
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
 		tests/battle_test.cpp)
@@ -89,13 +91,35 @@ add_executable(test_inventory
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
 		classes/containers/shop_inventory.hxx
-		tests/inventory_test.cpp)
+		tests/inventory_test.cpp
+		)
 
+add_executable(test_shop
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
+		classes/containers/shop_inventory.hxx
+		classes/shopkeeper.hxx
+		tests/shop_test.cpp
+		)
+
+add_executable(shop_demo
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
+		classes/containers/shop_inventory.hxx
+		classes/shopkeeper.hxx
+		menus/shop.hxx
+		tests/shop_demo.cpp
+		tests/shop_demo.cpp)
 #target_link_libraries( test_items Threads::Threads)
 add_executable(itp298_capstone
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
 		classes/shopkeeper.hxx
 		menus/battle.hxx
 		menus/map_movement.hxx

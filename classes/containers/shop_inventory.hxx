@@ -12,7 +12,8 @@
 #include "../../includes.hxx"
 class ShopInventory: public Inventory {
   public:
-	explicit ShopInventory(std::vecotr<){
+	explicit ShopInventory(const std::vector<Item*> &items = {},
+						   const std::vector<uint_fast32_t> &quantity = {}):Inventory(items,quantity){
 
 	}
 	/**
@@ -21,19 +22,11 @@ class ShopInventory: public Inventory {
 	 * @param amount The amount to attempt to purchase
 	 * @return The amount of gold it'd cost to buy it.
 	 */
-	unsigned int purchase_cost(unsigned short item_id, unsigned int amount=1){
-		return this->items[item_id]->get_value() * amount;
+	unsigned int purchase_cost(unsigned short item_id, unsigned int amount=1) const{
+		return this->items.at(item_id)->get_value() * amount;
 	}
 
-	/**
-	 * The value of the items to be sold. Always less than their value.
-	 * @param item_id The id of the item we're going to be selling.
-	 * @param amount
-	 * @return
-	 */
-	unsigned int sell_value(Inventory &inv, unsigned short item_id, unsigned int amount=1){
-		return std::lround(inv->purchase_cost(item_id,amount)*0.75);
-	}
+
 };
 
 

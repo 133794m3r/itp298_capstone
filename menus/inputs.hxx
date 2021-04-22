@@ -32,6 +32,9 @@ void text_wrap(std::string &input,unsigned int position,char wrap_char=' '){
 		return;
 	size_t found;
 	while( (found = input.find_last_of(wrap_char,position)) != input.npos && position < input.size()){
+		//if they're using a custom character it means we should replace it with a space.
+		if(wrap_char != ' ')
+			input.at(found-1) = ' ';
 		input.at(found) = '\n';
 		position += found;
 	}

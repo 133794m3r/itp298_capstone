@@ -7,6 +7,7 @@
 */
 #ifndef ITP298_CAPSTONE_PLAYER_HXX
 #define ITP298_CAPSTONE_PLAYER_HXX
+class ShopKeeper;
 #include <utility>
 
 #include "actor.hxx"
@@ -26,7 +27,7 @@ class Player: public Actor {
 			5,4,255){
 		//player will always have a set id that's way higher than the rest of the objects in the world.
 		this->id = 65535;
-		this->gold_ = 0;
+		this->gold_ = 100;
 		this->xp_ = 0;
 		//TODO: Figure out XP curve and set it to the relevant value with the level provided.
 		Actor::set_level(level);
@@ -45,6 +46,10 @@ class Player: public Actor {
 		this->str_ = this->base_str_;
 		this->def_ = this->base_def_;
 
+	}
+
+	unsigned int get_gold(){
+		return this->gold_;
 	}
 
 	void add_gold(unsigned int gold){
@@ -77,11 +82,15 @@ class Player: public Actor {
 	}
 
 	void remove_item(unsigned short item_id, unsigned int num = 1){
-
+		this->player_inventory.remove_item(item_id, num);
 	}
 
-	void add_item(){
+	void remove_item(Item &item, unsigned int num = 1){
+		this->player_inventory.remove_item(item, num);
+	}
 
+	void add_item(Item &item, unsigned int num = 1){
+		this->player_inventory.add_item(item,num);
 	}
 
 	operator std::string() const override{
@@ -93,6 +102,7 @@ class Player: public Actor {
 	}
 	friend void show_all_stats(Player &);
 	friend std::ostream& operator<<(std::ostream &, Player &);
+	friend ShopKeeper;
 };
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
