@@ -23,21 +23,21 @@ int main(){
 	unsigned int base_actor_hp = base_actor.get_hp();
 	unsigned int tmp_player_hp = tmp_player.get_hp();
 	unsigned int tmp_mob_hp = tmp_mob.get_hp();
-
+	//test the first actor build
 	if( "id: 0 Test hp:15/15 str:5/5 def:3/3" != (std::string) base_actor){
 		std::cout << "Base actor test failed. got " << (std::string) base_actor << std::endl;
 		tests_failed++;
 	}
 	else
 		std::cout << "Base actor test succeeded." << std::endl;
-
+	//same with the player
 	if("id: 65535 Player hp:20/20 str:5/5 def:4/4 xp:0 g:0" != (std::string) tmp_player){
 		std::cout << "player creation test failed" << std::endl;
 		tests_failed++;
 	}
 	else
 		std::cout << "Player creation test Passed" << std::endl;
-
+	//and mob
 	if( "id: 2 Spawn of Death hp:16/16 str:5/5 def:3/3 xp:6 g:4 tier: 1 / normal" != (std::string) tmp_mob){
 		std::cout << "mob creation test failed " << std::endl;
 		std::cout << (std::string) tmp_mob << std::endl;

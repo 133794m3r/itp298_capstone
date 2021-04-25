@@ -120,7 +120,7 @@ class Player: public Actor {
 			Item *item = this->player_inventory.get_item(item_id);
 			item_results.push_back({item->get_name(),
 						   this->player_inventory.get_quantity(item_id),
-						   static_cast<uint_fast32_t>(item->get_value()*0.75)
+						   static_cast<unsigned int>(item->get_value()*0.75)
 			});
 		}
 		return item_results;

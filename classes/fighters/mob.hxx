@@ -22,8 +22,8 @@ class Mob : public Actor {
 	//the xp to be awarded and gold be awarded upon death.
 	unsigned int xp_;
 	unsigned int gold_;
+	//the tier strings
 	const static std::string tier_str[7];
-
 
 	/*
 	 * type is based upon the following list.
@@ -40,7 +40,7 @@ class Mob : public Actor {
 
 	//a short to make C++ not try to make it be a string when doing stream operations.
 	unsigned short tier_;
-
+	//loot table
 	LootTable loot_table;
 
 	/**
@@ -134,23 +134,33 @@ class Mob : public Actor {
 	 *
 	 * @return A custom struct of the xp, gold, and the items that they can expect.
 	 */
-
 	MobRewards rewards(){
 		MobRewards rewards;
 		rewards.xp = this->xp_;
 		rewards.gold = this->gold_;
-		if(this->loot_table.number_items() != 0)
+		if(this->loot_table.inventory_quantity() != 0)
 			rewards.items = this->loot_table.award_items();
 		return rewards;
 	}
 
-
-	void add_items(std::vector<Item *> items, std::vector<uint_fast32_t> quantity, std::vector<double> chances){
+	/**
+	 * Add items to the mob's loot table.
+	 * @param items The items to add
+	 * @param quantity The number for each
+	 * @param chances The chance of each appearing
+	 */
+	void add_items(std::vector<Item *> items, std::vector<unsigned int> quantity, std::vector<double> chances){
 		for(unsigned int i=0;i<chances.size();i++){
 			this->loot_table.add_item(*items[i], quantity[i],chances[i]);
 		}
 	}
 
+	/**
+	 * Add a single item
+	 * @param item Item to add
+	 * @param quantity The number to add
+	 * @param chance The chance of rewarding it
+	 */
 	void add_item(Item &item, unsigned int quantity=1, double chance = 1.0){
 		this->loot_table.add_item(item,quantity,chance);
 	}

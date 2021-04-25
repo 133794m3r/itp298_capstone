@@ -18,7 +18,7 @@ class ShopKeeper {
 	Player *player_ = nullptr;
   public:
 	explicit ShopKeeper(std::string name = "Shop Keep", const std::vector<Item*> &items = {},
-					 const std::vector<uint_fast32_t> &quantity = {}){
+					 const std::vector<unsigned int> &quantity = {}){
 		this->shop_inventory_ = ShopInventory(items,quantity);
 		this->name_ = std::move(name);
 	}
@@ -50,7 +50,7 @@ class ShopKeeper {
 		return this->purchase_item(item_id,number);
 	}
 
-	const std::deque<uint_fast16_t> list_inventory() const{
+	const std::deque<unsigned short> list_inventory() const{
 		return this->shop_inventory_.get_item_ids();
 	}
 	std::string get_name(){
@@ -61,9 +61,9 @@ class ShopKeeper {
 	 * Each tuple is of the order of {Item.get_name(), Item_quantity, Item.get_value()}
 	 * @return The result vector of the shop's inventory.
 	 */
-//	std::vector<std::tuple<std::string, uint_fast32_t, uint_fast32_t> > show_inventory() const{
+//	std::vector<std::tuple<std::string, unsigned int, unsigned int> > show_inventory() const{
 	std::vector<InventoryMenuTuple> show_inventory() const{
-//		std::vector<std::tuple<std::string, uint_fast32_t, uint_fast32_t> > item_results;
+//		std::vector<std::tuple<std::string, unsigned int, unsigned int> > item_results;
 		std::vector<InventoryMenuTuple> item_results;
 		item_results.reserve(this->shop_inventory_.inventory_quantity());
 		for(auto item_id:this->list_inventory()){

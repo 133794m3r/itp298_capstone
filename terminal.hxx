@@ -5,6 +5,7 @@
 */
 #ifndef _TERMINAL_SETUP_
 #include <limits>
+
 void move_and_clear_terminal(unsigned int lines_up){
 	printf("\x1b[%dF\x1b[0J", lines_up);
 }

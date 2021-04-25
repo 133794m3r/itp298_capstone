@@ -16,73 +16,111 @@
 #include "../items/weapon.hxx"
 #include "../items/armor.hxx"
 
+
+//basic struct for use with the menus
 struct InventoryMenuTuple{
 	std::string item_name;
-	uint_fast32_t item_quantity;
-	uint_fast32_t item_value;
+	unsigned int item_quantity;
+	unsigned int item_value;
 };
 
 class Inventory {
   private:
+	//no private data atm.
   protected:
 	//The list of items contained in this object.
-	std::unordered_map<uint_fast16_t, Item*> items;
+	std::unordered_map<unsigned short, Item*> items;
   	//the number of items that are contained.
-	std::unordered_map<uint_fast16_t, uint_fast32_t> item_quantity;
+	std::unordered_map<unsigned short, unsigned int> item_quantity;
 	//the indexes of the items as they are held in memory
-	std::deque<uint_fast16_t> item_indexes;
-	uint_fast16_t num_items;
+	std::deque<unsigned short> item_indexes;
+	unsigned short num_items;
 
   public:
-	Inventory(std::vector<Item*> item={}, std::vector<uint_fast32_t> counts={}){
+	//constructor
+	Inventory(std::vector<Item*> item={}, std::vector<unsigned int> counts={}){
 		if(item.size() != 0){
-			uint_fast32_t i=0;
+			unsigned int i=0;
+			//basic loop to set all of the items up
 			for(auto el:item){
 				this->items[el->get_id()] = el;
 				this->item_indexes.push_back(el->get_id());
 			}
+			//see if they set any counts.
 			if(counts.size() != 0){
+				//set quantities based upon what's given.
 				for(auto item_id:this->item_indexes){
 					this->item_quantity[item_id] = counts[i++];
 				}
 			}
 			else{
+				//otherwise set to 1.
 				for(auto item_id:this->item_indexes){
 					this->item_quantity[item_id] = 1;
 				}
 			}
 		}
+		//set the size to the total number.
 		this->num_items = items.size();
 	}
 
-	void add_item(Item &item, uint_fast16_t number=1){
+	/**
+	 * Add an item to the Inventory
+	 * @param item the item to add
+	 * @param number The number to add
+	 */
+	void add_item(Item &item, unsigned short number=1){
+		//if it already exists
 		if(this->items.count(item.get_id()) != 0){
+			//add to it that number
 			this->item_quantity[item.get_id()]+=number;
 		}
 		else {
+			//otherwise add an item to the hashtables/such.
 			this->items[item.get_id()] = &item;
 			this->item_quantity[item.get_id()] = number;
 			this->item_indexes.push_back(item.get_id());
+			//increment total
 			this->num_items++;
 		}
 	}
 
-	Item *get_item(uint_fast16_t item_id) const{
+	/**
+	 * Gets an Item from the inventory.
+	 *
+	 * @param item_id Get the item by id.
+	 * @return The pointer to the item.
+	 */
+	Item *get_item(unsigned short item_id) const{
 		return this->items.at(item_id);
 	}
 
-	void add_at(unsigned short idx,uint_fast16_t num=1){
+	/**
+	 * Adds an item as specific index
+	 *
+	 * @param idx
+	 * @param num
+	 */
+	void add_at(unsigned short idx,unsigned short num=1){
 		if(idx > this->num_items)
 			return;
-		uint_fast16_t item_id = this->item_indexes[idx];
+		unsigned short item_id = this->item_indexes[idx];
 
 		this->item_quantity[item_id]+=num;
 	}
 
-	void remove_at(unsigned short idx, uint_fast16_t num=1){
+	/**
+	 * Removes an item at the specified index
+	 * @param idx
+	 * @param num
+	 */
+	void remove_at(unsigned short idx, unsigned short num=1){
+		//if it's more than we have just exit. No time for throwing errors atm.
 		if(idx > this->num_items)
 			return;
-		uint_fast16_t item_id = this->item_indexes[idx];
+
+		unsigned short item_id = this->item_indexes[idx];
+		//if we're removing the amount or more than is there remove it from the variables.
 		if(this->item_quantity[item_id] <= num) {
 			this->items.erase(item_id);
 			this->item_quantity.erase(item_id);
@@ -100,12 +138,12 @@ class Inventory {
 	 * @param num The amount to remove
 	 * @return Whether there is any left.
 	 */
-	bool remove_item(unsigned short item_id,uint_fast16_t num=1){
+	bool remove_item(unsigned short item_id,unsigned short num=1){
 		if(this->item_quantity[item_id] <= num) {
 			this->items.erase(item_id);
 			this->item_quantity.erase(item_id);
 			//have to iterate over the deq to find the index of the item id we're removing.
-			for(uint_fast16_t idx=0;idx<this->num_items;idx++){
+			for(unsigned short idx=0;idx<this->num_items;idx++){
 				//once found remove it.
 				if(this->item_indexes[idx] == item_id){
 					this->item_indexes.erase(this->item_indexes.begin()+idx);
@@ -118,39 +156,68 @@ class Inventory {
 			return true;
 		}
 		else{
+			//it still exists
 			this->item_quantity[item_id]-=num;
 			return false;
 		}
 	}
 
-	bool remove_item(Item &item, uint_fast16_t num=1){
+	/**
+	 *
+	 * @param item Remove an item based upon that item.
+	 * @param num Number to remove
+	 * @return whether it was a success.
+	 */
+	bool remove_item(Item &item, unsigned short num=1){
 		return this->remove_item(item.get_id(),num);
 	}
 
+	/**
+	 * Get an item based upon an index
+	 * @param idx
+	 * @return
+	 */
 	unsigned short get_item_id(unsigned short idx) const{
 		return this->item_indexes[idx];
 	}
+
+	/**
+	 * Get an item based upon it's id
+	 *
+	 * @param item_id
+	 * @return
+	 */
 	unsigned int get_quantity(unsigned short item_id) const{
 		return this->item_quantity.at(item_id);
 	}
+
+	/**
+	 * See if someone has an item based upon it's id.
+	 * @param item_id
+	 * @return
+	 */
 	bool contains(unsigned short item_id){
 		return this->items.count(item_id) != 0;
 	}
-	std::deque<uint_fast16_t> get_item_ids() const{
+
+	/**
+	 * Get all of the ids of all items that we have.
+	 *
+	 * @return
+	 */
+	std::deque<unsigned short> get_item_ids() const{
 		return this->item_indexes;
 	}
 
-	unsigned int number_items(){
-		return this->item_indexes.size();
-	}
 	/**
+	 * Stringify the object.
 	 *
 	 * @return The object transformed into a string.
 	 */
 	virtual operator std::string() const{
 		std::stringstream ss;
 		ss << "Inventory [";
-		uint_fast32_t i=0;
+		unsigned int i=0;
 		for(auto el: this->items){
 			ss << "{" << el.second->get_name() << ", " << this->item_quantity.at(el.first) << "}";
 			if(++i < this->num_items){
@@ -169,17 +236,21 @@ class Inventory {
 
 	/**
 	 *
+	 *
 	 * @return The number of items contained in the inventory.
 	 */
-	uint_fast16_t inventory_quantity() const{
+	unsigned short inventory_quantity() const{
 		return this->num_items;
 	}
 
+	//during desstructor clear it all.
 	~Inventory(){
 		this->items.clear();
 		this->item_quantity.clear();
 		this->item_indexes.clear();
 	}
+
+	//make sure we can send it to cout.
 	friend std::ostream& operator <<(std::ostream &os, Inventory &inv);
 };
 

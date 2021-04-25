@@ -6,6 +6,7 @@
 #include "../random.h"
 #include "../menus/battle.hxx"
 int main(){
+	//basic demo file used in testing.
 	std::cout << "\x1b[" << BRIGHT_WHITE_TXT << ";" << BLACK_BG << "m";
 	//something to be done here.
 	Mob mob("Fish",1,1);
