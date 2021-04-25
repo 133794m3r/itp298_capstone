@@ -37,6 +37,7 @@ class Actor {
 	//level can never be <0 so unsigned value.
 	unsigned short lvl_ = 0;
 
+	//their weapon/armor that they're using.
 	Weapon *weapon_held;
 	Armor *armor_equipped;
 	//the constructors, public methods, and getters.
@@ -192,11 +193,13 @@ class Actor {
 		this->str_ += weapon.get_damage();
 	}
 
-	void unequip_weapon(){
+	virtual void unequip_weapon(){
 		this->str_ = this->base_str_;
+		this->weapon_held = nullptr;
 	}
 
-	void unequip_armor(){
+	virtual void unequip_armor(){
+		this->armor_equipped = nullptr;
 		this->def_ = this->base_def_;
 	}
 

@@ -31,7 +31,7 @@ add_library(items_lib OBJECT
 
 add_library(inventory_lib OBJECT
 		classes/containers/inventory.hxx
-		)
+		classes/containers/loot_table.hxx)
 
 add_library(actors_lib OBJECT
 		classes/fighters/actor.hxx

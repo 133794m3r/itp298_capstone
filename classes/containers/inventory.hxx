@@ -140,6 +140,9 @@ class Inventory {
 		return this->item_indexes;
 	}
 
+	unsigned int number_items(){
+		return this->item_indexes.size();
+	}
 	/**
 	 *
 	 * @return The object transformed into a string.

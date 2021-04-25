@@ -19,6 +19,8 @@ class Player: public Actor {
 	unsigned int xp_;
 	unsigned int gold_;
 	Inventory player_inventory;
+	Armor *armor_equipped;
+	Weapon *weapon_equipped;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
 	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0,
@@ -93,6 +95,16 @@ class Player: public Actor {
 		this->player_inventory.add_item(item,num);
 	}
 
+	void unequip_armor() override{
+		this->player_inventory.add_item(*this->armor_equipped,1);
+		Actor::unequip_armor();
+	}
+
+	void unequip_weapon() override{
+		this->player_inventory.add_item(*this->weapon_equipped,1);
+		Actor::unequip_weapon();
+	}
+
 	operator std::string() const override{
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
@@ -115,8 +127,10 @@ class Player: public Actor {
 	}
 	friend void show_all_stats(Player &);
 	friend std::ostream& operator<<(std::ostream &, Player &);
+	//for now till I make it work the way I want.
 	friend ShopKeeper;
 };
+
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
 			  << player.base_str_ << " def:" << player.base_def_ << " level:" << std::to_string(player.lvl_) <<

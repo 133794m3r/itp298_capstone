@@ -10,7 +10,7 @@
 
 #include <string>
 #include <sstream>
-
+//Item Tiers 0 = trash, 1 = normal, 2 = rare, 3 = epic, 4 = legendary
 class Item {
 
 //Private variables

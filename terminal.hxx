@@ -8,6 +8,11 @@
 void move_and_clear_terminal(unsigned int lines_up){
 	printf("\x1b[%dF\x1b[0J", lines_up);
 }
+
+void move_and_clear_down(unsigned short line){
+	printf("\x1b[%dF\x1b[0J",line);
+}
+
 void clear_current_line(){
 	printf("\x1b[2K");
 }

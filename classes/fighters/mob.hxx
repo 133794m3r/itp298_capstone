@@ -8,14 +8,23 @@
 #ifndef ITP298_CAPSTONE_MOB_HXX
 #define ITP298_CAPSTONE_MOB_HXX
 
-#include "actor.hxx"
+//have a custom structure for the rewards themselves.
+struct MobRewards{
+	unsigned int gold = 0;
+	unsigned int xp = 0;
+	std::vector<std::pair<Item *,unsigned int>> items;
+};
 
+#include "actor.hxx"
+#include "../containers/loot_table.hxx"
 class Mob : public Actor {
-private:
+  private:
 	//the xp to be awarded and gold be awarded upon death.
 	unsigned int xp_;
 	unsigned int gold_;
 	const static std::string tier_str[7];
+
+
 	/*
 	 * type is based upon the following list.
 	 * 0 = trash-tier, 1 = normal, 2 = rare, 3 = elite, 4 = rare elite, 5 = mini-boss, 6 = boss
@@ -31,10 +40,8 @@ private:
 
 	//a short to make C++ not try to make it be a string when doing stream operations.
 	unsigned short tier_;
-	//might make the gold calculator a static method but unsure as of yet.
-//	static unsigned int calc_gold(unsigned int xp,unsigned int lvl){
-//
-//	}
+
+	LootTable loot_table;
 
 	/**
 	 * Sets the amount of gold that this mob should reward upon it's death.
@@ -73,7 +80,7 @@ private:
 		}
 		this->gold_ = static_cast<int>((((this->xp_*glm)-((dl / gm) * bvm))) * 0.5);
 	}
-public:
+  public:
 
 	//initialize the Mob class. Explicit since it can be called with just 1 parameter. Also initialize properties with parent class' constructor.
 	explicit Mob(std::string name="Mob",unsigned short tier=1, unsigned short level=1,
@@ -125,10 +132,27 @@ public:
 	/**
 	 * Returns the rewards upon death.
 	 *
-	 * @return a std::pair struct with all of the data set.
+	 * @return A custom struct of the xp, gold, and the items that they can expect.
 	 */
-	std::pair<unsigned int, unsigned int> rewards() {
-		return std::make_pair(this->xp_, this->gold_);
+
+	MobRewards rewards(){
+		MobRewards rewards;
+		rewards.xp = this->xp_;
+		rewards.gold = this->gold_;
+		if(this->loot_table.number_items() != 0)
+			rewards.items = this->loot_table.award_items();
+		return rewards;
+	}
+
+
+	void add_items(std::vector<Item *> items, std::vector<uint_fast32_t> quantity, std::vector<double> chances){
+		for(unsigned int i=0;i<chances.size();i++){
+			this->loot_table.add_item(*items[i], quantity[i],chances[i]);
+		}
+	}
+
+	void add_item(Item &item, unsigned int quantity=1, double chance = 1.0){
+		this->loot_table.add_item(item,quantity,chance);
 	}
 
 	/**
