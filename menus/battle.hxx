@@ -51,7 +51,7 @@ void show_battle_message(const std::string &message){
 		std::cout << new_str.substr(new_line+1) << padding_string.substr(0,53-(message_len - new_line));
 	}
 	move_cursor(11,1);
-	clear_line(11);
+	clear_current_line();
 }
 //might make this whole thing be abstracted away into the Battle class and then have the printing and such be done via the "complete_turn" method to make testing easier but that's later me's problem.
 /**

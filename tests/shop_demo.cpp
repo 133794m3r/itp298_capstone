@@ -16,8 +16,8 @@ int main(){
 	Weapon sword("Sword");
 	Item rock("Rock");
 	ShopKeeper shop_keeper("Kennel Club",{&shirt,&sword,&rock},{1,1,1});
-	shop_menu(shop_keeper, test_player);
-
+	ShopMenu shop_menu(shop_keeper, test_player);
+	shop_menu.shop_menu();
 	std::cout << std::endl;
 	return 0;
 }

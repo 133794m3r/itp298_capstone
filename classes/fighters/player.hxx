@@ -100,6 +100,19 @@ class Player: public Actor {
 			<< this->base_def_ << " xp:" << this->xp_ << " g:" << this->gold_;
 		return ss.str();
 	}
+
+	std::vector<InventoryMenuTuple> show_inventory(){
+		std::vector<InventoryMenuTuple> item_results;
+		item_results.reserve(this->player_inventory.inventory_quantity());
+		for(auto item_id:this->player_inventory.get_item_ids()){
+			Item *item = this->player_inventory.get_item(item_id);
+			item_results.push_back({item->get_name(),
+						   this->player_inventory.get_quantity(item_id),
+						   static_cast<uint_fast32_t>(item->get_value()*0.75)
+			});
+		}
+		return item_results;
+	}
 	friend void show_all_stats(Player &);
 	friend std::ostream& operator<<(std::ostream &, Player &);
 	friend ShopKeeper;

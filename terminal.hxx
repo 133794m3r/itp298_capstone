@@ -4,12 +4,22 @@
 * Licensed AGPLv3
 */
 #ifndef _TERMINAL_SETUP_
+#include <limits>
 void move_and_clear_terminal(unsigned int lines_up){
 	printf("\x1b[%dF\x1b[0J", lines_up);
 }
-void clear_line(unsigned int line){
-	printf("\x1b[%dK",line);
+void clear_current_line(){
+	printf("\x1b[2K");
 }
+void clear_lines(unsigned short start_line, unsigned short lines){
+	printf("\x1b[%d;1H",start_line);
+	for(unsigned short i=0;i<=lines;i++){
+		fputs("\x1b[2K",stdout);
+		fputs("\x1b[1B",stdout);
+	}
+	printf("\x1b[%d;1H",start_line);
+}
+
 #ifdef _WIN32
 #include <windows.h>
 		//windows has the system pause command.
@@ -24,7 +34,7 @@ void clear_line(unsigned int line){
 	int pause(){
 		//clear the rest of cin.
 		std::cin.clear();
-		std::cout << "Press Enter/Return key to continue... ";
+		std::cout << "press enter/return key to continue... ";
 		std::getchar();
 		std::cin.clear();
 		move_and_clear_terminal(1);
@@ -60,25 +70,35 @@ void move_cursor(unsigned int row, unsigned int column){
 
 #ifdef __cplusplus
 //to make it still work as a C style header. I'll have a version for C eventually.
-template <typename T> int proper_input(T &variable){
+template <typename T> int proper_input(T &variable, std::string prefix){
 	/* I'm checking to see if the return code is set to anything.
 	* if it fails to coerce the input into the type that's passed
 	* then I'll negate the response code so that it'll loop forever.
 	* So if it can't convert the input into the type that's needed it'll fail
 	* thus it'll continue the loop.
 	*/
-	while(!(std::cin >> variable)){
+//	while(!(std::cin >> variable)){
+	while(1){
+		std::cin >> variable;
 		if(std::cin.eof()){
 			variable = T();
 			std::cin.clear();
 			return -1;
 		}
-		else {
+		else if(std::cin.fail()){
 			//tell them that the input is invalid.
 			std::cout << "You have entered invalid input please try again." << std::endl;
-			pause();
-			move_and_clear_terminal(4);
-			std::cout << "\x1b[1mSelection\x1b[22m: ";
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cin.clear();
+			std::cout << "press enter/return key to continue... ";
+			std::getchar();
+			std::cin.clear();
+			move_and_clear_terminal(3);
+			std::cout << "\x1b[1m" << prefix << "\x1b[22m: ";
+		}
+		else{
+			break;
 		}
 	}
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');

@@ -32,6 +32,7 @@ class ShopKeeper {
 		}
 		player_->sub_gold(cost);
 		player_->add_item(*this->shop_inventory_.get_item(item_id),quantity);
+		return true;
 	}
 
 	unsigned int item_cost(unsigned short item_id, unsigned int quantity=1) const{
