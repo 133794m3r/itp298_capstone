@@ -32,6 +32,7 @@ class ShopKeeper {
 		}
 		player_->sub_gold(cost);
 		player_->add_item(*this->shop_inventory_.get_item(item_id),quantity);
+		this->shop_inventory_.remove_item(item_id,quantity);
 		return true;
 	}
 
@@ -98,7 +99,7 @@ class ShopKeeper {
 		unsigned int gold = this->sell_value(item_id,amount);
 		this->player_->remove_item(item_id,amount);
 		this->player_->add_gold(gold);
-
+		this->shop_inventory_.add_item(*this->player_->player_inventory.get_item(item_id), amount);
 		return true;
 	}
 

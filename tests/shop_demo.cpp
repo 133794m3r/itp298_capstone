@@ -11,7 +11,7 @@
 #include "../menus/shop.hxx"
 int main(){
 	Player test_player("Jim");
-	test_player.add_gold(10000);
+	test_player.add_gold(100);
 	Armor shirt("T-shirt");
 	Weapon sword("Sword");
 	Item rock("Rock");

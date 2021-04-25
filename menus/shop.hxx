@@ -24,19 +24,22 @@ class ShopMenu {
 	std::vector<InventoryMenuTuple> player_items;
 
 	void update_buy_menu(){
+		this->buy_menu_string = "";
 		for(unsigned int i = 0; i < this->shop_items.size(); i++){
 			this->buy_menu_string += std::to_string(i + 1) + ")" + this->shop_items[i].item_name +
 							   this->padding_string.substr(0, 14 - this->shop_items[i].item_name.size()) + ';';
 		}
 		this->buy_menu_string +=
-				std::to_string(this->shop_items.size() + 1) + ")Sell Items;    " + std::to_string(this->shop_items.size() + 2) +
+				std::to_string(this->shop_items.size() + 1) + ")Sell Items    ;" + std::to_string(this->shop_items.size() + 2) +
 				")Exit Shop   ;";
 	}
 
 	void update_shop_text(){
 		move_cursor(2,1);
 		clear_lines(2,2);
-		std::cout << "Shop Inventory\n";
+		std::cout << "Shop Inventory";
+		move_cursor(2,30);
+		std::cout << "Current Money:" << this->player->get_gold() << "g\n";
 		for(unsigned int i = 0; i < this->shop_items.size(); i++){
 			std::cout << this->shop_items[i].item_name << " x " <<
 					  this->shop_items[i].item_quantity << ' ' << this->shop_items[i].item_value <<
@@ -51,7 +54,9 @@ class ShopMenu {
 	void update_player_text(){
 		move_cursor(2,1);
 		clear_lines(2,2);
-		std::cout << this->player->get_name() << "'s Inventory\n";
+		std::cout << this->player->get_name() << "'s Inventory";
+		move_cursor(2,30);
+		std::cout << "Current Money:"  <<  this->player->get_gold() << "g\n";
 		for(unsigned int i = 0; i < this->player_items.size(); i++){
 			std::cout << this->player_items[i].item_name << " x " <<
 					  this->player_items[i].item_quantity << ' ' << this->player_items[i].item_value <<
@@ -64,12 +69,19 @@ class ShopMenu {
 	}
 
 	void update_sell_menu(){
+		this->sell_menu_string = "";
 		for(unsigned short i=0;i<this->player_items.size();i++){
 			this->sell_menu_string += std::to_string(i+1) + ")" + this->player_items[i].item_name + this->padding_string.substr(0,14 - this->player_items[i].item_name.size()) + ';';
 		}
-		this->sell_menu_string += std::to_string(player_items.size()+1) + ")Buy Items;     " + std::to_string(this->shop_items.size() + 2) + ")Exit Shop   ;";
+		this->sell_menu_string += std::to_string(player_items.size()+1) + ")Buy Items;     " + std::to_string(this->player_items.size() + 2) + ")Exit Shop   ;";
 	}
 
+	void update_shop_items(){
+
+	}
+	void update_player_items(){
+
+	}
   public:
 	ShopMenu(ShopKeeper &shop_keeper, Player &player){
 		this->shop_keeper = &shop_keeper;
@@ -122,15 +134,17 @@ class ShopMenu {
 			unsigned int choice = valid_option(1, this->shop_items.size()+2, "What'll it be?");
 			if(choice <= this->shop_items.size()){
 				unsigned int amount;
-				unsigned int max_amt = std::min(this->player->get_gold() /this-> shop_items[choice].item_value,this->shop_items[choice].item_quantity);
-				std::cout << "You can purchase " << max_amt
-						  << "\nHow many? ";
+				choice--;
+				move_and_clear_terminal(1);
+				unsigned int max_amt = std::min(this->player->get_gold() /this->shop_items[choice].item_value,this->shop_items[choice].item_quantity);
+				std::cout << "You can purchase " << max_amt << " " << this->shop_items[choice].item_name << "(s)\nHow many? ";
 				amount = valid_option(0, max_amt);
 				if (amount != 0) {
 					clear_textbox(7, 3);
 					move_cursor(7, 3);
 					std::cout << "1) Yes        2) No" << this->padding_string.substr(0, 32);
-					clear_lines(11, 3);
+//					clear_lines(11, 3);
+					move_and_clear_down(11);
 					std::cout << "Are you sure you want to buy " << amount << " " << this->shop_items[choice].item_name
 							  << " for "
 							  <<
@@ -140,25 +154,31 @@ class ShopMenu {
 						bool status = this->shop_keeper->purchase_item(choice, amount);
 						clear_textbox(7, 3);
 						move_cursor(7, 3);
-						if (status) {
-							std::cout << this->player->get_name() << " purchased " << amount << this->shop_items[choice].item_name
+						if (status){
+							std::cout << this->player->get_name() << " purchased " << amount << " " << this->shop_items[choice].item_name
 									  << " for " << this->shop_items[choice].item_value * amount << "g";
+
+							pause();
+							this->player_items = this->player->show_inventory();
+							this->update_sell_menu();
 							if(this->shop_items[choice].item_quantity == amount) {
+								this->shop_items.erase(this->shop_items.begin()+choice);
 								this->update_buy_menu();
 								this->update_shop_text();
-								this->shop_items.erase(this->shop_items.begin()+choice);
 								show_menu_message(this->buy_menu_string);
 							}
 						}
 						else {
 							std::cout << "You didn't have enough gold or you tried to purchase more than it had!";
+							move_cursor(11,1);
+							pause();
 						}
-						pause();
+//						pause();
 					}
 				}
 			}
 			else {
-				return choice;
+				return choice - this->shop_items.size();
 			}
 		}
 	}
@@ -166,29 +186,32 @@ class ShopMenu {
 	unsigned short sell_menu() {
 		this->update_player_text();
 		show_menu_message(this->sell_menu_string);
-
 		while (1) {
-			unsigned int choice = valid_option(this->player_items.size() + 2);
+			std::cout << "\x1b[1mSelection\x1b[22m:";
+			unsigned int choice = valid_option(1,this->player_items.size() + 2,"Selection");
 			if (choice <= this->player_items.size()) {
+				choice--;
+				std::cout << "You can sell " << this->player_items[choice].item_quantity << "\nHow many?";
 				unsigned int amount = valid_option(0, this->player_items[choice].item_quantity);
 				if (amount != 0) {
-
 					clear_textbox(7, 3);
 					move_cursor(7, 3);
 					std::cout << "1) Yes        2) No" << this->padding_string.substr(0, 32);
 					clear_lines(11, 3);
-					std::cout << "Are you sure you want to sell " << amount << " " << this->player_items[choice].item_name
-							  << " for "
-							  <<
-							  std::lround(this->player_items[choice].item_value * amount * 0.75) << "g?\n\x1b[1mSelection:\x1b[22m";
+					std::cout << "Are you sure you want to sell " << amount << " "
+						<< this->player_items[choice].item_name << " for " <<
+						std::lround(this->player_items[choice].item_value * amount * 0.75)
+						<< "g?\n\x1b[1mSelection:\x1b[22m";
+
 					if(valid_option(1,2) == 1){
 						bool status = this->shop_keeper->sell_item(choice, amount);
 						clear_textbox(7, 3);
 						move_cursor(7, 3);
 						if (status) {
 							std::cout << this->player->get_name() << " sold " << amount
-									  << this->player_items[choice].item_name
-									  << " for " << std::lround(this->player_items[choice].item_value * amount *0.75) << "g";
+									  << this->player_items[choice].item_name << " for " <<
+									  std::lround(this->player_items[choice].item_value * amount *0.75) << "g";
+
 							if (this->player_items[choice].item_quantity == amount) {
 								this->update_sell_menu();
 								this->update_player_text();
@@ -202,9 +225,12 @@ class ShopMenu {
 						pause();
 					}
 				}
+				else{
+					move_and_clear_down(11);
+				}
 			}
 			else{
-				return choice;
+				return choice - this->player_items.size();
 			}
 		}
 	}
@@ -230,7 +256,7 @@ class ShopMenu {
 			else
 				cur_choice = sell_menu();
 
-			if(cur_choice == 4) {
+			if(cur_choice == 1) {
 				//redraw the menu text options.
 				if(this->menu)
 					this->update_shop_text();
