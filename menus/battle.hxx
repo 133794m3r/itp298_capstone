@@ -5,7 +5,11 @@
 */
 #ifndef ITP298_CAPSTONE_BATTLE_HXX
 #define ITP298_CAPSTONE_BATTLE_HXX
+//global C++ specific stuff
 #include <iomanip>
+//solely for MSVC++ compiler as for some reason it doesn't include C++ in it's standard templates(for reasons) during compilation.
+#include <array>
+//Local includes
 #include "../includes.hxx"
 #include "../classes/fighters/player.hxx"
 #include "../classes/fighters/mob.hxx"

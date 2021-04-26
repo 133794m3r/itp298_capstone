@@ -32,8 +32,8 @@ void clear_lines(unsigned short start_line, unsigned short lines){
 		void pause(){
 			system("pause");
 		}
-		//complained that I wasn't capturing the output. So this is just here for that.
-		WINBOOL test = SetConsoleMode(GetStdHandle(static_cast<DWORD>(-11)), 7);
+		//complained that I wasn't capturing the output. So this is just here for that. Also WINBOOL isn't a type anymore. Still only going to be 1 byte of pointless space and 1 global.
+		bool __unused_test = SetConsoleMode(GetStdHandle(static_cast<DWORD>(-11)), 7);
 
 #else
 	//all other devices I have use to the crappy getchar() version but it works.
@@ -46,7 +46,6 @@ void clear_lines(unsigned short start_line, unsigned short lines){
 		move_and_clear_terminal(1);
 		return 0;
 	}
-
 #endif //_WIN32
 
 #include <limits>
