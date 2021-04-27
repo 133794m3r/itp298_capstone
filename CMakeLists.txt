@@ -144,7 +144,7 @@ add_executable(itp298_capstone
 		menus/map_movement.hxx
 		menus/shop.hxx
 		main.cpp
-		menus/inputs.hxx)
+		menus/inputs.hxx data/mobs.hxx data/maps.hxx data/items.hxx data/shops.hxx)
 
 #target_link_libraries(itp298_capstone Threads::Threads)
 #have to make sure this works on windows first.
