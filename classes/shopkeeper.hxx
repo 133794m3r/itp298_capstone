@@ -36,34 +36,19 @@ class ShopKeeper {
 		return true;
 	}
 
-	unsigned int item_cost(unsigned short item_id, unsigned int quantity=1) const{
-		return this->shop_inventory_.purchase_cost(item_id, quantity);
-	}
-
-	unsigned int item_cost_idx(unsigned short idx, unsigned int quantity=1) const{
-		unsigned short item_id = this->shop_inventory_.get_item_id(idx);
-		return this->item_cost(item_id);
-	}
-
-	bool purchase_slot(unsigned short idx, unsigned int number=1){
-		unsigned short item_id = this->shop_inventory_.get_item_id(idx);
-		return this->purchase_item(item_id,number);
-	}
-
 	const std::deque<unsigned short> list_inventory() const{
 		return this->shop_inventory_.get_item_ids();
 	}
-	std::string get_name(){
+	std::string get_name() const{
 		return this->name_;
 	}
+
 	/**
 	 * Retruns a std::vector of tuples of the Items in the shop's inventory.
 	 * Each tuple is of the order of {Item.get_name(), Item_quantity, Item.get_value()}
 	 * @return The result vector of the shop's inventory.
 	 */
-//	std::vector<std::tuple<std::string, unsigned int, unsigned int> > show_inventory() const{
 	std::vector<InventoryMenuTuple> show_inventory() const{
-//		std::vector<std::tuple<std::string, unsigned int, unsigned int> > item_results;
 		std::vector<InventoryMenuTuple> item_results;
 		item_results.reserve(this->shop_inventory_.inventory_quantity());
 		for(auto item_id:this->list_inventory()){
@@ -97,9 +82,9 @@ class ShopKeeper {
 			return false;
 
 		unsigned int gold = this->sell_value(item_id,amount);
-		this->player_->remove_item(item_id,amount);
 		this->player_->add_gold(gold);
 		this->shop_inventory_.add_item(*this->player_->player_inventory.get_item(item_id), amount);
+		this->player_->remove_item(item_id,amount);
 		return true;
 	}
 

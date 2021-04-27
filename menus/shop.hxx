@@ -196,7 +196,6 @@ class ShopMenu {
 						if (status){
 							std::cout << this->player->get_name() << " purchased " << amount << " " << this->shop_items[choice].item_name
 									  << " for " << this->shop_items[choice].item_value * amount << "g";
-
 							pause();
 							this->player_items = this->player->show_inventory();
 							this->update_sell_menu();

@@ -18,9 +18,13 @@ else()
 	endif()
 endif()
 
+#the libraries
+
+#basic includes stuff
 add_library(includes_lib OBJECT
 		includes.hxx)
 
+#items related stuff
 add_library(items_lib OBJECT
 		classes/items/itembase.hxx
 		classes/items/itembase.cpp
@@ -29,17 +33,22 @@ add_library(items_lib OBJECT
 		classes/items/armor.hxx
 		classes/items/armor.cpp)
 
+#inventory related stuff
 add_library(inventory_lib OBJECT
 		classes/containers/inventory.hxx
 		classes/containers/loot_table.hxx)
 
+#actors related stuff
 add_library(actors_lib OBJECT
 		classes/fighters/actor.hxx
 		classes/fighters/mob.hxx
 		classes/fighters/player.hxx
 		)
 
-#find_package(Threads REQUIRED)
+
+#Executables start below
+
+#fighters/actors stuff
 add_executable(test_fighters
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
@@ -47,8 +56,8 @@ add_executable(test_fighters
 		$<TARGET_OBJECTS:actors_lib>
 		tests/actor_test.cpp
 		)
-##target_link_libraries( test_fighters Threads::Threads)
 
+#battle demo
 add_executable(battle_demo
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
@@ -58,7 +67,8 @@ add_executable(battle_demo
 		menus/battle.hxx
 		tests/battle_demo.cpp)
 
-#target_link_libraries( battle_demo Threads::Threads)
+
+#test the battle
 add_executable(test_battle
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
@@ -68,8 +78,8 @@ add_executable(test_battle
 		menus/battle.hxx
 		tests/battle_test.cpp)
 
-#target_link_libraries( test_battle Threads::Threads)
-add_executable(map_test
+#test the map, will have to make this a library eventually.
+add_executable(test_map
 		includes.hxx
 		classes/maps/room.hxx
 		classes/maps/room.cpp
@@ -78,7 +88,7 @@ add_executable(map_test
 		tests/map_test.cpp
 		)
 
-#target_link_libraries( map_test Threads::Threads)
+#build the item test binary.
 add_executable(test_items
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
@@ -92,6 +102,13 @@ add_executable(test_inventory
 		$<TARGET_OBJECTS:inventory_lib>
 		classes/containers/shop_inventory.hxx
 		tests/inventory_test.cpp
+		)
+add_executable(inventory_demo
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
+		classes/containers/shop_inventory.hxx
+		tests/inventory_demo.cpp
 		)
 
 add_executable(test_shop
@@ -114,6 +131,8 @@ add_executable(shop_demo
 		menus/shop.hxx
 		tests/shop_demo.cpp
 		tests/shop_demo.cpp)
+
+
 #target_link_libraries( test_items Threads::Threads)
 add_executable(itp298_capstone
 		$<TARGET_OBJECTS:includes_lib>
@@ -129,17 +148,24 @@ add_executable(itp298_capstone
 
 #target_link_libraries(itp298_capstone Threads::Threads)
 #have to make sure this works on windows first.
-#if(MSVC)
+if(MSVC)
 #	#may not actually work but who knows.
 #	add_test( NAME "Battle Test"
-#			COMMAND test_battle.exe)
-#else()
+#			COMMAND \.test_battle.exe)
+else()
 	#Test the battle system
 	add_test(NAME "Battle_Module"
 			COMMAND ./test_battle)
 	#Test the Actor class and children classes.
 	add_test(NAME "Actor_Module"
 			COMMAND ./test_fighters)
+	#Test the Inventory Module and related children classes.
 	add_test(NAME "Inventory_Module"
 			COMMAND ./test_inventory)
-#endif()
+
+	add_test(NAME "Item_Module"
+			COMMAND ./test_items)
+
+	add_test(NAME "Shop_Module"
+			COMMAND ./test_shop)
+endif()
