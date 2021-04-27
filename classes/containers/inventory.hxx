@@ -61,7 +61,7 @@ class Inventory {
 			}
 		}
 		//set the size to the total number.
-		this->num_items = items.size();
+		this->num_items = static_cast<unsigned short>(items.size());
 	}
 
 	/**

@@ -61,7 +61,7 @@ template <typename T> T xorshift128(T low=0, T high=0){
 	else if(high == 0 && low == 0){
 		high = static_cast<T>(UINT64_MAX);
 	}
-	return low+((high-low)*((double)result/ UINT64_MAX));
+	return static_cast<T>(low+((high-low)*((double)result/ UINT64_MAX)));
 }
 template <typename T, typename U> U xorshift128(T low=0, U high=0){
 	//get the current state.
@@ -79,9 +79,9 @@ template <typename T, typename U> U xorshift128(T low=0, U high=0){
 		low=0;
 	}
 	else if(high == 0 && low == 0){
-		high = UINT64_MAX;
+		high = static_cast<U>(UINT64_MAX);
 	}
-	return low+((high-low)*((double)result/ UINT64_MAX));
+	return static_cast<U>(low+((high-low)*((double)result/ UINT64_MAX)));
 }
 
 //this is the C++ version because I'm using chrono. The C version using the same function.
