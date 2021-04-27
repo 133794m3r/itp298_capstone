@@ -7,20 +7,29 @@
 */
 #ifndef ITP298_CAPSTONE_PLAYER_HXX
 #define ITP298_CAPSTONE_PLAYER_HXX
+class ShopKeeper;
 #include <utility>
 
 #include "actor.hxx"
+#include "../containers/inventory.hxx"
+
 class Player: public Actor {
   private:
 	//player has their current xp and gold properties atm.
 	unsigned int xp_;
 	unsigned int gold_;
+	Inventory player_inventory;
+	Armor *armor_equipped;
+	Weapon *weapon_equipped;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
-	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0, double bonus_str=0.0, double bonus_def=0.0): Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,5,4){
+	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0,
+				 double bonus_str=0.0, double bonus_def=0.0)
+				 :Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,
+			5,4,255){
 		//player will always have a set id that's way higher than the rest of the objects in the world.
 		this->id = 65535;
-		this->gold_ = 0;
+		this->gold_ = 100;
 		this->xp_ = 0;
 		//TODO: Figure out XP curve and set it to the relevant value with the level provided.
 		Actor::set_level(level);
@@ -39,6 +48,10 @@ class Player: public Actor {
 		this->str_ = this->base_str_;
 		this->def_ = this->base_def_;
 
+	}
+
+	unsigned int get_gold(){
+		return this->gold_;
 	}
 
 	void add_gold(unsigned int gold){
@@ -69,16 +82,55 @@ class Player: public Actor {
 			return false;
 		}
 	}
-	operator std::string() const{
+
+	void remove_item(unsigned short item_id, unsigned int num = 1){
+		this->player_inventory.remove_item(item_id, num);
+	}
+
+	void remove_item(Item &item, unsigned int num = 1){
+		this->player_inventory.remove_item(item, num);
+	}
+
+	void add_item(Item &item, unsigned int num = 1){
+		this->player_inventory.add_item(item,num);
+	}
+
+	void unequip_armor() override{
+		this->player_inventory.add_item(*this->armor_equipped,1);
+		Actor::unequip_armor();
+	}
+
+	void unequip_weapon() override{
+		this->player_inventory.add_item(*this->weapon_equipped,1);
+		Actor::unequip_weapon();
+	}
+
+	operator std::string() const override{
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
 			" str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"
 			<< this->base_def_ << " xp:" << this->xp_ << " g:" << this->gold_;
 		return ss.str();
 	}
+
+	std::vector<InventoryMenuTuple> show_inventory(){
+		std::vector<InventoryMenuTuple> item_results;
+		item_results.reserve(this->player_inventory.inventory_quantity());
+		for(auto item_id:this->player_inventory.get_item_ids()){
+			Item *item = this->player_inventory.get_item(item_id);
+			item_results.push_back({item->get_name(),
+						   this->player_inventory.get_quantity(item_id),
+						   static_cast<unsigned int>(item->get_value()*0.75)
+			});
+		}
+		return item_results;
+	}
 	friend void show_all_stats(Player &);
 	friend std::ostream& operator<<(std::ostream &, Player &);
+	//for now till I make it work the way I want.
+	friend ShopKeeper;
 };
+
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
 			  << player.base_str_ << " def:" << player.base_def_ << " level:" << std::to_string(player.lvl_) <<

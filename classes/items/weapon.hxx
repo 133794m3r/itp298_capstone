@@ -15,11 +15,11 @@ class Weapon: public Item
 private:
     int damage; //private weapon variable for damage
     public:
-    Weapon(std::string name,
-            int damage,
-            unsigned int value,
-            unsigned int tier,
-            unsigned int level);
+    explicit Weapon(std::string,
+            int damage = 0,
+            unsigned int value = 1,
+            unsigned int tier = 1,
+            unsigned int level = 1);
 
     virtual ~Weapon();
 

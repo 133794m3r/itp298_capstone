@@ -5,7 +5,11 @@
 */
 #ifndef ITP298_CAPSTONE_BATTLE_HXX
 #define ITP298_CAPSTONE_BATTLE_HXX
+//global C++ specific stuff
 #include <iomanip>
+//solely for MSVC++ compiler as for some reason it doesn't include C++ in it's standard templates(for reasons) during compilation.
+#include <array>
+//Local includes
 #include "../includes.hxx"
 #include "../classes/fighters/player.hxx"
 #include "../classes/fighters/mob.hxx"
@@ -51,7 +55,7 @@ void show_battle_message(const std::string &message){
 		std::cout << new_str.substr(new_line+1) << padding_string.substr(0,53-(message_len - new_line));
 	}
 	move_cursor(11,1);
-	clear_line(11);
+	clear_current_line();
 }
 //might make this whole thing be abstracted away into the Battle class and then have the printing and such be done via the "complete_turn" method to make testing easier but that's later me's problem.
 /**
@@ -221,14 +225,27 @@ If enemy's HP is over 4 digits then we make it be ????.
 	if(player.is_alive()) {
 		//this is just a place-holder message will eventually go somewhere.
 		std::cout << player.get_name() << " defeated " << mob.get_name() << std::endl;
-		std::pair<int,int> rewards = mob.rewards();
-		std::cout << "You received " << rewards.first << "xp and " << rewards.second << "g for defeating the enemy!" << std::endl;
-		player.add_xp(rewards.first);
-		player.add_gold(rewards.second);
+		MobRewards rewards = mob.rewards();
+		std::cout << "You received " << rewards.xp << "xp and " << rewards.gold << "g for defeating the enemy!" << std::endl;
+		player.add_xp(rewards.xp);
+		player.add_gold(rewards.gold);
+		if(rewards.items.size()!=0){
+			std::cout << "And ";
+			for(auto item_slot:rewards.items){
+				std::cout << item_slot.second << item_slot.first->get_name() << "(s) ";
+				player.add_item(*item_slot.first,item_slot.second);
+			}
+			std::cout << "Items!" << std::endl;
+		}
+		else{
+			std::cout << "No items were found near the scene!" << std::endl;
+		}
+		pause();
 		return true;
 	}
 	else {
 		std::cout << player.get_name() << " was defeated by " << mob.get_name() << std::endl;
+		pause();
 		return false;
 	}
 }
