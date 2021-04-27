@@ -31,7 +31,7 @@ int main(){
 	else
 		std::cout << "Base actor test succeeded." << std::endl;
 	//same with the player
-	if("id: 65535 Player hp:20/20 str:5/5 def:4/4 xp:0 g:0" != (std::string) tmp_player){
+	if("id: 65535 Player hp:20/20 str:5/5 def:4/4 xp:0 g:100" != (std::string) tmp_player){
 		std::cout << "player creation test failed" << std::endl;
 		tests_failed++;
 	}
