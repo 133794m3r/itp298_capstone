@@ -32,8 +32,13 @@ int main(){
 	//show the stringified version
 	std::cout << (std::string) test << std::endl;
 
-	//make sure it's the same
-	if( (std::string) test != "Inventory [{Plaid Shirt, 2}, {Club, 6}, {Stick, 2}, {Sword, 6}] \nTotal Items:4\nItem Indexes = {0, 2, 3, 4}"){
+	//make sure it's the same. This is platform dependent due to the hashing function apparently.
+	if( (std::string) test !=
+#ifdef _WIN32
+    "Inventory [{Sword, 6}, {Stick, 2}, {Club, 6}, {Plaid Shirt, 2}] \nTotal Items:4\nItem Indexes = {0, 2, 3, 4}"){
+#else
+	"Inventory [{Plaid Shirt, 2}, {Club, 6}, {Stick, 2}, {Sword, 6}] \nTotal Items:4\nItem Indexes = {0, 2, 3, 4}"){
+#endif
 		std::cout << "Inventory test failed got '" << (std::string) test << "' but expected  'Inventory [{Plaid Shirt, 2}, {Club, 6}, {Stick, 2}, {Sword, 6}] \nTotal Items:4\nItem Indexes = {0, 2, 3, 4} '" << std::endl;
 		//it didn't work and show the error
 		return 1;

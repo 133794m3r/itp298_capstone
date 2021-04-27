@@ -27,6 +27,7 @@ void clear_lines(unsigned short start_line, unsigned short lines){
 }
 
 #ifdef _WIN32
+//what do you know more BS windows garbage.
 #include <windows.h>
 		//windows has the system pause command.
 		void pause(){
@@ -107,7 +108,6 @@ template <typename T> int proper_input(T &variable, std::string prefix){
 		}
 	}
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-//	std::cin.clear();
 	return 0;
 }
 #else

@@ -3,6 +3,7 @@ project(itp298_capstone)
 enable_testing()
 set(CMAKE_CXX_STANDARD 14)
 if(MSVC)
+	add_compile_definitions(NOMINMAX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /W4")
 	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O2")
 else()
@@ -23,6 +24,8 @@ endif()
 #basic includes stuff
 add_library(includes_lib OBJECT
 		includes.hxx)
+#because of windows
+set_target_properties(includes_lib PROPERTIES LINKER_LANGUAGE CXX)
 
 #items related stuff
 add_library(items_lib OBJECT
@@ -32,11 +35,12 @@ add_library(items_lib OBJECT
 		classes/items/weapon.cpp
 		classes/items/armor.hxx
 		classes/items/armor.cpp)
-
+set_target_properties(includes_lib PROPERTIES LINKER_LANGUAGE CXX)
 #inventory related stuff
 add_library(inventory_lib OBJECT
 		classes/containers/inventory.hxx
 		classes/containers/loot_table.hxx)
+set_target_properties(inventory_lib PROPERTIES LINKER_LANGUAGE CXX)
 
 #actors related stuff
 add_library(actors_lib OBJECT
@@ -44,7 +48,7 @@ add_library(actors_lib OBJECT
 		classes/fighters/mob.hxx
 		classes/fighters/player.hxx
 		)
-
+set_target_properties(actors_lib PROPERTIES LINKER_LANGUAGE CXX)
 
 #Executables start below
 
@@ -149,9 +153,24 @@ add_executable(itp298_capstone
 #target_link_libraries(itp298_capstone Threads::Threads)
 #have to make sure this works on windows first.
 if(MSVC)
-#	#may not actually work but who knows.
-#	add_test( NAME "Battle Test"
-#			COMMAND \.test_battle.exe)
+	#Test the battle system
+	add_test(NAME "Battle_Module"
+			COMMAND test_battle.exe)
+	#Test the Actor class and children classes.
+	add_test(NAME "Actor_Module"
+			COMMAND test_fighters.exe)
+
+	#Test the Inventory Module and related children classes.
+	add_test(NAME "Inventory_Module"
+			COMMAND test_inventory.exe)
+
+	#Item Module
+	add_test(NAME "Item_Module"
+			COMMAND test_items.exe)
+
+	#shop Module
+	add_test(NAME "Shop_Module"
+			COMMAND test_shop.exe)
 else()
 	#Test the battle system
 	add_test(NAME "Battle_Module"

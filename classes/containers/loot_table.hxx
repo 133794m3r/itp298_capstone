@@ -45,7 +45,7 @@ class LootTable:public Inventory {
 	}
 
 	void add_item(Item &item,unsigned int quantity,double probability){
-		this->chances.push_back(probability*4294967295);
+		this->chances.push_back(std::lround(probability*4294967295));
 		Inventory::add_item(item,quantity);
 	}
 };

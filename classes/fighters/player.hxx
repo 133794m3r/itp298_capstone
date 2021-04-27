@@ -71,7 +71,7 @@ class Player: public Actor {
 	bool add_xp(unsigned int xp){
 		//might make this just be a one-time calculation and store the value as a property but that's up in the air.
 		double dl = static_cast<double>(this->lvl_+1);
-		unsigned int mkxp = (dl * ((dl*0.79)*1.2) );
+		unsigned int mkxp = std::lround((dl * ((dl*0.79)*1.2) ));
 		unsigned int xp_lvl = std::lround( ( (dl*1.125) * mkxp )*1.6);
 		this->xp_ += xp;
 		if(this->xp_ > xp_lvl){
