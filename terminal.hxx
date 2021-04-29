@@ -6,12 +6,20 @@
 #ifndef _TERMINAL_SETUP_
 #include <limits>
 
-void move_and_clear_terminal(unsigned int lines_up){
+/**
+ * Moves cursor to specififed line(up from current) and clears it all.
+ * @param lines_up How many lines to go up.
+ */
+void move_and_clear_up(unsigned int lines_up){
 	printf("\x1b[%dF\x1b[0J", lines_up);
 }
 
-void move_and_clear_down(unsigned short line){
-	printf("\x1b[%dF\x1b[0J",line);
+/**
+ * Moves and clears all lines from this specific one down.
+ * @param line The line to move to.
+ */
+void move_and_clear(unsigned short line){
+	printf("\x1b[%dH\x1b[0J",line);
 }
 
 void clear_current_line(){
@@ -44,7 +52,7 @@ void clear_lines(unsigned short start_line, unsigned short lines){
 		std::cout << "press enter/return key to continue... ";
 		std::getchar();
 		std::cin.clear();
-		move_and_clear_terminal(1);
+		move_and_clear_up(1);
 		return 0;
 	}
 #endif //_WIN32
@@ -84,7 +92,7 @@ template <typename T> int proper_input(T &variable, std::string prefix){
 	* thus it'll continue the loop.
 	*/
 //	while(!(std::cin >> variable)){
-	while(1){
+	while(true){
 		std::cin >> variable;
 		if(std::cin.eof()){
 			variable = T();
@@ -100,7 +108,7 @@ template <typename T> int proper_input(T &variable, std::string prefix){
 			std::cout << "press enter/return key to continue... ";
 			std::getchar();
 			std::cin.clear();
-			move_and_clear_terminal(3);
+			move_and_clear_up(3);
 			std::cout << "\x1b[1m" << prefix << "\x1b[22m: ";
 		}
 		else{

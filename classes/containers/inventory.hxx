@@ -12,13 +12,13 @@
 #include <sstream>
 #include <unordered_map>
 #include <deque>
-#include "../items/itembase.hxx"
+#include "../items/item_base.hxx"
 #include "../items/weapon.hxx"
 #include "../items/armor.hxx"
 
 
 //basic struct for use with the menus
-struct InventoryMenuTuple{
+struct menu_item_data{
 	std::string item_name;
 	unsigned int item_quantity;
 	unsigned int item_value;
@@ -31,15 +31,16 @@ class Inventory {
 	//The list of items contained in this object.
 	std::unordered_map<unsigned short, Item*> items;
   	//the number of items that are contained.
-	std::unordered_map<unsigned short, unsigned int> item_quantity;
+	std::unordered_map<unsigned char, unsigned int> item_quantity;
 	//the indexes of the items as they are held in memory
 	std::deque<unsigned short> item_indexes;
 	unsigned short num_items;
 
   public:
 	//constructor
-	Inventory(std::vector<Item*> item={}, std::vector<unsigned int> counts={}){
+	Inventory(std::vector<Item*> item={}, std::vector<unsigned char> counts={}){
 		if(item.size() != 0){
+
 			unsigned int i=0;
 			//basic loop to set all of the items up
 			for(auto el:item){

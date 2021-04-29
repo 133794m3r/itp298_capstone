@@ -5,8 +5,8 @@
  * Date: 4/5/21
  * Purpose: Base Item class (header) for our currently Untitled RPG. This is the building block for our weapon and armor classes
 */
-#ifndef ITP298_CAPSTONE_ITEMBASE_HXX
-#define ITP298_CAPSTONE_ITEMBASE_HXX
+#ifndef ITP298_CAPSTONE_ITEM_BASE_HXX
+#define ITP298_CAPSTONE_ITEM_BASE_HXX
 
 #include <string>
 #include <sstream>
@@ -56,4 +56,4 @@ public:
 };
 
 
-#endif //ITP298_CAPSTONE_ITEMBASE_HXX
+#endif //ITP298_CAPSTONE_ITEM_BASE_HXX

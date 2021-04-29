@@ -3,6 +3,7 @@ project(itp298_capstone)
 enable_testing()
 set(CMAKE_CXX_STANDARD 14)
 if(MSVC)
+	#Microsoft "Helpfully" defines it's own min/max functions
 	add_compile_definitions(NOMINMAX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /W4")
 	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O2")
@@ -19,6 +20,7 @@ else()
 	endif()
 endif()
 
+
 #the libraries
 
 #basic includes stuff
@@ -29,13 +31,14 @@ set_target_properties(includes_lib PROPERTIES LINKER_LANGUAGE CXX)
 
 #items related stuff
 add_library(items_lib OBJECT
-		classes/items/itembase.hxx
-		classes/items/itembase.cpp
+		classes/items/item_base.hxx
+		classes/items/item_base.cpp
 		classes/items/weapon.hxx
 		classes/items/weapon.cpp
 		classes/items/armor.hxx
-		classes/items/armor.cpp)
+		classes/items/armor.cpp classes/items/potion.hxx)
 set_target_properties(includes_lib PROPERTIES LINKER_LANGUAGE CXX)
+
 #inventory related stuff
 add_library(inventory_lib OBJECT
 		classes/containers/inventory.hxx
@@ -49,6 +52,7 @@ add_library(actors_lib OBJECT
 		classes/fighters/player.hxx
 		)
 set_target_properties(actors_lib PROPERTIES LINKER_LANGUAGE CXX)
+
 
 #Executables start below
 
@@ -69,7 +73,8 @@ add_executable(battle_demo
 		$<TARGET_OBJECTS:actors_lib>
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
-		tests/battle_demo.cpp)
+		tests/battle_demo.cpp
+		)
 
 
 #test the battle
@@ -80,7 +85,8 @@ add_executable(test_battle
 		$<TARGET_OBJECTS:actors_lib>
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
-		tests/battle_test.cpp)
+		tests/battle_test.cpp
+		)
 
 #test the map, will have to make this a library eventually.
 add_executable(test_map
@@ -98,7 +104,7 @@ add_executable(test_items
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
 		tests/item_test.cpp
-		)
+		classes/items/potion.hxx)
 
 add_executable(test_inventory
 		$<TARGET_OBJECTS:includes_lib>
@@ -107,11 +113,14 @@ add_executable(test_inventory
 		classes/containers/shop_inventory.hxx
 		tests/inventory_test.cpp
 		)
+
 add_executable(inventory_demo
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
 		classes/containers/shop_inventory.hxx
+		menus/menu.hxx
+		menus/inventory_menu.hxx
 		tests/inventory_demo.cpp
 		)
 
@@ -132,25 +141,35 @@ add_executable(shop_demo
 		$<TARGET_OBJECTS:actors_lib>
 		classes/containers/shop_inventory.hxx
 		classes/shopkeeper.hxx
+		menus/menu.hxx
 		menus/shop.hxx
 		tests/shop_demo.cpp
-		tests/shop_demo.cpp)
+		)
 
 
-#target_link_libraries( test_items Threads::Threads)
 add_executable(itp298_capstone
+		#all the libraries
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
 		$<TARGET_OBJECTS:actors_lib>
 		classes/shopkeeper.hxx
+		#all the menus
+		menus/menu.hxx
 		menus/battle.hxx
 		menus/map_movement.hxx
 		menus/shop.hxx
+		menus/inputs.hxx
+		#data
+		data/mobs.hxx
+		data/maps.hxx
+		data/items.hxx
+		data/shops.hxx
+		#main binary
 		main.cpp
-		menus/inputs.hxx data/mobs.hxx data/maps.hxx data/items.hxx data/shops.hxx)
+		)
 
-#target_link_libraries(itp298_capstone Threads::Threads)
+
 #have to make sure this works on windows first.
 if(MSVC)
 	#Test the battle system

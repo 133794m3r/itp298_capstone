@@ -8,6 +8,7 @@
 #ifndef ITP298_CAPSTONE_PLAYER_HXX
 #define ITP298_CAPSTONE_PLAYER_HXX
 class ShopKeeper;
+class InventoryMenu;
 #include <utility>
 
 #include "actor.hxx"
@@ -19,8 +20,6 @@ class Player: public Actor {
 	unsigned int xp_;
 	unsigned int gold_;
 	Inventory player_inventory;
-	Armor *armor_equipped;
-	Weapon *weapon_equipped;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
 	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0,
@@ -82,7 +81,12 @@ class Player: public Actor {
 			return false;
 		}
 	}
-
+	void add_hp(unsigned short hp){
+		if(hp > (this->base_hp_ - this->hp_))
+			this->hp_ = this->base_hp_;
+		else
+			this->hp_ += hp;
+	}
 	void remove_item(unsigned short item_id, unsigned int num = 1){
 		this->player_inventory.remove_item(item_id, num);
 	}
@@ -96,12 +100,16 @@ class Player: public Actor {
 	}
 
 	void unequip_armor() override{
+		if(this->armor_equipped == nullptr)
+			return;
 		this->player_inventory.add_item(*this->armor_equipped,1);
 		Actor::unequip_armor();
 	}
 
 	void unequip_weapon() override{
-		this->player_inventory.add_item(*this->weapon_equipped,1);
+		if(this->weapon_held == nullptr)
+			return;
+		this->player_inventory.add_item(*this->weapon_held,1);
 		Actor::unequip_weapon();
 	}
 
@@ -113,8 +121,8 @@ class Player: public Actor {
 		return ss.str();
 	}
 
-	std::vector<InventoryMenuTuple> show_inventory(){
-		std::vector<InventoryMenuTuple> item_results;
+	std::vector<menu_item_data> show_inventory(){
+		std::vector<menu_item_data> item_results;
 		item_results.reserve(this->player_inventory.inventory_quantity());
 		for(auto item_id:this->player_inventory.get_item_ids()){
 			Item *item = this->player_inventory.get_item(item_id);
@@ -125,10 +133,11 @@ class Player: public Actor {
 		}
 		return item_results;
 	}
-	friend void show_all_stats(Player &);
+	friend void show_all_stats(Player &player);
 	friend std::ostream& operator<<(std::ostream &, Player &);
 	//for now till I make it work the way I want.
 	friend ShopKeeper;
+	friend InventoryMenu;
 };
 
 void show_all_stats(Player &player){

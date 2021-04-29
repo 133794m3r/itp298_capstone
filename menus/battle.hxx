@@ -185,11 +185,12 @@ If enemy's HP is over 4 digits then we make it be ????.
 					redraw_hp(mob);
 				else
 					message  = player.get_name() + " missed completely!";
-
 				break;
 			case 2:
 				message = player.get_name() + " is thinking of their next move.";
 				break;
+			default:
+				message = player.get_name() + " doesn't know what to do!";
 		}
 		show_battle_message(message);
 		pause();

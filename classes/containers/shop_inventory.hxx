@@ -13,7 +13,7 @@
 class ShopInventory: public Inventory {
   public:
 	explicit ShopInventory(const std::vector<Item*> &items = {},
-						   const std::vector<unsigned int> &quantity = {}):Inventory(items,quantity){
+						   const std::vector<unsigned char> &quantity = {}):Inventory(items,quantity){
 
 	}
 	/**

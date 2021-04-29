@@ -17,7 +17,7 @@ class LootTable:public Inventory {
   private:
 	std::vector<unsigned int> chances;
   public:
-	explicit LootTable(std::vector<Item*> items={}, std::vector<unsigned int> counts={},const std::vector<double>& probs = {})
+	explicit LootTable(std::vector<Item*> items={}, std::vector<unsigned char> counts={},const std::vector<double>& probs = {})
 	:Inventory(std::move(items),std::move(counts)){
 		this->chances.reserve(probs.size());
 		for(double prob:probs){
