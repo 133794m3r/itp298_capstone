@@ -18,7 +18,7 @@ class ShopKeeper {
 	Player *player_ = nullptr;
   public:
 	explicit ShopKeeper(std::string name = "Shop Keep", const std::vector<Item*> &items = {},
-					 const std::vector<unsigned int> &quantity = {}){
+					 const std::vector<unsigned char> &quantity = {}){
 		this->shop_inventory_ = ShopInventory(items,quantity);
 		this->name_ = std::move(name);
 	}

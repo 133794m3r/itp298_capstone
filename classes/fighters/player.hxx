@@ -133,7 +133,7 @@ class Player: public Actor {
 		}
 		return item_results;
 	}
-	friend void show_all_stats(Player &);
+	friend void show_all_stats(Player &player);
 	friend std::ostream& operator<<(std::ostream &, Player &);
 	//for now till I make it work the way I want.
 	friend ShopKeeper;

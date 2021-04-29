@@ -18,7 +18,7 @@ int main(){
 	Weapon sword("Sword");
 	Item rock("Rock");
 	//create shop keeper
-	ShopKeeper shop_keeper("Kennel Club",{&shirt,&sword,&rock},{1000,1000,1000});
+	ShopKeeper shop_keeper("Kennel Club",{&shirt,&sword,&rock},{255,255,255});
 	//make player enter the shop
 	shop_keeper.enter_shop(test_player);
 	std::deque<unsigned short> shop_item_ids = shop_keeper.list_inventory();
