@@ -6,7 +6,7 @@
 *
 */
 #include "../includes.hxx"
-#include "../classes/items/itembase.hxx"
+#include "../classes/items/item_base.hxx"
 #include "../classes/items/weapon.hxx"
 #include "../classes/items/armor.hxx"
 #include <string>

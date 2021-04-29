@@ -22,8 +22,8 @@ int main(){
 	//make player enter the shop
 	shop_keeper.enter_shop(test_player);
 	std::deque<unsigned short> shop_item_ids = shop_keeper.list_inventory();
-	std::vector<InventoryMenuTuple> shop_items = shop_keeper.show_inventory();
-	std::vector<InventoryMenuTuple> player_items = test_player.show_inventory();
+	std::vector<menu_item_data> shop_items = shop_keeper.show_inventory();
+	std::vector<menu_item_data> player_items = test_player.show_inventory();
 
 	unsigned int failed_tests = 0;
 	unsigned int passed_tests = 0;

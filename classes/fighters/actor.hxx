@@ -7,7 +7,7 @@
 #ifndef ITP298_CAPSTONE_ACTOR_HXX
 #define ITP298_CAPSTONE_ACTOR_HXX
 #include "../../includes.hxx"
-#include "../items/itembase.hxx"
+#include "../items/item_base.hxx"
 #include "../items/weapon.hxx"
 #include "../items/armor.hxx"
 #include <sstream>
@@ -187,6 +187,13 @@ class Actor {
 	bool is_alive(){
 		return this->hp_ > 0;
 	}
+
+//	void equip_weapon(Item &weapon){
+//		if(weapon.get_type() !=1)
+//			return;
+//		this->weapon_held = dynamic_cast<Weapon *>(&weapon);
+//		this->str_ += weapon.get_damage();
+//	}
 
 	void equip_weapon(Weapon &weapon){
 		this->weapon_held = &weapon;

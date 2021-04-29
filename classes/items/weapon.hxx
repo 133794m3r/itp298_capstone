@@ -8,7 +8,7 @@
 #ifndef ITP298_CAPSTONE_WEAPON_HXX
 #define ITP298_CAPSTONE_WEAPON_HXX
 
-#include "itembase.hxx"
+#include "item_base.hxx"
 
 class Weapon: public Item
 {

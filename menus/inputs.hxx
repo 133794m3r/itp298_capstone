@@ -25,7 +25,7 @@ unsigned int valid_option(unsigned int min=1,unsigned int max=1,std::string pref
 	if(max < min)
 		std::swap(min,max);
 	//infinite loop until it's good
-	while(1) {
+	while(true) {
 		res = proper_input(option,prefix);
 		//-1 means EOF was noticed
 		if(res == -1)
@@ -38,7 +38,7 @@ unsigned int valid_option(unsigned int min=1,unsigned int max=1,std::string pref
 		std::cout << "Enter valid option from " << min << " to " << max << std::endl;
 		//make sure they know this
 		pause();
-		move_and_clear_terminal(2);
+		move_and_clear_up(2);
 		//show the prefix message
 		std::cout << "\x1b[1m" << prefix << "\x1b[22m: ";
 	}

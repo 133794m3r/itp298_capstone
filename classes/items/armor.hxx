@@ -7,7 +7,7 @@
 */
 #ifndef ITP298_CAPSTONE_ARMOR_HXX
 #define ITP298_CAPSTONE_ARMOR_HXX
-#include "itembase.hxx"
+#include "item_base.hxx"
 
 class Armor: public Item {
 private:

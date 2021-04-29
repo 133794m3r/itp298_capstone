@@ -48,8 +48,8 @@ class ShopKeeper {
 	 * Each tuple is of the order of {Item.get_name(), Item_quantity, Item.get_value()}
 	 * @return The result vector of the shop's inventory.
 	 */
-	std::vector<InventoryMenuTuple> show_inventory() const{
-		std::vector<InventoryMenuTuple> item_results;
+	std::vector<menu_item_data> show_inventory() const{
+		std::vector<menu_item_data> item_results;
 		item_results.reserve(this->shop_inventory_.inventory_quantity());
 		for(auto item_id:this->list_inventory()){
 			Item *item = this->shop_inventory_.get_item(item_id);
