@@ -25,21 +25,25 @@ int main(){
 	unsigned int tmp_mob_hp = tmp_mob.get_hp();
 	//test the first actor build
 	if( "id: 0 Test hp:15/15 str:5/5 def:3/3" != (std::string) base_actor){
-		std::cout << "Base actor test failed. got " << (std::string) base_actor << std::endl;
+		std::cout << "Base actor test failed. got '" << (std::string) base_actor;
+		std::cout << "\nbut we expected 'id: 0 Test hp:15/15 str:5/5 def:3/3'" << std::endl;
 		tests_failed++;
 	}
 	else
 		std::cout << "Base actor test succeeded." << std::endl;
 	//same with the player
 	if("id: 65535 Player hp:20/20 str:5/5 def:4/4 xp:0 g:100" != (std::string) tmp_player){
-		std::cout << "player creation test failed" << std::endl;
+		std::cout << "player creation test failed\n";
+		std::cout << "Expected 'id: 65535 Player hp:20/20 str:5/5 def:4/4 xp:0 g:100' but we got '";
+		std::cout << (std::string) tmp_player << std::endl;
 		tests_failed++;
 	}
 	else
 		std::cout << "Player creation test Passed" << std::endl;
 	//and mob
-	if( "id: 2 Spawn of Death hp:16/16 str:5/5 def:3/3 xp:6 g:4 tier: 1 / normal" != (std::string) tmp_mob){
-		std::cout << "mob creation test failed " << std::endl;
+	if( "id: 2 Spawn of Death hp:16/16 str:8/8 def:3/3 xp:6 g:4 tier: 1 / normal" != (std::string) tmp_mob){
+		std::cout << "mob creation test failed \n";
+		std::cout << "Expected 'id: 2 Spawn of Death hp:16/16 str:8/8 def:3/3 xp:6 g:4 tier: 1 / normal' but we got '";
 		std::cout << (std::string) tmp_mob << std::endl;
 		tests_failed++;
 	}
@@ -83,17 +87,20 @@ int main(){
 	//test the tiers and scaling.
 	Mob boss("Bossman",6,5);
 	std::cout << "Boss creation/scaling/tier test ";
-	if((std::string) boss != "id: 3 Bossman hp:91/91 str:25/25 def:18/18 xp:36 g:30 tier: 6 / boss"){
-		std::cout << "failed. Expected 'id: 3 Bossman hp:91/91 str:25/25 def:18/18 xp:36 g:30 tier: 6 / boss' but we got '" << (std::string) boss << "'" << std::endl;
+	if((std::string) boss != "id: 3 Bossman hp:99/99 str:38/38 def:20/20 xp:36 g:30 tier: 6 / boss"){
+		std::cout << "failed. Expected 'id: 3 Bossman hp:99/99 str:38/38 def:20/20 xp:36 g:30 tier: 6 / boss' but we got '" << (std::string) boss << "'" << std::endl;
 		tests_failed++;
 	}
 	else
 		std::cout << "passed." << std::endl;
 
 	std::cout << "Passed " << 6 - tests_failed << "/6" << std::endl;
+	Player tmp_act("jon",6);
 	if(tests_failed != 0){
 		return 1;
 	}
 	else
 		return 0;
+
+
 }

@@ -19,6 +19,9 @@ int main(){
 	player.add_item(potion,2);
 	player.equip_armor(cloth_shirt);
 	player.equip_weapon(rusty_sword);
+	std::cout << "p atk m " << player.get_str() - boss.get_def() << "\n";
+	std::cout << "m atk p " << boss.get_str() - player.get_def() << "\n";
+	pause();
 //	std::cout << player << std::endl << mob << std::endl;
 //	std::cout << (std::string) player << std::endl;
 //	pause();
