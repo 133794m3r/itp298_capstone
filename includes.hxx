@@ -20,7 +20,7 @@
 #include "terminal.hxx"
 #include <string>
 #include <iostream>
-template <typename T> unsigned long long hash(std::iterator<T> iterable){
+//template <typename T> unsigned long long hash(std::iterator<T> iterable){
 
-}
+//}
 #endif //ITP298_CAPSTONE_INCLUDES_HXX
