@@ -6,7 +6,7 @@
 *
 */
 
-#include "../classes/shopkeeper.hxx"
+#include "../classes/shop_keeper.hxx"
 int main(){
 	//test file for the shop current WIP
 	//create player

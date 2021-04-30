@@ -7,7 +7,7 @@
 */
 
 
-#include "../classes/shopkeeper.hxx"
+#include "../classes/shop_keeper.hxx"
 #include "../menus/shop.hxx"
 int main(){
 	//the demo files are always used for testing

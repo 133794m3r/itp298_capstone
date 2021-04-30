@@ -10,9 +10,11 @@
 class ShopKeeper;
 class InventoryMenu;
 #include <utility>
+#include <fstream>
 
 #include "actor.hxx"
 #include "../containers/inventory.hxx"
+#include "../items/potion.hxx"
 
 class Player: public Actor {
   private:
@@ -20,6 +22,7 @@ class Player: public Actor {
 	unsigned int xp_;
 	unsigned int gold_;
 	Inventory player_inventory;
+	unsigned short current_game_level;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
 	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0,
@@ -30,7 +33,7 @@ class Player: public Actor {
 		this->id = 65535;
 		this->gold_ = 100;
 		this->xp_ = 0;
-		//TODO: Figure out XP curve and set it to the relevant value with the level provided.
+		this->current_game_level = 0;
 		Actor::set_level(level);
 	}
 
@@ -81,11 +84,17 @@ class Player: public Actor {
 			return false;
 		}
 	}
-	void add_hp(unsigned short hp){
-		if(hp > (this->base_hp_ - this->hp_))
+	unsigned short add_hp(unsigned short hp){
+		unsigned short restored = 0;
+		if(hp > (this->base_hp_ - this->hp_)) {
+			restored = this->base_hp_ - this->hp_;
 			this->hp_ = this->base_hp_;
-		else
+		}
+		else {
+			restored = hp;
 			this->hp_ += hp;
+		}
+		return restored;
 	}
 	void remove_item(unsigned short item_id, unsigned int num = 1){
 		this->player_inventory.remove_item(item_id, num);
@@ -113,12 +122,20 @@ class Player: public Actor {
 		Actor::unequip_weapon();
 	}
 
-	operator std::string() const override{
-		std::stringstream ss;
-		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
-			" str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"
-			<< this->base_def_ << " xp:" << this->xp_ << " g:" << this->gold_;
-		return ss.str();
+	unsigned int get_xp(){
+		return this->xp_;
+	}
+
+	std::vector<std::pair<menu_item_data, unsigned short> > get_potions(){
+		std::vector<std::pair<menu_item_data, unsigned short> > potions;
+		for(auto item_id:this->player_inventory.get_item_ids()){
+			Item *item = this->player_inventory.get_item(item_id);
+			if(item->get_type() == 3){
+				Potion *pot = dynamic_cast<Potion *>(item);
+				potions.push_back({{item->get_name(),player_inventory.get_quantity(item_id),pot->get_power()},item->get_id()});
+			}
+		}
+		return potions;
 	}
 
 	std::vector<menu_item_data> show_inventory(){
@@ -127,18 +144,50 @@ class Player: public Actor {
 		for(auto item_id:this->player_inventory.get_item_ids()){
 			Item *item = this->player_inventory.get_item(item_id);
 			item_results.push_back({item->get_name(),
-						   this->player_inventory.get_quantity(item_id),
-						   static_cast<unsigned int>(item->get_value()*0.75)
-			});
+									this->player_inventory.get_quantity(item_id),
+									static_cast<unsigned int>(item->get_value()*0.75)
+								   });
 		}
 		return item_results;
 	}
+
+	const std::deque<unsigned short> list_inventory() const{
+		return this->player_inventory.get_item_ids();
+	}
+
+	operator std::string() const override{
+		std::stringstream ss;
+		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
+			" str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"
+			<< this->base_def_ << " xp:" << this->xp_ << " g:" << this->gold_;
+		return ss.str();
+	}
+
+
 	friend void show_all_stats(Player &player);
 	friend std::ostream& operator<<(std::ostream &, Player &);
 	//for now till I make it work the way I want.
 	friend ShopKeeper;
 	friend InventoryMenu;
+
+	friend void save_game(Player &player);
+	friend Player load_game(std::string save_file);
 };
+
+void save_game(Player &player){
+	//TODO: Actually finish this later.
+	std::ofstream save_file(player.get_name()+"_save_file.csv");
+	save_file << player.name_ << "," << player.xp_ << "," << player.hp_
+	<< "," << player.base_hp_ << "," << player.base_str_ << "," << player.base_def_;
+}
+
+Player load_game(std::string save_file){
+	//TODO: Actually write the loading function.
+	Player player("tmp");
+
+	return player;
+}
+
 
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
@@ -155,4 +204,6 @@ std::ostream& operator<<(std::ostream &os, Player &a){
 	<< " xp:" << a.xp_ << " g:" << a.gold_;
 	return os;
 }
+
+
 #endif //ITP298_CAPSTONE_PLAYER_HXX

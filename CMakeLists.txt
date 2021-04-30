@@ -36,7 +36,8 @@ add_library(items_lib OBJECT
 		classes/items/weapon.hxx
 		classes/items/weapon.cpp
 		classes/items/armor.hxx
-		classes/items/armor.cpp classes/items/potion.hxx)
+		classes/items/armor.cpp
+		classes/items/potion.hxx)
 set_target_properties(includes_lib PROPERTIES LINKER_LANGUAGE CXX)
 
 #inventory related stuff
@@ -130,7 +131,7 @@ add_executable(test_shop
 		$<TARGET_OBJECTS:inventory_lib>
 		$<TARGET_OBJECTS:actors_lib>
 		classes/containers/shop_inventory.hxx
-		classes/shopkeeper.hxx
+		classes/shop_keeper.hxx
 		tests/shop_test.cpp
 		)
 
@@ -140,12 +141,35 @@ add_executable(shop_demo
 		$<TARGET_OBJECTS:inventory_lib>
 		$<TARGET_OBJECTS:actors_lib>
 		classes/containers/shop_inventory.hxx
-		classes/shopkeeper.hxx
+		classes/shop_keeper.hxx
 		menus/menu.hxx
 		menus/shop.hxx
 		tests/shop_demo.cpp
 		)
 
+add_executable(tutorial_demo
+		#all the libraries
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
+		classes/shop_keeper.hxx
+		#all the menus
+		menus/menu.hxx
+		menus/battle.hxx
+		menus/map_movement.hxx
+		menus/shop.hxx
+		menus/inputs.hxx
+		menus/tutorial_menu.hxx
+		#data
+		data/mobs.hxx
+		data/maps.hxx
+		data/items.hxx
+		data/shops.hxx
+		data/menus.hxx
+		#main binary
+		tests/tutorial_menu.cpp
+		)
 
 add_executable(itp298_capstone
 		#all the libraries
@@ -153,7 +177,7 @@ add_executable(itp298_capstone
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
 		$<TARGET_OBJECTS:actors_lib>
-		classes/shopkeeper.hxx
+		classes/shop_keeper.hxx
 		#all the menus
 		menus/menu.hxx
 		menus/battle.hxx
@@ -167,7 +191,7 @@ add_executable(itp298_capstone
 		data/shops.hxx
 		#main binary
 		main.cpp
-		)
+		data/menus.hxx)
 
 
 #have to make sure this works on windows first.

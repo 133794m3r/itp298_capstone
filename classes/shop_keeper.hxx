@@ -6,8 +6,8 @@
 *
 */
 
-#ifndef ITP298_CAPSTONE_SHOPKEEPER_HXX
-#define ITP298_CAPSTONE_SHOPKEEPER_HXX
+#ifndef ITP298_CAPSTONE_SHOP_KEEPER_HXX
+#define ITP298_CAPSTONE_SHOP_KEEPER_HXX
 #include <utility>
 #include "fighters/player.hxx"
 #include "containers/shop_inventory.hxx"
@@ -39,6 +39,7 @@ class ShopKeeper {
 	const std::deque<unsigned short> list_inventory() const{
 		return this->shop_inventory_.get_item_ids();
 	}
+
 	std::string get_name() const{
 		return this->name_;
 	}
@@ -57,6 +58,7 @@ class ShopKeeper {
 		}
 		return item_results;
 	};
+
 	void enter_shop(Player &player){
 		this->player_ = &player;
 	}
@@ -91,4 +93,4 @@ class ShopKeeper {
 };
 
 
-#endif //ITP298_CAPSTONE_SHOPKEEPER_HXX
+#endif //ITP298_CAPSTONE_SHOP_KEEPER_HXX

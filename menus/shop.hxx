@@ -9,7 +9,7 @@
 #define ITP298_CAPSTONE_SHOP_HXX
 
 #include <algorithm>
-#include "../classes/shopkeeper.hxx"
+#include "../classes/shop_keeper.hxx"
 #include "inputs.hxx"
 #include "menu.hxx"
 class ShopMenu:public Menu {
@@ -27,7 +27,8 @@ class ShopMenu:public Menu {
 
 	std::vector<menu_item_data> shop_items;
 	std::vector<menu_item_data> player_items;
-
+	std::deque<unsigned short> shop_item_ids;
+	std::deque<unsigned short> player_item_ids;
 	/**
 	 * Updates the buy strings menu
 	 */
@@ -107,12 +108,29 @@ class ShopMenu:public Menu {
 		this->player = &player;
 		shop_keeper.enter_shop(player);
 		this->shop_items = shop_keeper.show_inventory();
+		this->shop_item_ids = shop_keeper.list_inventory();
 		this->update_buy_menu();
 		this->player_items = player.show_inventory();
 		this->update_sell_menu();
+		this->player_item_ids = player.list_inventory();
 	}
 
+	explicit ShopMenu(ShopKeeper &shop_keeper)
+	:Menu(7,4){
+		this->shop_keeper = &shop_keeper;
+		this->player = nullptr;
+		this->shop_items = shop_keeper.show_inventory();
+		this->update_buy_menu();
+		this->shop_item_ids = shop_keeper.list_inventory();
+	}
 
+	void enter_shop(Player &p){
+		this->player = &p;
+		shop_keeper->enter_shop(p);
+		this->player_items = p.show_inventory();
+		this->update_sell_menu();
+		this->player_item_ids = p.list_inventory();
+	}
 
 	/**
 	 * The menu portiont o be shown when buying items.
@@ -134,7 +152,7 @@ class ShopMenu:public Menu {
 				//move terminal
 				move_and_clear_up(1);
 				//figure out max they can buy
-				unsigned int max_amt = std::min(this->player->get_gold() /this->shop_items[choice].item_value,this->shop_items[choice].item_quantity);
+				unsigned int max_amt = std::min(this->player->get_gold() / this->shop_items[choice].item_value,this->shop_items[choice].item_quantity);
 				std::cout << "You can purchase " << max_amt << " " << this->shop_items[choice].item_name << "(s)\nHow many? ";
 				//make sure they don't try to get more than that.
 				amount = valid_option(0, max_amt);
@@ -155,7 +173,7 @@ class ShopMenu:public Menu {
 					//they did want to buy it
 					if (max_amt == 1) {
 						//see if they can
-						bool status = this->shop_keeper->purchase_item(choice, amount);
+						bool status = this->shop_keeper->purchase_item(this->shop_item_ids[choice], amount);
 						clear_textbox(7, 3);
 						move_cursor(7, 3);
 						//they can
@@ -163,13 +181,14 @@ class ShopMenu:public Menu {
 							std::cout << this->player->get_name() << " purchased " << amount << " " << this->shop_items[choice].item_name
 									  << " for " << this->shop_items[choice].item_value * amount << "g";
 							this->player_items = this->player->show_inventory();
+							this->player_item_ids = this->player->list_inventory();
 							this->update_sell_menu();
 							if(this->shop_items[choice].item_quantity == amount) {
 								this->shop_items.erase(this->shop_items.begin()+choice);
+								this->shop_item_ids.erase(this->shop_item_ids.begin()+choice);
 								this->update_buy_menu();
-								this->update_shop_text();
-								show_menu_message(this->buy_menu_string);
 							}
+							this->update_shop_text();
 						}
 						else {
 							//they can't
@@ -179,8 +198,9 @@ class ShopMenu:public Menu {
 						pause();
 					}
 				}
+				show_menu_message(this->buy_menu_string);
 			}
-			//exit loop
+				//exit loop
 			else {
 				return choice - this->shop_items.size();
 			}
@@ -214,7 +234,9 @@ class ShopMenu:public Menu {
 						<< "g?\n\x1b[1mSelection:\x1b[22m";
 
 					if(valid_option(1,2) == 1){
-						bool status = this->shop_keeper->sell_item(choice, amount);
+						bool status = this->shop_keeper->sell_item(this->player_item_ids[choice], amount);
+						this->shop_items = this->shop_keeper->show_inventory();
+						this->shop_item_ids = this->shop_keeper->list_inventory();
 						clear_textbox(7, 3);
 						move_cursor(7, 3);
 						if (status) {
@@ -224,10 +246,11 @@ class ShopMenu:public Menu {
 
 							if (this->player_items[choice].item_quantity == amount) {
 								this->update_sell_menu();
-								this->update_player_text();
 								this->player_items.erase(this->player_items.begin() + choice);
+								this->player_item_ids.erase(this->player_item_ids.begin()+choice);
 								show_menu_message(this->sell_menu_string);
 							}
+							this->update_player_text();
 						}
 						else {
 							std::cout << "You didn't have enough items to sell!";
@@ -245,6 +268,7 @@ class ShopMenu:public Menu {
 			}
 		}
 	}
+
 	/**
 	 * The main menu method.
 	 */

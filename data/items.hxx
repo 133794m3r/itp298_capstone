@@ -8,5 +8,8 @@
 
 #ifndef ITP298_CAPSTONE_ITEMS_HXX
 #define ITP298_CAPSTONE_ITEMS_HXX
-
+//the items below are solely here for the tutorial so their use in the real game is questionable.
+Weapon stick("Sharp Stick");
+Armor shirt("Thick Shirt");
+Potion basic_potion("Basic");
 #endif //ITP298_CAPSTONE_ITEMS_HXX

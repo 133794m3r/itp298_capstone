@@ -7,6 +7,8 @@
 #include "menus/map_movement.hxx"
 #include "menus/battle.hxx"
 #include "menus/shop.hxx"
+#include "menus/inventory_menu.hxx"
+#include "menus/tutorial_menu.hxx"
 #include "data/mobs.hxx"
 #include "data/maps.hxx"
 #include "data/items.hxx"
@@ -28,6 +30,7 @@ int main() {
 		std::cout << "Enter your name: ";
 		std::cin >> player_name;
 		Player player(player_name);
+		TutorialMenu tutorial();
 	}
 	//not yet implemented
 	else if(option == 2){
