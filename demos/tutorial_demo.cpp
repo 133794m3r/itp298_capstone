@@ -14,6 +14,7 @@
 #include "../data/menus.hxx"
 #include "../menus/tutorial_menu.hxx"
 int main(){
+	std::cout << "\x1b[" << BLACK_BG << "m\x1b[" << BRIGHT_WHITE_TXT << "m";
 	Player player("Jimbo");
 	InventoryMenu inv_men(&player);
 	TutorialMenu tut_menu(player,inv_men);

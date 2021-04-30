@@ -15,7 +15,7 @@ Weapon::Weapon(
         unsigned int level)
         :Item(name, 1, tier, value, level) //base item constructor
 {
-    damage = (level * 3 + level);
+    damage = std::lround((level * 3.00 + level)+(level*((tier-1.00)/4.00)));
     this->damage = damage; //sets max damage value
 }
 

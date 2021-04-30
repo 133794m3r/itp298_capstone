@@ -74,7 +74,7 @@ add_executable(battle_demo
 		$<TARGET_OBJECTS:actors_lib>
 		classes/battle/battle_system.hxx
 		menus/battle.hxx
-		tests/battle_demo.cpp
+		demos/battle_demo.cpp
 		)
 
 
@@ -122,7 +122,7 @@ add_executable(inventory_demo
 		classes/containers/shop_inventory.hxx
 		menus/menu.hxx
 		menus/inventory_menu.hxx
-		tests/inventory_demo.cpp
+		demos/inventory_demo.cpp
 		)
 
 add_executable(test_shop
@@ -144,7 +144,7 @@ add_executable(shop_demo
 		classes/shop_keeper.hxx
 		menus/menu.hxx
 		menus/shop.hxx
-		tests/shop_demo.cpp
+		demos/shop_demo.cpp
 		)
 
 add_executable(tutorial_demo
@@ -168,7 +168,7 @@ add_executable(tutorial_demo
 		data/shops.hxx
 		data/menus.hxx
 		#main binary
-		tests/tutorial_menu.cpp
+		demos/tutorial_demo.cpp
 		)
 
 add_executable(itp298_capstone

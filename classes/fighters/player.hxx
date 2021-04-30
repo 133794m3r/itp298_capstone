@@ -25,8 +25,8 @@ class Player: public Actor {
 	unsigned short current_game_level;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
-	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0,
-				 double bonus_str=0.0, double bonus_def=0.0)
+	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.05,
+				 double bonus_str=0.05, double bonus_def=0.05)
 				 :Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,
 			5,4,255){
 		//player will always have a set id that's way higher than the rest of the objects in the world.
@@ -34,9 +34,28 @@ class Player: public Actor {
 		this->gold_ = 100;
 		this->xp_ = 0;
 		this->current_game_level = 0;
-		Actor::set_level(level);
+		this->set_level(level);
 	}
+	void set_level(unsigned short level) override{
 
+		int dif = 0;
+		//if it's the same just do nothing.
+		if(level == this->lvl_)
+			dif = this->lvl_ - 1;
+		else if(level > this->lvl_)
+			dif = level - this->lvl_;
+		else
+			dif = this->lvl_ - level;
+		//when they modify the level change the stats to the proper values.
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.05)*13.0*dif);
+		this->base_str_ += std::lround( (this->bonus_str_+1.05)*4.0*dif);
+		//increase hardiness against mobs
+		this->base_def_ += std::lround( (this->bonus_def_+1.05)*3.25*dif);
+		//then set the current stats from the base.
+		this->hp_ = this->base_hp_;
+		this->str_ = this->base_str_;
+		this->def_ = this->base_def_;
+	}
 	//level up actor with new stats
 	void level_up(){
 		unsigned int old_hp = this->base_hp_;
@@ -45,7 +64,8 @@ class Player: public Actor {
 		//basic formulas until better ones are figured out.
 		this->base_hp_ += std::lround( (this->bonus_hp_+1.05)*13.0);
 		this->base_str_ += std::lround( (this->bonus_str_+1.05)*4.0);
-		this->base_def_ += std::lround( (this->bonus_def_+1.05)*3.0);
+		//to make them hardier when it comes to fighting mobs
+		this->base_def_ += std::lround( (this->bonus_def_+1.05)*3.25);
 		this->hp_ = this->base_hp_;
 		this->str_ = this->base_str_;
 		this->def_ = this->base_def_;
@@ -77,6 +97,7 @@ class Player: public Actor {
 		unsigned int xp_lvl = std::lround( ( (dl*1.125) * mkxp )*1.6);
 		this->xp_ += xp;
 		if(this->xp_ > xp_lvl){
+			this->lvl_++;
 			this->level_up();
 			return true;
 		}

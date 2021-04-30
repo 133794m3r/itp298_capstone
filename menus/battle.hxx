@@ -303,9 +303,9 @@ If enemy's HP is over 4 digits then we make it be ????.
 		//player won so get the stuff
 		std::cout << player.get_name() << " defeated " << mob.get_name() << std::endl;
 		MobRewards rewards = mob.rewards();
-		std::cout << "You received " << rewards.xp << "xp and " << rewards.gold << "g for defeating the enemy!\n?";
+		std::cout << "You received " << rewards.xp << "xp and " << rewards.gold << "g for defeating the enemy!\n";
 		//add xp/gold
-		player.add_xp(rewards.xp);
+		bool lvl_up = player.add_xp(rewards.xp);
 		player.add_gold(rewards.gold);
 		//if they got any items add those too and tell them.
 		if(rewards.items.size()!=0){
@@ -322,9 +322,8 @@ If enemy's HP is over 4 digits then we make it be ????.
 		}
 		//pause again to show them it
 		pause();
-		//if they leveled up just show this message for now. Future versions will show the actual changes
-		if(player.get_lvl() > start_lvl) {
-			std::cout << "You leveled up! You feel stronger now.";
+		if(lvl_up){
+			std::cout << "You leveled up! You feel stronger now!\n";
 		}
 		//they lived
 		return true;

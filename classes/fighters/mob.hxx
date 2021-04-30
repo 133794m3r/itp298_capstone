@@ -86,13 +86,14 @@ class Mob : public Actor {
 	explicit Mob(std::string name="Mob",unsigned short tier=1, unsigned short level=1,
 			  double bonus_hp=0.00, double bonus_str=0.0, double bonus_def=0.0)
 			  :Actor(std::move(name),level,bonus_hp+((tier-1.0)/35),
-			bonus_str+((tier-1.0)/100),bonus_def+((tier-1.0)/80),16,5,3,1) {
+			bonus_str+((tier-1.0)/100),bonus_def+((tier-1.0)/80),16,6,3,1) {
 		unsigned int tmp = this->lvl_ + 1;
 		//based on other formulas this should make the curve OK.
 		//tier will modify the two formulas below eventually
 		this->xp_ = std::lround( tmp* ((tmp*0.79 )+1.2));
 		this->set_gold();
 		this->tier_ = tier;
+		level = std::lround(level+(this->tier_-1.00)/3.00);
 		this->set_level(level);
 	}
 

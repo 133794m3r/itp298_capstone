@@ -18,6 +18,12 @@ class TutorialMenu: public Menu {
 		this->menu_string = "";
 
 	}
+	void redraw_menu(){
+		clear_and_move_top();
+		std::cout << "Level: Tutorial " << this->player_->get_name() << "'s journey\n";
+		this->redraw_stats();
+		std::cout << "+------------------------------------------------------+\n|                                                      |\n|                                                      |\n+------------------------------------------------------+" << std::endl;
+	}
 	void redraw_stats(){
 		move_cursor(2,1);
 		std::cout << "HP:\x1b[1m" << this->player_->get_hp() << "\x1b[22m/" << this->player_->get_base_hp() << "  Gold:" << this->player_->get_gold() << " XP:" << this->player_->get_xp() << "\n\n";
@@ -34,7 +40,7 @@ class TutorialMenu: public Menu {
 		ShopMenu tut_shop_menu(tut_shop);
 		std::cout << "Welcome to the tutorial " << this->player_->get_name() << ".\n To start off with you need to purchase a weapon and armor from the shop. It's also recommended that you purchase some Potions(always end in Pot) to heal yourself during battle and after them.\nThen you need to equip your new items by entering your inventory. After that you can start the real game.\n";
 		pause();
-		move_and_clear(1);
+		this->redraw_menu();
 		std::string end_string = "2)Inventory Menu;3)Continue On ;4)Save Game   ;";
 		std::cout << "Level: Tutorial " << this->player_->get_name() << "'s journey\n";
 		this->redraw_stats();
@@ -59,10 +65,14 @@ class TutorialMenu: public Menu {
 					if(tut_status <= 1 || tut_status == 5){
 						tut_shop_menu.enter_shop(*this->player_);
 						tut_shop_menu.shop_menu();
+						this->redraw_menu();
 					}
 					else if(tut_status >= 2 && tut_status <= 4){
 						player_alive = battle(*this->player_, rat);
 						tut_status++;
+						if(tut_status == 5){
+							this->menu_string = "1)Enter Shop;"+end_string;
+						}
 					}
 					else{
 						player_alive = battle(*this->player_, rat_king);
@@ -71,6 +81,7 @@ class TutorialMenu: public Menu {
 					break;
 				case 2:
 					inv_menu->enter();
+					this->redraw_menu();
 					break;
 				case 3:
 					if(tut_status <= 1){
@@ -78,6 +89,11 @@ class TutorialMenu: public Menu {
 							player_alive = battle(*this->player_, rat);
 							this->menu_string = "1)Explore the Darkness;"+end_string;
 							tut_status = 2;
+							clear_and_move_top();
+						}
+						else{
+							this->show_menu_message("You sense an extremely dark presence on the horizon. It's best to gear up before moving on.");
+							pause();
 						}
 					}
 					else if(tut_status == 4){
@@ -85,6 +101,7 @@ class TutorialMenu: public Menu {
 					}
 					else if(tut_status == 5){
 						this->menu_string = "1)Fight Giant Rat;" + end_string;
+						tut_status++;
 					}
 					break;
 				case 4:

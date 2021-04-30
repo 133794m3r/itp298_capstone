@@ -28,24 +28,24 @@ class InventoryMenu: public Menu{
 		unsigned int i =this->current_idx;
 		for(;i<end_idx;i++){
 			std::string tmp = " x" + std::to_string(this->items[i].item_quantity);
-			menu_string += std::to_string(i+1) +')' + this->items[i].item_name + tmp + padding_string.substr(0,std::floor(15 - (this->items[i].item_name.size()+tmp.size()))) + ';';
+			this->menu_string += std::to_string(i+1) +')' + this->items[i].item_name + tmp + padding_string.substr(0,std::floor(15 - (this->items[i].item_name.size()+tmp.size()))) + ';';
 
 		}
 		i++;
 		if(end_idx > 3) {
-			menu_string += std::to_string(i++) + ")Show Next      ;";
+			this->menu_string += std::to_string(i++) + ")Show Next      ;";
 			this->next = true;
 		}
 		else
 			this->next = false;
 		if(current_idx != 0){
-			menu_string += std::to_string(i++) +")Show Prev      ;";
+			this->menu_string += std::to_string(i++) +")Show Prev      ;";
 			this->prev = true;
 		}
 		else
 			this->prev = false;
 
-		menu_string += std::to_string(i) + ")Exit Menu;";
+		this->menu_string += std::to_string(i) + ")Exit Menu;";
 		if(forward)
 			this->current_idx+= end_idx;
 		else
@@ -56,14 +56,16 @@ class InventoryMenu: public Menu{
   public:
 	explicit InventoryMenu(Player *player):Menu(9,3){
 		this->player_ = player;
-		items = this->player_->show_inventory();
-		item_ids = this->player_->player_inventory.get_item_ids();
+		this->items = this->player_->show_inventory();
+		this->item_ids = this->player_->player_inventory.get_item_ids();
 		this->prev = false;
 		this->next = false;
 	}
 
 	void enter(){
 		clear_and_move_top();
+		this->items = this->player_->show_inventory();
+		this->item_ids = this->player_->player_inventory.get_item_ids();
 		bool item_consumed = true;
 		std::cout << "Player Inventory Management\n" << this->player_->get_name() << " HP:"<< this->player_->get_hp() << "/" << this->player_->get_base_hp();
 		std::cout << "\nSelect item to use/equip. Total Items:" << this->items.size() << "\nIf total items is more than the last item then use the next/prev respectively\nYou can only use potions.\n\n\n";
