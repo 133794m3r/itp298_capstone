@@ -13,8 +13,8 @@ int main(){
 	Player player("Jimmy",2);
 	Mob boss("Fishmonger",6,2);
 	Potion potion("Basic");
-	Armor cloth_shirt("Cloth Shirt",0,0,0,1);
-	Weapon rusty_sword("Rusty Sword",0,0,0,1);
+	Armor cloth_shirt("Cloth Shirt",0,1);
+	Weapon rusty_sword("Rusty Sword",0,1);
 	mob.add_items({&cloth_shirt, &rusty_sword},{1,1},{1.0, 1.0});
 	player.add_item(potion,2);
 	player.equip_armor(cloth_shirt);
