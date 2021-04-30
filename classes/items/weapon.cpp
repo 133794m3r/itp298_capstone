@@ -9,13 +9,11 @@
 
 Weapon::Weapon(
         std::string name,
-        int damage,
-        unsigned int value,
         unsigned int tier,
         unsigned int level)
-        :Item(name, 1, tier, value, level) //base item constructor
+        :Item(name, 1, tier, level) //base item constructor
 {
-    damage = std::lround((level * 3.00 + level)+(level*((tier-1.00)/4.00)));
+    unsigned int damage = std::lround((level * 3.00 + level)+(level*((tier-1.00)/4.00)));
     this->damage = damage; //sets max damage value
 }
 

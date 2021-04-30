@@ -17,9 +17,7 @@ private:
 public:
     explicit Armor(
           std::string name,
-		  int defense = 0,
 		  unsigned int tier = 0,
-		  unsigned int value = 0,
 		  unsigned int level = 1);
 
 

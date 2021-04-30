@@ -21,14 +21,13 @@ void Item::generate()
 Item::Item(std::string name,
            unsigned int type,
            unsigned int tier,
-           unsigned int value,
            unsigned int level){
 
-value = level *6 + 25 + level;
+unsigned int val = level *6 + 25 + level;
 this->id = next_id++; //increments item id
 this->name = std::move(name); //assigns the given value of name
 this->type = type;  //assigns the given value of type
-this->value = value; //assigns the given value of value
+this->value = val; //assigns the given value of value
 this->tier = tier; //assigns the given value of tier
 this->level = level;}//assigns the given value of level
 

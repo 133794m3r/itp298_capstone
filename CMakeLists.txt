@@ -189,9 +189,23 @@ add_executable(itp298_capstone
 		data/maps.hxx
 		data/items.hxx
 		data/shops.hxx
+		data/menus.hxx
 		#main binary
 		main.cpp
-		data/menus.hxx)
+		)
+
+add_executable(save_demo
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
+		data/mobs.hxx
+		data/maps.hxx
+		data/items.hxx
+		data/shops.hxx
+		data/menus.hxx
+		demos/load_save_demo.cpp
+		)
 
 
 #have to make sure this works on windows first.
