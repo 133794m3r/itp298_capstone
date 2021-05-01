@@ -20,7 +20,7 @@ struct MobRewards{
 class Mob : public Actor {
   private:
 	//the xp to be awarded and gold be awarded upon death.
-	unsigned int xp_;
+	unsigned long xp_;
 	unsigned int gold_;
 	//the tier strings
 	const static std::string tier_str[7];
@@ -78,7 +78,7 @@ class Mob : public Actor {
 			glm = 4.0;
 			bvm = 120.0;
 		}
-		this->gold_ = static_cast<int>((((this->xp_*glm)-((dl / gm) * bvm))) * 0.5);
+		this->gold_ = static_cast<unsigned int>((((this->xp_*glm)-((dl / gm) * bvm))) * 0.5);
 	}
   public:
 
@@ -103,7 +103,7 @@ class Mob : public Actor {
 	 */
 	void set_level(unsigned short level) override{
 		double modifier =  (1 + ( (this->tier_<5)?(this->tier_-1)/29.0:(this->tier_-1)/27.0 ));
-		double dif = 0.0;
+		double dif;
 		//if it's the same just do nothing.
 		if(level == this->lvl_)
 			dif = this->lvl_ - 1;

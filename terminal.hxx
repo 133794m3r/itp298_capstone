@@ -4,6 +4,7 @@
 * Licensed AGPLv3
 */
 #ifndef _TERMINAL_SETUP_
+#define _TERMINAL_SETUP_
 #include <limits>
 
 /**

@@ -22,7 +22,7 @@ private:
     virtual ~Weapon();
 
     //Accessors
-    inline const int get_damage() const { return this->damage;} //gets the damage value of a weapon
+    inline int get_damage() const { return this->damage;} //gets the damage value of a weapon
 
 
     //functions

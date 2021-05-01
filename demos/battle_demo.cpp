@@ -3,7 +3,6 @@
 * Group: Dangling Pointers
 * Macarthur Inbody && Nathaniel Mullins
 */
-#include "../random.h"
 #include "../menus/battle.hxx"
 int main(){
 	//basic demo file used in testing.
@@ -15,13 +14,14 @@ int main(){
 	Potion potion("Basic");
 	Armor cloth_shirt("Cloth Shirt",0,1);
 	Weapon rusty_sword("Rusty Sword",0,1);
-	mob.add_items({&cloth_shirt, &rusty_sword},{1,1},{1.0, 1.0});
+	Item paper_crown("Paper Crown",0,4,1);
+	mob.add_items({&cloth_shirt, &rusty_sword,&paper_crown},{1,1,1},{1.0, 1.0,1.0});
 	player.add_item(potion,2);
 	player.equip_armor(cloth_shirt);
 	player.equip_weapon(rusty_sword);
-	std::cout << "p atk m " << player.get_str() - boss.get_def() << "\n";
-	std::cout << "m atk p " << boss.get_str() - player.get_def() << "\n";
-	pause();
+//	std::cout << "p atk m " << player.get_str() - boss.get_def() << "\n";
+//	std::cout << "m atk p " << boss.get_str() - player.get_def() << "\n";
+//	pause();
 //	std::cout << player << std::endl << mob << std::endl;
 //	std::cout << (std::string) player << std::endl;
 //	pause();
@@ -29,7 +29,7 @@ int main(){
 //	show_all_stats(mob);
 //	show_all_stats(player);
 //	pause();
-	battle(player,boss);
+	battle(player,mob);
 	show_all_stats(player);
 	return 0;
 }

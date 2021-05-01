@@ -6,15 +6,14 @@
  * Purpose:Armor class for our currently Untitled RPG. This subclass inherits properties from Item in order to produce Armor
 */
 #include "armor.hxx"
-#include <string>
-#include <sstream>
+#include <utility>
 
 
 Armor::Armor(
         std::string name,
         unsigned int tier,
         unsigned int level)
-       :Item(name, 2, tier, level) //calls base constructor
+       :Item(std::move(name), 2, tier, level) //calls base constructor
 {
 	this->defense = std::lround((level * 2.00 + level)+(level*((tier-1.00)/4.00)));
 }

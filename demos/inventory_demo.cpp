@@ -5,7 +5,6 @@
 * Created on 4/26/21.
 *
 */
-#include "../includes.hxx"
 #include "../menus/inventory_menu.hxx"
 int main(){
 	Player player("Jim");

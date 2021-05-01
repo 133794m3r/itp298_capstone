@@ -17,7 +17,7 @@
  * @param prefix Prefix message to show before player input.
  * @return The option that they chose.
  */
-unsigned int valid_option(unsigned int min=1,unsigned int max=1,std::string prefix="Selection"){
+unsigned int valid_option(unsigned int min=1,unsigned int max=1,const std::string&& prefix="Selection"){
 	unsigned int option;
 	//infinite loop is best way to enforce the options.
 	int res;
@@ -56,7 +56,7 @@ void text_wrap(std::string &input,unsigned int position,char wrap_char=' '){
 	if(input.size() < position)
 		return;
 	size_t found;
-	while( (found = input.find_last_of(wrap_char,position)) != input.npos && position < input.size()){
+	while( (found = input.find_last_of(wrap_char,position)) != std::string::npos && position < input.size()){
 		//change it to a new line
 		input.at(found) = '\n';
 		//make the starting position be increased by the current found position

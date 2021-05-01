@@ -50,7 +50,7 @@ public:
     unsigned int get_level() const; //allows for other files to access the level variable
     unsigned short get_id() const; //allows for other files to access the id variable
 
-    //public functions
+	virtual //public functions
      std::string toString();
 };
 

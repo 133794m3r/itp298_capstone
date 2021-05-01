@@ -68,7 +68,7 @@ unsigned short Item::get_id() const
 
 
 //functions
-    std::string Item::toString() {
+std::string Item::toString() {
     std::stringstream ss;
     ss << "id = " <<this->id
        << " Name = " <<this->name

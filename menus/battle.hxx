@@ -16,7 +16,7 @@
 #include "../classes/fighters/mob.hxx"
 #include "inputs.hxx"
 
-void redraw_hp(const Actor &actor, bool player=false){
+void redraw_hp(const Actor &actor){
 	if(actor.get_id() == 65535) {
 		//move the cursor to the proper place before outputting.
 		move_cursor(5, 1);
@@ -66,8 +66,8 @@ void show_battle_message(const std::string &message){
 
 std::string update_potions(std::vector< std::pair<menu_item_data, unsigned short> > &potions, Player &player){
 	potions = player.get_potions();
-	std::string potions_opt = "";
-	if(potions.size() != 0) {
+	std::string potions_opt;
+	if(!potions.empty()) {
 		unsigned int max = std::min(potions.size(), static_cast<unsigned long>(4));
 		for (unsigned int i = 0; i < max; i++) {
 
@@ -90,7 +90,6 @@ std::string update_potions(std::vector< std::pair<menu_item_data, unsigned short
  */
 bool battle(Player &player,Mob mob){
 	clear_and_move_top();
-	unsigned short start_lvl = player.get_lvl();
 	std::array<std::string,3> options = {
 			"Attack",
 			"Defend",
@@ -100,8 +99,8 @@ bool battle(Player &player,Mob mob){
 //			"Else",
 	};
 
-	for(unsigned char i=0;i<options.size();i++){
-		options[i].append(14-options[i].size(),' ');
+	for(auto & option : options){
+		option.append(14-option.size(),' ');
 	}
 	//the forward declaration of the options.
 	unsigned int option = 0;
@@ -192,14 +191,14 @@ If enemy's HP is over 4 digits then we make it be ????.
 	move_cursor(11,1);
 	//show the selection prompt
 	std::cout << "\x1b[1mSelection\x1b[22m: ";
-	std::string potions_opt = "";
+	std::string potions_opt;
 	std::vector<std::pair<menu_item_data, unsigned short >> potions;
 	potions_opt = update_potions(potions,player);
 	// we only continue the battle as long as both participants are alive
 	while(player.is_alive() && mob.is_alive()) {
 		option = valid_option(1,options.size());
 		//have the mob randomly select one for now.
-		mob_opt = xorshift128(0, 3);
+		mob_opt = xorshift128(static_cast<unsigned int>(0), static_cast<unsigned int>(3));
 		//currently only doing the attack one
 		switch(option){
 			case 1:
@@ -274,7 +273,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 			message = mob.get_name() + " did "  + std::to_string(dmg) + " damage!";
 
 			if(dmg != 0)
-				redraw_hp(player,true);
+				redraw_hp(player);
 			else
 				message = mob.get_name() + " missed completely!";
 
@@ -291,8 +290,6 @@ If enemy's HP is over 4 digits then we make it be ????.
 		pause();
 		//reset message
 		message = "";
-		//reset the option to 0.
-		option = 0;
 		//show the menu again
 		show_battle_message(menu_string);
 		std::cout << "\x1b[1mSelection\x1b[22m: ";
@@ -308,10 +305,31 @@ If enemy's HP is over 4 digits then we make it be ????.
 		bool lvl_up = player.add_xp(rewards.xp);
 		player.add_gold(rewards.gold);
 		//if they got any items add those too and tell them.
-		if(rewards.items.size()!=0){
+		if(!rewards.items.empty()){
 			std::cout << "And ";
 			for(auto item_slot:rewards.items){
-				std::cout << " " << item_slot.second << item_slot.first->get_name() << "(s) ";
+				std::cout << " " << item_slot.second << " ";
+				switch(item_slot.first->get_tier()){
+					case 0:
+						std::cout << "\x1b[" << GRAY_TXT << 'm';
+						break;
+					case 1:
+						std::cout << "\x1b[" << BRIGHT_WHITE_TXT << 'm';
+						break;
+					case 2:
+						std::cout << "\x1b[" << BRIGHT_BLUE_TXT << 'm';
+						break;
+					case 3:
+						std::cout << "\x1b[" << BRIGHT_MAGENTA_TXT << 'm';
+						break;
+					case 4:
+						std::cout << "\x1b[" << BRIGHT_YELLOW_TXT << 'm';
+						break;
+					default:
+						std::cout << "\x1b[" << BRIGHT_WHITE_TXT << 'm';
+						break;
+				}
+				std::cout << item_slot.first->get_name() << "\x1b[97m(s) ";
 				player.add_item(*item_slot.first,item_slot.second);
 			}
 			std::cout << "!" << std::endl;

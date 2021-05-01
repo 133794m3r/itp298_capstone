@@ -9,7 +9,6 @@
 #include "../classes/items/item_base.hxx"
 #include "../classes/items/weapon.hxx"
 #include "../classes/items/armor.hxx"
-#include <string>
 
 int main(){
 	unsigned short tests_failed = 0;
