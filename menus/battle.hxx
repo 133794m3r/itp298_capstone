@@ -68,7 +68,7 @@ std::string update_potions(std::vector< std::pair<menu_item_data, unsigned short
 	potions = player.get_potions();
 	std::string potions_opt;
 	if(!potions.empty()) {
-		unsigned int max = std::min(potions.size(), static_cast<unsigned long>(4));
+		unsigned int max = std::min(potions.size(), static_cast<size_t>(4));
 		for (unsigned int i = 0; i < max; i++) {
 
 			potions_opt +=

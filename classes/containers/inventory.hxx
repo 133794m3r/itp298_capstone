@@ -31,7 +31,7 @@ class Inventory {
 	//The list of items contained in this object.
 	std::unordered_map<unsigned short, Item*> items;
   	//the number of items that are contained.
-	std::unordered_map<unsigned char, unsigned int> item_quantity;
+	std::unordered_map<unsigned short, unsigned char> item_quantity;
 	//the indexes of the items as they are held in memory
 	std::deque<unsigned short> item_indexes;
 	unsigned short num_items;

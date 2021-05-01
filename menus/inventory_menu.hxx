@@ -24,7 +24,7 @@ class InventoryMenu: public Menu{
 	void update_shown_items(bool forward=true){
 		this->menu_string = "";
 		std::string padding_string(53,' ');
-		unsigned int end_idx = std::min(this->items.size() - this->current_idx,static_cast<unsigned long>(3));
+		unsigned int end_idx = std::min(this->items.size() - this->current_idx,static_cast<size_t>(3));
 		unsigned int i =this->current_idx;
 		for(;i<end_idx;i++){
 			std::string tmp = " x" + std::to_string(this->items[i].item_quantity);
