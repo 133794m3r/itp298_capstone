@@ -102,6 +102,10 @@ void __add_items(Player &p, const std::string& item_tokens){
  * @return A freshly created player object with all of their data.
  */
 Player load_game(const std::string &save_file_name){
+	if(!save_file_name.find("_save_file.dat")){
+		std::cout << "\x1b[" << BRIGHT_RED_TXT << "mNOT A VALID SAVE FILE!";
+		exit(1);
+	}
 	std::ifstream save_file(save_file_name);
 	//make sure we can read the file.
 	if(!save_file.is_open()){
@@ -117,6 +121,10 @@ Player load_game(const std::string &save_file_name){
 	std::string token;
 	save_file >> save_string;
 	size_t split = save_string.find(':')+1;
+	if(split == std::string::npos){
+		std::cerr << "\x1b[" << BRIGHT_RED_TXT << "mNO HASH FOUND!\x1b[0m";
+		exit(2);
+	}
 	//check the hash
 	unsigned long ck_hash = std::stoul(save_string.substr(split),nullptr,16);
 	unsigned long hash = gen_hash(save_string.substr(0,split-1));
@@ -144,6 +152,10 @@ Player load_game(const std::string &save_file_name){
 		token = save_string.substr(tok_start,split-tok_start);
 		switch(current_idx){
 			case 0:
+				if(split-tok_start > 50){
+					std::cout << "Name's too long";
+					exit(1);
+				}
 				player_name = token;
 				break;
 			case 1:

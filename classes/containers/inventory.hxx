@@ -226,7 +226,7 @@ class Inventory {
 		ss << "Inventory [";
 		unsigned int i=0;
 		for(auto el: this->items){
-			ss << "{" << el.second->get_name() << ", " << this->item_quantity.at(el.first) << "}";
+			ss << "{" << el.second->get_name() << ", " << std::to_string(this->item_quantity.at(el.first)) << "}";
 			if(++i < this->num_items){
 				ss << ", ";
 			}

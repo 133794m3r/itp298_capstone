@@ -192,7 +192,7 @@ add_executable(save_demo
 		demos/load_save_demo.cpp
 		)
 
-add_executable(save_test
+add_executable(test_save
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
@@ -239,6 +239,11 @@ if(MSVC)
 	#shop Module
 	add_test(NAME "Shop_Module"
 			COMMAND test_shop.exe)
+
+	#save system
+	add_test(NAME "Shop_Module"
+			COMMAND test_save)
+
 else()
 	#Test the battle system
 	add_test(NAME "Battle_Module"
@@ -255,4 +260,8 @@ else()
 
 	add_test(NAME "Shop_Module"
 			COMMAND ./test_shop)
+
+	add_test(NAME "Save_System"
+			COMMAND ./test_save)
+
 endif()

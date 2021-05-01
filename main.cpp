@@ -18,6 +18,18 @@ int main(int argc, char *argv[]) {
 		std::string player_name;
 		std::cout << "Enter your name: ";
 		std::cin >> player_name;
+		if(player_name.size() > 50){
+			move_and_clear_up(1);
+			while(player_name.size() > 50 && !player_name.empty()){
+				std::cout << "Name is too long! Max is 50 characters\n";
+				std::cout << "Reenter your name: ";
+				std::cin >> player_name;
+				move_and_clear_up(3);
+			}
+		}
+		if(player_name.empty()){
+			exit(0);
+		}
 		Player player(player_name);
 		InventoryMenu player_inv(&player);
 		TutorialMenu tutorial(player, player_inv);
