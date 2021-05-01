@@ -5,12 +5,8 @@
 * Created on 4/30/21.
 *
 */
-#include "../classes/items/item_base.hxx"
-#include "../classes/items/weapon.hxx"
-#include "../classes/items/armor.hxx"
-#include "../classes/items/potion.hxx"
-#include "../data/items.hxx"
 #include "../classes/fighters/player.hxx"
+#include "../data/items.hxx"
 #include "../main.hxx"
 int main(){
 	Player player("zzz_test_user");
@@ -115,6 +111,6 @@ int main(){
 	}
 	std::cout << std::endl;
 
-	std::cout << "\n\x1b[1mResult\x1b[0m\n\x1b[" << BRIGHT_GREEN_TXT << "mPASSED:" << tests_passed << " \x1b[" << BRIGHT_RED_TXT << "mFAILED: " << tests_failed << "\x1b[0m out of " << (tests_passed+tests_failed) << " total tests.\n" << std::endl;
+	std::cout << "\n\x1b[1mResult\x1b[0m\n\x1b[" << BRIGHT_GREEN_TXT << "mPASSED:" << tests_passed << " \x1b[" << BRIGHT_RED_TXT << "mFAILED:" << tests_failed << "\x1b[0m out of " << (tests_passed+tests_failed) << " total tests.\n" << std::endl;
 	return (tests_failed != 0)?1:0;
 }

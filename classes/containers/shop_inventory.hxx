@@ -16,6 +16,7 @@ class ShopInventory: public Inventory {
 						   const std::vector<unsigned char> &quantity = {}):Inventory(items,quantity){
 
 	}
+
 	/**
 	 * The cost to buy amount of the items.
 	 * @param item_id The item we're going to be using.

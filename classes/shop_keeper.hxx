@@ -32,7 +32,7 @@ class ShopKeeper {
 	 * @param quantity how many to purchase
 	 * @return if the player was able to purchase said item.
 	 */
-	bool purchase_item(unsigned short item_id,unsigned int quantity=1){
+	bool purchase_item(unsigned short item_id,unsigned short quantity=1){
 		//if there's not yet a player bail b4 sigint/sigfault/etc.
 		if(player_ == nullptr)
 			return false;
@@ -55,7 +55,7 @@ class ShopKeeper {
 	 * utility function to give me ids of all items.
 	 * @return the ids of all items in tehs hop
 	 */
-	const std::deque<unsigned short> list_inventory() const{
+	std::deque<unsigned short> list_inventory() const{
 		return this->shop_inventory_.get_item_ids();
 	}
 
@@ -106,16 +106,14 @@ class ShopKeeper {
 	 * @param amount The amount to sell.
 	 * @return Whether they could or not.
 	 */
-	bool sell_item(unsigned short item_id, unsigned int amount=1){
+	bool sell_item(unsigned short item_id, unsigned short amount=1){
 		//bail
 		if(this->player_ == nullptr)
 			return false;
 
 		//if they don't have the item
-		if(!this->player_->player_inventory.contains(item_id))
-			return false;
-		//if they try to sell more than they have
-		else if(this->player_->player_inventory.get_quantity(item_id) < amount)
+		if(!this->player_->player_inventory.contains(item_id) ||
+		   this->player_->player_inventory.get_quantity(item_id) < amount)
 			return false;
 
 		//ok let's figure out how much to award them for the sale.

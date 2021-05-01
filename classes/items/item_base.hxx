@@ -28,8 +28,7 @@ protected:
 	unsigned int value; //the value of the item
 
 
-    //private functions
-    void generate(); //item generation function
+	//item generation function
 
 
 public:

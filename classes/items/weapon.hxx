@@ -19,7 +19,7 @@ private:
             unsigned int tier = 1,
             unsigned int level = 1);
 
-    virtual ~Weapon();
+    ~Weapon() override;
 
     //Accessors
     inline int get_damage() const { return this->damage;} //gets the damage value of a weapon
@@ -27,7 +27,7 @@ private:
 
     //functions
     Weapon* clone() const; //creates a clone of a weapon
-    std::string toString();
+    std::string toString() override;
 
 
 };

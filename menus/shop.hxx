@@ -90,15 +90,6 @@ class ShopMenu:public Menu {
 				std::to_string(this->player_items.size() + 2) + ")Exit Shop   ;";
 	}
 
-	//still not done yet
-	void update_shop_items(){
-
-	}
-	//ditto here
-	void update_player_items(){
-
-	}
-
   public:
 	//constructor
 	ShopMenu(ShopKeeper &shop_keeper, Player &player)
@@ -202,7 +193,7 @@ class ShopMenu:public Menu {
 			}
 				//exit loop
 			else {
-				return choice - this->shop_items.size();
+				return static_cast<unsigned short>(choice - this->shop_items.size());
 			}
 		}
 	}
@@ -264,7 +255,7 @@ class ShopMenu:public Menu {
 				}
 			}
 			else{
-				return choice - this->player_items.size();
+				return static_cast<unsigned short>(choice - this->player_items.size());
 			}
 		}
 	}

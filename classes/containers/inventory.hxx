@@ -76,13 +76,17 @@ class Inventory {
 	 * @param item the item to add
 	 * @param number The number to add
 	 */
-	void add_item(Item &item, unsigned short number=1){
+	void add_item(Item &item, unsigned char number=1){
 		//if it already exists
 		if(this->items.count(item.get_id()) != 0){
 			//add to it that number
 			this->item_quantity[item.get_id()]+=number;
 		}
 		else {
+			//shouldn't be able to have more than 255 items. type is short due to std::cout issues.
+			if(this->num_items > 255)
+				return;
+
 			//otherwise add an item to the hashtables/such.
 			this->items[item.get_id()] = &item;
 			this->item_quantity[item.get_id()] = number;
@@ -182,17 +186,17 @@ class Inventory {
 	/**
 	 * Get an item based upon an index
 	 * @param idx
-	 * @return
+	 * @return get the id of the item in that index
 	 */
 	unsigned short get_item_id(unsigned short idx) const{
 		return this->item_indexes[idx];
 	}
 
 	/**
-	 * Get an item based upon it's id
+	 * Get an item's quantity based upon it's id
 	 *
 	 * @param item_id
-	 * @return
+	 * @return the amount of the item they have
 	 */
 	unsigned int get_quantity(unsigned short item_id) const{
 		return this->item_quantity.at(item_id);

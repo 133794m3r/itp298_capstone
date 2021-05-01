@@ -81,15 +81,15 @@ void save_game(const Player &player){
  * @param p The player object
  * @param item_tokens the token string representing their inventory
  */
-void __add_items(Player &p, const std::string& item_tokens){
-	size_t split = 0;
-	size_t tok_start = 0;
+void _add_items(Player &p, const std::string& item_tokens){
+	size_t split;
+	size_t tok_start;
 	split = item_tokens.find(',');
 	//find the number of items
-	unsigned short num_items = std::stoul(item_tokens.substr(0,split));
+	unsigned short num_items = static_cast<unsigned short>(std::stoul(item_tokens.substr(0, split)));
 	if(num_items == 0)
 		return;
-	unsigned int idx;
+	unsigned long idx;
 	unsigned short item_id;
 	unsigned short item_number;
 	std::string item_tuple;
@@ -99,14 +99,14 @@ void __add_items(Player &p, const std::string& item_tokens){
 	while(tok_start != std::string::npos){
 		item_tuple = item_tokens.substr(tok_start,split-tok_start);
 		idx = item_tuple.find(';');
-		item_id = std::stoul(item_tuple.substr(0,idx));
+		item_id = static_cast<unsigned short>(std::stoul(item_tuple.substr(0, idx)));
 		//bail before we get any real issuses.
 		if(item_id > ALL_ITEMS_.size()){
 			std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID ITEM ID!\n";
 			//the test suite will never attempt this.
 			exit(255);
 		}
-		item_number = std::stoul(item_tuple.substr(idx+1));
+		item_number = static_cast<unsigned short>(std::stoul(item_tuple.substr(idx + 1)));
 		p.add_item(*ALL_ITEMS_[item_id], item_number);
 		tok_start = split;
 		split = item_tokens.find(',',split+1);
@@ -181,15 +181,15 @@ int load_game(const std::string &save_file_name,Player &player){
 				break;
 			case 1:
 				//lvl
-				lvl = std::stoul(token);
+				lvl = static_cast<unsigned short>(std::stoul(token));
 				break;
 			case 2:
 				//xp
-				xp = std::stoul(token);
+				xp = static_cast<unsigned int>(std::stoul(token));
 				break;
 			case 3:
 				//gold
-				gold = std::stoul(token);
+				gold = static_cast<unsigned int>(std::stoul(token));
 				break;
 			case 4:
 				//hp
@@ -209,35 +209,47 @@ int load_game(const std::string &save_file_name,Player &player){
 				break;
 			case 8:
 				//current_game_level
-				current_game_level = std::stoul(token);
+				current_game_level = static_cast<unsigned short>(std::stoul(token));
 				break;
 			case 9:
 				//weeapon equipped
+				//if it's the string null then it's blank
 				if(strcmp(token.c_str(),"null") != 0){
-					unsigned short weapon_id = std::stoul(token);
+					//get the id
+					unsigned short weapon_id = static_cast<unsigned short>(std::stoul(token));
+					//if it's more than the total items we have die.
 					if(weapon_id > ALL_ITEMS_.size()){
 						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID WEAPON!\n";
 						return 255;
 					}
-					weapon_held = dynamic_cast<Weapon *>(ALL_ITEMS_[std::stoul(token)]);
-					if(weapon_held->get_type() != 1){
+					//it's not actually a weapon bail
+					if(ALL_ITEMS_[weapon_id]->get_type() != 1){
 						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID WEAPON\n";
 						return 255;
+					}
+					else {
+						//convert the pointer
+						weapon_held = dynamic_cast<Weapon *>(ALL_ITEMS_[weapon_id]);
 					}
 				}
 				break;
 			case 10:
 				//equipped armor
 				if(strcmp(token.c_str(),"null") != 0){
-					unsigned short weapon_id = std::stoul(token);
+					unsigned short weapon_id = static_cast<unsigned short>(std::stoul(token));
+					//id is more than we have time to bail
 					if(weapon_id > ALL_ITEMS_.size()){
 						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID ARMOR!\x1b[0m\n";
 						return 255;
 					}
-					armor_equip = dynamic_cast<Armor *>(ALL_ITEMS_[std::stoul(token)]);
-					if(armor_equip->get_type() != 1){
+					//not actually armor so bail
+					if(ALL_ITEMS_[weapon_id]->get_type() != 2){
 						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID ARMOR\x1b[0m\n";
 						return 255;
+					}
+					else {
+						//convert the pointer to armor type
+						armor_equip = dynamic_cast<Armor *>(ALL_ITEMS_[std::stoul(token)]);
 					}
 				}
 				break;
@@ -262,6 +274,7 @@ int load_game(const std::string &save_file_name,Player &player){
 	}
 	//get the string minus the hash
 	split = save_string.find(':');
+
 	//ugly hack till I implement copy constructor
 	player.bonus_hp_ = bonus_hp;
 	player.bonus_def_ = bonus_def;
@@ -272,19 +285,22 @@ int load_game(const std::string &save_file_name,Player &player){
 	player.set_level(lvl);
 	player.name_ = player_name;
 	//end of ugly hack
+
+	//make sure we are trying to equip something
 	if(weapon_held != nullptr)
 		player.equip_weapon(*weapon_held);
 	if(armor_equip != nullptr)
 		player.equip_armor(*armor_equip);
+
 	//if their current hp is less than what the default is at that level
 	if(player.get_hp() > hp){
 		//remove some.
-		player.damage((hp-player.get_hp())+player.get_def());
+		player.damage(static_cast<unsigned int>((hp - player.get_hp()) + player.get_def()));
 	}
 	//get the item token substring
 	token = save_string.substr(tok_start+1,split-tok_start-2);
 	//add the items
-	__add_items(player,token);
+	_add_items(player,token);
 	//return teh player object
 	return 0;
 }

@@ -52,7 +52,7 @@ class Player: public Actor {
 	 */
 	void set_level(unsigned short level) override{
 
-		int dif = 0;
+		int dif;
 		//if it's the same just do nothing.
 		if(level == this->lvl_)
 			dif = this->lvl_ - 1;
@@ -112,8 +112,8 @@ class Player: public Actor {
 	 */
 	bool add_xp(unsigned int xp){
 		//might make this just be a one-time calculation and store the value as a property but that's up in the air.
-		double dl = static_cast<double>(this->lvl_+1);
-		unsigned int mkxp = std::lround((dl * ((dl*0.79)*1.2) ));
+		auto dl = static_cast<double>(this->lvl_+1);
+		unsigned long mkxp = std::lround((dl * ((dl*0.79)*1.2) ));
 		unsigned int xp_lvl = std::lround( ( (dl*1.125) * mkxp )*1.6);
 		this->xp_ += xp;
 		if(this->xp_ > xp_lvl){
@@ -128,7 +128,7 @@ class Player: public Actor {
 
 	//add HP to the player
 	unsigned short add_hp(unsigned short hp){
-		unsigned short restored = 0;
+		unsigned short restored;
 		if(hp > (this->base_hp_ - this->hp_)) {
 			restored = this->base_hp_ - this->hp_;
 			this->hp_ = this->base_hp_;
@@ -140,16 +140,16 @@ class Player: public Actor {
 		return restored;
 	}
 	//item removal functions
-	void remove_item(unsigned short item_id, unsigned int num = 1){
+	void remove_item(unsigned short item_id, unsigned short num = 1){
 		this->player_inventory.remove_item(item_id, num);
 	}
 
-	void remove_item(Item &item, unsigned int num = 1){
+	void remove_item(Item &item, unsigned short num = 1){
 		this->player_inventory.remove_item(item, num);
 	}
 
 	//add an item. Has to have an actual item in case it doesn't already exist in inventory.
-	void add_item(Item &item, unsigned int num = 1){
+	void add_item(Item &item, unsigned short num = 1){
 		this->player_inventory.add_item(item,num);
 	}
 
@@ -228,9 +228,8 @@ class Player: public Actor {
 
 	friend void save_game(const Player &);
 	friend int load_game(const std::string& save_file,Player &);
-	friend void __add_items(Player &, const std::string&);
+	friend void _add_items(Player &, const std::string&);
 };
-
 
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "

@@ -46,6 +46,8 @@ int main(int argc, char *argv[]) {
 			exit(0);
 		}
 		Player player(player_name);
+		//make sure they're ready for the fight.
+		player.add_gold(200);
 		InventoryMenu player_inv(&player);
 		TutorialMenu tutorial(player, player_inv);
 		tutorial.enter();
