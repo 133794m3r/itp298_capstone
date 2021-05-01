@@ -87,16 +87,17 @@ void _add_items(Player &p, const std::string& item_tokens){
 	split = item_tokens.find(',');
 	//find the number of items
 	unsigned short num_items = static_cast<unsigned short>(std::stoul(item_tokens.substr(0, split)));
-	if(num_items == 0)
+	if(num_items == 0 || num_items > 255)
 		return;
 	unsigned long idx;
 	unsigned short item_id;
 	unsigned short item_number;
+	unsigned short current_items=0;
 	std::string item_tuple;
 	tok_start = split+1;
 	split = item_tokens.find(',',split+1);
 	//now iterate over it adding items.
-	while(tok_start != std::string::npos){
+	while(tok_start != std::string::npos || current_items > num_items){
 		item_tuple = item_tokens.substr(tok_start,split-tok_start);
 		idx = item_tuple.find(';');
 		item_id = static_cast<unsigned short>(std::stoul(item_tuple.substr(0, idx)));
@@ -110,6 +111,7 @@ void _add_items(Player &p, const std::string& item_tokens){
 		p.add_item(*ALL_ITEMS_[item_id], item_number);
 		tok_start = split;
 		split = item_tokens.find(',',split+1);
+		current_items++;
 	}
 }
 
