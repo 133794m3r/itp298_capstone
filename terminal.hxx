@@ -75,7 +75,7 @@ enum TEXT_COLORS{RESET_COLOR,
 };
 
 void clear_and_move_top(){
-	printf("\x1b[2J\x1b[1H");
+	printf("\x1b[1H\x1b[0J");
 }
 
 void move_cursor(unsigned int row, unsigned int column){

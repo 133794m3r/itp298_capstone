@@ -10,9 +10,11 @@
 class ShopKeeper;
 class InventoryMenu;
 #include <utility>
+#include <fstream>
 
 #include "actor.hxx"
 #include "../containers/inventory.hxx"
+#include "../items/potion.hxx"
 
 class Player: public Actor {
   private:
@@ -20,20 +22,44 @@ class Player: public Actor {
 	unsigned int xp_;
 	unsigned int gold_;
 	Inventory player_inventory;
+	unsigned short current_game_level;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
-	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.0,
-				 double bonus_str=0.0, double bonus_def=0.0)
+	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.05,
+				 double bonus_str=0.05, double bonus_def=0.05)
 				 :Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,
 			5,4,255){
 		//player will always have a set id that's way higher than the rest of the objects in the world.
 		this->id = 65535;
 		this->gold_ = 100;
 		this->xp_ = 0;
-		//TODO: Figure out XP curve and set it to the relevant value with the level provided.
-		Actor::set_level(level);
+		this->current_game_level = 0;
+		Player::set_level(level);
 	}
+	/**
+	 * Sets the player's level
+	 * @param level The level to set the player to
+	 */
+	void set_level(unsigned short level) override{
 
+		int dif = 0;
+		//if it's the same just do nothing.
+		if(level == this->lvl_)
+			dif = this->lvl_ - 1;
+		else if(level > this->lvl_)
+			dif = level - this->lvl_;
+		else
+			dif = this->lvl_ - level;
+		//when they modify the level change the stats to the proper values.
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.05)*13.0*dif);
+		this->base_str_ += std::lround( (this->bonus_str_+1.05)*4.0*dif);
+		//increase hardiness against mobs
+		this->base_def_ += std::lround( (this->bonus_def_+1.05)*3.25*dif);
+		//then set the current stats from the base.
+		this->hp_ = this->base_hp_;
+		this->str_ = this->base_str_;
+		this->def_ = this->base_def_;
+	}
 	//level up actor with new stats
 	void level_up(){
 		unsigned int old_hp = this->base_hp_;
@@ -42,28 +68,35 @@ class Player: public Actor {
 		//basic formulas until better ones are figured out.
 		this->base_hp_ += std::lround( (this->bonus_hp_+1.05)*13.0);
 		this->base_str_ += std::lround( (this->bonus_str_+1.05)*4.0);
-		this->base_def_ += std::lround( (this->bonus_def_+1.05)*3.0);
+		//to make them hardier when it comes to fighting mobs
+		this->base_def_ += std::lround( (this->bonus_def_+1.05)*3.25);
 		this->hp_ = this->base_hp_;
 		this->str_ = this->base_str_;
 		this->def_ = this->base_def_;
 
 	}
 
-	unsigned int get_gold(){
+	/**
+	 * Gets the player's gold
+	 * @return the amount of gold the player has.
+	 */
+	unsigned int get_gold() const{
 		return this->gold_;
 	}
 
+	//adds gold to the player
 	void add_gold(unsigned int gold){
 		this->gold_ += gold;
 	}
 
+	//removes gold
 	void sub_gold(unsigned int gold){
 		//checks will be handled by the shop functions for now.
 		this->gold_ -= gold;
 	}
 
 	/**
-	 *
+	 * Addx XP to the player and levels up if necessary
 	 * @param xp The amount of XP to add.
 	 * @return True if player leveled up false otherwise.
 	 */
@@ -74,6 +107,7 @@ class Player: public Actor {
 		unsigned int xp_lvl = std::lround( ( (dl*1.125) * mkxp )*1.6);
 		this->xp_ += xp;
 		if(this->xp_ > xp_lvl){
+			this->lvl_++;
 			this->level_up();
 			return true;
 		}
@@ -81,12 +115,21 @@ class Player: public Actor {
 			return false;
 		}
 	}
-	void add_hp(unsigned short hp){
-		if(hp > (this->base_hp_ - this->hp_))
+
+	//add HP to the player
+	unsigned short add_hp(unsigned short hp){
+		unsigned short restored = 0;
+		if(hp > (this->base_hp_ - this->hp_)) {
+			restored = this->base_hp_ - this->hp_;
 			this->hp_ = this->base_hp_;
-		else
+		}
+		else {
+			restored = hp;
 			this->hp_ += hp;
+		}
+		return restored;
 	}
+	//item removal functions
 	void remove_item(unsigned short item_id, unsigned int num = 1){
 		this->player_inventory.remove_item(item_id, num);
 	}
@@ -95,17 +138,22 @@ class Player: public Actor {
 		this->player_inventory.remove_item(item, num);
 	}
 
+	//add an item. Has to have an actual item in case it doesn't already exist in inventory.
 	void add_item(Item &item, unsigned int num = 1){
 		this->player_inventory.add_item(item,num);
 	}
 
+	//unequip the armor
 	void unequip_armor() override{
 		if(this->armor_equipped == nullptr)
 			return;
+		//add it to the player's inventory
 		this->player_inventory.add_item(*this->armor_equipped,1);
+		//then actually unequip it
 		Actor::unequip_armor();
 	}
 
+	//same with the weapon
 	void unequip_weapon() override{
 		if(this->weapon_held == nullptr)
 			return;
@@ -113,12 +161,27 @@ class Player: public Actor {
 		Actor::unequip_weapon();
 	}
 
-	operator std::string() const override{
-		std::stringstream ss;
-		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
-			" str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"
-			<< this->base_def_ << " xp:" << this->xp_ << " g:" << this->gold_;
-		return ss.str();
+	//get the player's xp
+	unsigned int get_xp() const{
+		return this->xp_;
+	}
+
+	//get the potions from the player's inventory, also how many they have. value is used for the power of the potion.
+	std::vector<std::pair<menu_item_data, unsigned short> > get_potions() const{
+		//create my vector
+		std::vector<std::pair<menu_item_data, unsigned short> > potions;
+		//iterate over the item ids
+		for(auto item_id:this->player_inventory.get_item_ids()){
+			//get the item
+			Item *item = this->player_inventory.get_item(item_id);
+			//if it's a potion add it to the list
+			if(item->get_type() == 3){
+				//first recast it.
+				auto *pot = dynamic_cast<Potion *>(item);
+				potions.push_back({{item->get_name(),player_inventory.get_quantity(item_id),pot->get_power()},item->get_id()});
+			}
+		}
+		return potions;
 	}
 
 	std::vector<menu_item_data> show_inventory(){
@@ -127,18 +190,69 @@ class Player: public Actor {
 		for(auto item_id:this->player_inventory.get_item_ids()){
 			Item *item = this->player_inventory.get_item(item_id);
 			item_results.push_back({item->get_name(),
-						   this->player_inventory.get_quantity(item_id),
-						   static_cast<unsigned int>(item->get_value()*0.75)
-			});
+									this->player_inventory.get_quantity(item_id),
+									static_cast<unsigned int>(item->get_value()*0.75)
+								   });
 		}
 		return item_results;
 	}
+
+	std::deque<unsigned short> list_inventory() const{
+		return this->player_inventory.get_item_ids();
+	}
+
+	explicit operator std::string() const override{
+		std::stringstream ss;
+		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
+			" str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"
+			<< this->base_def_ << " xp:" << this->xp_ << " g:" << this->gold_;
+		return ss.str();
+	}
+
+
 	friend void show_all_stats(Player &player);
 	friend std::ostream& operator<<(std::ostream &, Player &);
 	//for now till I make it work the way I want.
 	friend ShopKeeper;
 	friend InventoryMenu;
+
+	friend void save_game(Player &player);
+	friend Player load_game(std::string save_file);
 };
+
+void save_game(Player &player){
+	std::stringstream ss;
+	//TODO: Actually finish this later.
+	std::ofstream save_file(player.get_name()+"_save_file.csv");
+	//first we get their name, the xp, gold, hp, base hp, base str, base def
+	ss << player.name_ << "," << player.xp_ << "," << player.hp_
+	<< "," << player.base_hp_ << "," << player.base_str_ << "," << player.base_def_;
+	//then we get their inventory it is delmited by a [ to seperate it from the other part of the save file
+	ss << ",[";
+
+	std::deque<unsigned short> item_ids = player.player_inventory.get_item_ids();
+	//the first entry is the number of entries we're dealing with
+	ss << item_ids.size() <<",";
+	//then add all of the items based upon their id
+	for(unsigned int i=0;i<player.player_inventory.inventory_quantity();i++){
+		ss << item_ids[i];
+		if(i < player.player_inventory.inventory_quantity()-1)
+			ss << ",";
+	}
+	ss << "]";
+	std::hash<std::string> hash;
+	save_file << ss.str();
+
+	save_file << ":" <<std::hex << hash(ss.str());
+}
+
+Player load_game(std::string save_file){
+	//TODO: Actually write the loading function.
+	Player player("tmp");
+
+	return player;
+}
+
 
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
@@ -155,4 +269,6 @@ std::ostream& operator<<(std::ostream &os, Player &a){
 	<< " xp:" << a.xp_ << " g:" << a.gold_;
 	return os;
 }
+
+
 #endif //ITP298_CAPSTONE_PLAYER_HXX

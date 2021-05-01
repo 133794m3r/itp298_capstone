@@ -17,7 +17,7 @@ class Potion:public Item {
 	unsigned short power_;
   public:
 	//the name should always convey that it's a potion
-	explicit Potion(std::string name="Junk", unsigned short level=1, unsigned short tier=1):Item(std::move(name)+" Pot",3,tier,0,level){
+	explicit Potion(std::string name="Junk", unsigned short level=1, unsigned short tier=1):Item(std::move(name)+" Pot",3,tier,level){
 		this->power_ = std::lround((level*16.00)*((tier+1.00)/4.00));
 	}
 	unsigned short get_power(){

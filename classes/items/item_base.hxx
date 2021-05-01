@@ -10,6 +10,7 @@
 
 #include <string>
 #include <sstream>
+#include <cmath>
 //Item Tiers 0 = trash, 1 = normal, 2 = rare, 3 = epic, 4 = legendary
 class Item {
 
@@ -22,10 +23,9 @@ protected:
     unsigned short id; // initializes the id variable
     std::string name; //used to denote the name of an item.
     unsigned int type; //used to denote the type of item upon creation.
-    unsigned int value; // used to denote the value of a generated item.
     unsigned int tier; // used to denote the tier (rarity) of an item.
     unsigned int level;  //used to determine the level of an item.
-
+	unsigned int value; //the value of the item
 
 
     //private functions
@@ -36,7 +36,6 @@ public:
     explicit Item(std::string name,
          unsigned int type=0,
          unsigned int tier=0,
-         unsigned int value=0,
          unsigned int level=1);
 
 

@@ -85,8 +85,8 @@ class Mob : public Actor {
 	//initialize the Mob class. Explicit since it can be called with just 1 parameter. Also initialize properties with parent class' constructor.
 	explicit Mob(std::string name="Mob",unsigned short tier=1, unsigned short level=1,
 			  double bonus_hp=0.00, double bonus_str=0.0, double bonus_def=0.0)
-			  :Actor(std::move(name),level,bonus_hp+((tier-1.0)/35),
-			bonus_str+((tier-1.0)/100),bonus_def+((tier-1.0)/80),16,5,3,1) {
+			  :Actor(std::move(name),level,bonus_hp+((tier-1.0)/20),
+			bonus_str+((tier-1.0)/100),bonus_def+((tier-1.0)/80),16,6,3,1) {
 		unsigned int tmp = this->lvl_ + 1;
 		//based on other formulas this should make the curve OK.
 		//tier will modify the two formulas below eventually
@@ -111,10 +111,11 @@ class Mob : public Actor {
 			dif = level - this->lvl_;
 		else
 			dif = this->lvl_ - level;
+		dif += (this->tier_-1)/6;
 		//when they modify the level change the stats to the proper values.
-		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.0*modifier*dif)+(this->tier_-1);
-		this->base_str_ += std::lround( (this->bonus_str_+1.0)*4.0*modifier*dif);
-		this->base_def_ += std::lround( (this->bonus_def_+1.0)*3.0*modifier*dif);
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.1*modifier*dif)+(this->tier_-1);
+		this->base_str_ += std::lround( ((this->bonus_str_+1.0)*4.0*modifier*dif)+((this->tier_)*2));
+		this->base_def_ += std::lround( ((this->bonus_def_+1.0)*3.125*modifier*dif)+((this->tier_-1)/3));
 		//then set the current stats from the base.
 		this->hp_ = this->base_hp_;
 		this->str_ = this->base_str_;

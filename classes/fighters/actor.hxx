@@ -132,6 +132,10 @@ class Actor {
 		return this->def_;
 	}
 
+	unsigned short get_id() const{
+		return this->id;
+	}
+
 	/**
 	 *
 	 * @param  the amount of damage to be inflicted.
@@ -215,6 +219,13 @@ class Actor {
 		this->def_ += armor.get_defense();
 	}
 
+	Item *equipped_weapon(){
+		return this->weapon_held;
+	}
+
+	Item *equipped_armor(){
+		return this->armor_equipped;
+	}
 	virtual operator std::string() const{
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;

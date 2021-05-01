@@ -16,8 +16,6 @@ private:
     int damage; //private weapon variable for damage
     public:
     explicit Weapon(std::string,
-            int damage = 0,
-            unsigned int value = 1,
             unsigned int tier = 1,
             unsigned int level = 1);
 

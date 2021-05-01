@@ -9,16 +9,14 @@
 #include <string>
 #include <sstream>
 
+
 Armor::Armor(
         std::string name,
-        int defense,
         unsigned int tier,
-        unsigned int value,
         unsigned int level)
-       :Item(name, 2, tier, value, level) //calls base constructor
+       :Item(name, 2, tier, level) //calls base constructor
 {
-    defense = (level*2 + level);
-    this->defense = defense; //sets the initial value of variable defence
+	this->defense = std::lround((level * 2.00 + level)+(level*((tier-1.00)/4.00)));
 }
 
 Armor::~Armor() //destructor
