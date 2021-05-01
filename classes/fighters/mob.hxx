@@ -78,7 +78,7 @@ class Mob : public Actor {
 			glm = 4.00;
 			bvm = 120.00;
 		}
-		this->gold_ = static_cast<unsigned int>((this->xp_ * glm - ((dl / gm) * bvm)) * (0.50 + (this->tier_-1 / 3.00)));
+		this->gold_ = static_cast<unsigned int>((this->xp_ * glm - ((dl / gm) * bvm)) * 0.50);
 	}
   public:
 
@@ -90,7 +90,7 @@ class Mob : public Actor {
 		unsigned int tmp = this->lvl_ + 1;
 		//based on other formulas this should make the curve OK.
 		//tier will modify the two formulas below eventually
-		this->xp_ = std::lround(tmp * (tmp * (0.79 + (tier - 1 / 3.00)) + 2.00));
+		this->xp_ = std::lround((tmp * (tmp * 0.79) *(1+ (tier - 1.00 / 3.25))+ 2.00));
 		this->gold_ = 0;
 		this->set_gold();
 		this->tier_ = tier;
