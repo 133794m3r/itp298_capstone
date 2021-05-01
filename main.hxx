@@ -10,7 +10,6 @@
 #define ITP298_CAPSTONE_MAIN_HXX
 #include <iostream>
 #include <string>
-#include <filesystem>
 #include "terminal.hxx"
 #include "includes.hxx"
 
