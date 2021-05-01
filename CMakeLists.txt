@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 if(MSVC)
 	#Microsoft "Helpfully" defines it's own min/max functions
 	add_compile_definitions(NOMINMAX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /O2 /W4")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /O2 /W1")
 	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O3")
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
@@ -183,8 +183,26 @@ add_executable(tutorial_demo
 		#main binary
 		demos/tutorial_demo.cpp
 		)
+add_executable(save_demo
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
+		$<TARGET_OBJECTS:data_lib>
+		demos/load_save_demo.cpp
+		)
 
-add_executable(itp298_capstone
+add_executable(save_test
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
+		$<TARGET_OBJECTS:actors_lib>
+		$<TARGET_OBJECTS:data_lib>
+		tests/load_save_test.cpp
+		)
+
+
+add_executable(dangling_pointers
 		#all the libraries
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
@@ -198,14 +216,7 @@ add_executable(itp298_capstone
 		main.cpp
 		main.hxx)
 
-add_executable(save_demo
-		$<TARGET_OBJECTS:includes_lib>
-		$<TARGET_OBJECTS:items_lib>
-		$<TARGET_OBJECTS:inventory_lib>
-		$<TARGET_OBJECTS:actors_lib>
-		$<TARGET_OBJECTS:data_lib>
-		demos/load_save_demo.cpp
-		)
+
 
 
 #have to make sure this works on windows first.
