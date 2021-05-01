@@ -42,6 +42,7 @@ class Actor {
 	Armor *armor_equipped;
 	//the constructors, public methods, and getters.
   public:
+
 	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0,
 				double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15,
 				unsigned int str = 5, unsigned int def = 3,unsigned short type=0)
@@ -200,6 +201,7 @@ class Actor {
 //	}
 
 	void equip_weapon(Weapon &weapon){
+
 		this->weapon_held = &weapon;
 		this->str_ += weapon.get_damage();
 	}

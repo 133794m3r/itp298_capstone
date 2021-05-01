@@ -6,12 +6,27 @@
 #include "main.hxx"
 int main(int argc, char *argv[]) {
 	clear_and_move_top();
-	redraw_main();
 	unsigned int option;
+	int result;
 	if(argc == 2){
-		load_game(argv[1]);
-		std::cout << "Thanks for playing but the game isn't ready yet.";
+		if(strncmp(argv[1],"-h",2) == 0){
+			std::cout << "\nprogram use " << argv[0];
+			std::cout << " {SAVE_FILE_TO_LOAD}. Or -h to see this message. If no argument is given it'll immediately go into the game loading.\n The game does basic checks to make sure it's loading a valid save file but the rest is up to you.\n\n";
+			return 0;
+		}
+		else {
+			Player player;
+			result = load_game(argv[1], player);
+			if (result != 0) {
+				std::cout << "Thanks for playing but the game isn't ready yet.\n";
+				return 0;
+			}
+			else {
+				return result;
+			}
+		}
 	}
+	redraw_main();
 	std::cout << "\x1b[1mSelection\x1b[22m: ";
 	option = valid_option(1,3);
 	if(option == 1) {
@@ -42,7 +57,8 @@ int main(int argc, char *argv[]) {
 		std::cout << "Enter your character's name: ";
 		std::string filename;
 		std::cin >> filename;
-		load_game(filename+"_save_file.dat");
+		Player player;
+		load_game(filename+"_save_file.dat",player);
 		std::cout << "Your file loaded correctly but the game isn't ready yet, so please try again later!";
 		return 0;
 	}

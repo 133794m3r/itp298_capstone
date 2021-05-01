@@ -227,11 +227,10 @@ class Player: public Actor {
 	friend InventoryMenu;
 
 	friend void save_game(const Player &);
-	friend Player load_game(const std::string& save_file);
+	friend int load_game(const std::string& save_file,Player &);
 	friend void __add_items(Player &, const std::string&);
 };
-void save_game(const Player &player);
-Player load_game(const std::string& save_file);
+
 
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
