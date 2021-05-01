@@ -38,9 +38,8 @@ class Inventory {
 
   public:
 	//constructor
-	Inventory(std::vector<Item*> item={}, std::vector<unsigned char> counts={}){
-		if(item.size() != 0){
-
+	explicit Inventory(const std::vector<Item*>& item={}, std::vector<unsigned char> counts={}){
+		if(!item.empty()){
 			unsigned int i=0;
 			//basic loop to set all of the items up
 			for(auto el:item){
@@ -48,7 +47,7 @@ class Inventory {
 				this->item_indexes.push_back(el->get_id());
 			}
 			//see if they set any counts.
-			if(counts.size() != 0){
+			if(!counts.empty()){
 				//set quantities based upon what's given.
 				for(auto item_id:this->item_indexes){
 					this->item_quantity[item_id] = counts[i++];
@@ -60,9 +59,16 @@ class Inventory {
 					this->item_quantity[item_id] = 1;
 				}
 			}
+			this->num_items = static_cast<unsigned short>(items.size());
+		}
+		else{
+			this->items = {};
+			this->item_indexes = {};
+			this->item_quantity = {};
+			this->num_items = 0;
 		}
 		//set the size to the total number.
-		this->num_items = static_cast<unsigned short>(items.size());
+
 	}
 
 	/**
@@ -215,7 +221,7 @@ class Inventory {
 	 *
 	 * @return The object transformed into a string.
 	 */
-	virtual operator std::string() const{
+	virtual explicit operator std::string() const{
 		std::stringstream ss;
 		ss << "Inventory [";
 		unsigned int i=0;
@@ -244,12 +250,6 @@ class Inventory {
 		return this->num_items;
 	}
 
-	//during desstructor clear it all.
-	~Inventory(){
-		this->items.clear();
-		this->item_quantity.clear();
-		this->item_indexes.clear();
-	}
 
 	//make sure we can send it to cout.
 	friend std::ostream& operator <<(std::ostream &os, Inventory &inv);

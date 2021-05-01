@@ -6,7 +6,6 @@
 *
 */
 
-#include "../random.h"
 #include "../menus/battle.hxx"
 int main(){
 	Mob mob("Fish");

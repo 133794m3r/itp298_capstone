@@ -26,7 +26,7 @@ public:
 	virtual ~Armor(); //destructor
 
     //accessors
-    inline const int& get_defense() const { return this->defense;}
+    inline int get_defense() const { return this->defense;}
 
     //functions
     Armor*clone() const; //function to clone armor

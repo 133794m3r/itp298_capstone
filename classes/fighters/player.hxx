@@ -25,15 +25,25 @@ class Player: public Actor {
 	unsigned short current_game_level;
   public:
 	//initialize the Player class with the defined properties and using the parent classes' constructor for shared properties.
+	/**
+	 *
+	 * @param name
+	 * @param level
+	 * @param bonus_hp
+	 * @param bonus_str
+	 * @param bonus_def
+	 * @param xp
+	 * @param gold
+	 */
 	explicit Player(std::string name="Player", unsigned short level=1,double bonus_hp=0.05,
-				 double bonus_str=0.05, double bonus_def=0.05)
+				 double bonus_str=0.05, double bonus_def=0.05,unsigned int xp=0, unsigned int gold = 100,unsigned short current_level=0)
 				 :Actor(std::move(name),level,bonus_hp, bonus_str,bonus_def,20,
 			5,4,255){
 		//player will always have a set id that's way higher than the rest of the objects in the world.
 		this->id = 65535;
-		this->gold_ = 100;
-		this->xp_ = 0;
-		this->current_game_level = 0;
+		this->gold_ = gold;
+		this->xp_ = xp;
+		this->current_game_level = current_level;
 		Player::set_level(level);
 	}
 	/**
@@ -62,9 +72,9 @@ class Player: public Actor {
 	}
 	//level up actor with new stats
 	void level_up(){
-		unsigned int old_hp = this->base_hp_;
-		unsigned int old_str = this->base_str_;
-		unsigned int old_def = this->base_def_;
+//		unsigned int old_hp = this->base_hp_;
+//		unsigned int old_str = this->base_str_;
+//		unsigned int old_def = this->base_def_;
 		//basic formulas until better ones are figured out.
 		this->base_hp_ += std::lround( (this->bonus_hp_+1.05)*13.0);
 		this->base_str_ += std::lround( (this->bonus_str_+1.05)*4.0);
@@ -216,43 +226,12 @@ class Player: public Actor {
 	friend ShopKeeper;
 	friend InventoryMenu;
 
-	friend void save_game(Player &player);
-	friend Player load_game(std::string save_file);
+	friend void save_game(const Player &);
+	friend Player load_game(const std::string& save_file);
+	friend void __add_items(Player &, const std::string&);
 };
-
-void save_game(Player &player){
-	std::stringstream ss;
-	//TODO: Actually finish this later.
-	std::ofstream save_file(player.get_name()+"_save_file.csv");
-	//first we get their name, the xp, gold, hp, base hp, base str, base def
-	ss << player.name_ << "," << player.xp_ << "," << player.hp_
-	<< "," << player.base_hp_ << "," << player.base_str_ << "," << player.base_def_;
-	//then we get their inventory it is delmited by a [ to seperate it from the other part of the save file
-	ss << ",[";
-
-	std::deque<unsigned short> item_ids = player.player_inventory.get_item_ids();
-	//the first entry is the number of entries we're dealing with
-	ss << item_ids.size() <<",";
-	//then add all of the items based upon their id
-	for(unsigned int i=0;i<player.player_inventory.inventory_quantity();i++){
-		ss << item_ids[i];
-		if(i < player.player_inventory.inventory_quantity()-1)
-			ss << ",";
-	}
-	ss << "]";
-	std::hash<std::string> hash;
-	save_file << ss.str();
-
-	save_file << ":" <<std::hex << hash(ss.str());
-}
-
-Player load_game(std::string save_file){
-	//TODO: Actually write the loading function.
-	Player player("tmp");
-
-	return player;
-}
-
+void save_game(const Player &player);
+Player load_game(const std::string& save_file);
 
 void show_all_stats(Player &player){
 	std::cout << "Name:'" << player.name_ + "' hp:" << player.base_hp_ << " str: "
@@ -263,12 +242,10 @@ void show_all_stats(Player &player){
 			  << std::endl;
 }
 
-std::ostream& operator<<(std::ostream &os, Player &a){
-	os << a.name_ << " hp:" <<a.hp_ << "/" << a.base_hp_ << " str:" << a.str_ << "/"
-	<< a.base_str_ << " def:" << a.def_ << "/" << a.base_def_
-	<< " xp:" << a.xp_ << " g:" << a.gold_;
+std::ostream& operator<<(std::ostream &os, Player &a) {
+	os << a.name_ << " hp:" << a.hp_ << "/" << a.base_hp_ << " str:" << a.str_ << "/"
+	   << a.base_str_ << " def:" << a.def_ << "/" << a.base_def_
+	   << " xp:" << a.xp_ << " g:" << a.gold_;
 	return os;
 }
-
-
 #endif //ITP298_CAPSTONE_PLAYER_HXX

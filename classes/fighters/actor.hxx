@@ -159,7 +159,7 @@ class Actor {
 	 * @param the target actor to damage. Uses this object's strength.
 	 * @return int the amount of damage carried out.
 	 */
-	int attack(Actor &target){
+	unsigned int attack(Actor &target){
 		return target.damage(this->base_str_);
 	}
 

@@ -35,3 +35,7 @@ std::string Weapon::toString() //returns attributes on item (weapon)
 
     return ss.str();
 }
+
+Weapon *Weapon::clone() const {
+	return nullptr;
+}

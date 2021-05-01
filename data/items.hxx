@@ -13,8 +13,9 @@
 Weapon stick("Sharp Stick",0,1);
 Armor shirt("Thick Shirt",0,1);
 Potion basic_potion("Basic");
+Item paper_crown("Small Paper Crown",4,2);
 //this is a super hack but it'll work for now.
 //eventually creating a new item globally will add it to this vector but for now this works. Eventual plan is to index
 //into this vector to figure out which item they have.
-std::vector<Item *> all_items({&stick, &shirt, &basic_potion});
+std::vector<Item *> ALL_ITEMS_({&stick, &shirt, &basic_potion, &paper_crown});
 #endif //ITP298_CAPSTONE_ITEMS_HXX

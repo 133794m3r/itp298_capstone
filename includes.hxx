@@ -15,12 +15,35 @@
 #ifdef _WIN32
 #include <Windows.h>
 #else
-#include <unistd.h>
+//#include <unistd.h>
 #endif
 #include "terminal.hxx"
 #include <string>
 #include <iostream>
-//template <typename T> unsigned long long hash(std::iterator<T> iterable){
 
-//}
+//only works with a single layer of iterator
+template<typename C, typename T = typename C::value_type> unsigned long gen_hash(C const &container){
+	unsigned long prime = 1000000007;
+	unsigned long multiplier = 263;
+	unsigned long h = 0;
+	for(int i = static_cast<int>(container.size());i >= 0; --i){
+		h = (h* multiplier + container[i]) % prime;
+	}
+	return h;
+}
+template <typename T> std::enable_if_t<std::is_scalar<T>::value,unsigned long> gen_hash(T x){
+	unsigned long prime = 1000000007;
+	unsigned long multiplier = 263;
+	unsigned long h = 0;
+	unsigned long t = 0;
+	unsigned long i = 0;
+	unsigned long long num = static_cast<unsigned long long>(x);
+	while(num > 0){
+		h = (h*multiplier + i) % prime;
+		num >>=(t*8);
+		i = num & 0xff;
+		t++;
+	}
+	return  static_cast<unsigned long>(num % prime);
+}
 #endif //ITP298_CAPSTONE_INCLUDES_HXX

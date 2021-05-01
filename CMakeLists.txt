@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 14)
 if(MSVC)
 	#Microsoft "Helpfully" defines it's own min/max functions
 	add_compile_definitions(NOMINMAX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /W4")
-	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O2")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /O2 /W4")
+	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O3")
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O0 -g3 ")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O2 -g3 ")
 	#since CLion decides that you debug from the damn release buildl always instead of from debug and won't let you change that.
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O1")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")
 
 	if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
@@ -54,8 +54,26 @@ add_library(actors_lib OBJECT
 		)
 set_target_properties(actors_lib PROPERTIES LINKER_LANGUAGE CXX)
 
+add_library(menu_lib OBJECT
+		menus/menu.hxx
+		menus/map_movement.hxx
+		menus/inventory_menu.hxx
+		menus/shop.hxx
+		menus/battle.hxx
+		menus/tutorial_menu.hxx)
+set_target_properties(menu_lib PROPERTIES LINKER_LANGUAGE CXX)
+
+add_library(data_lib OBJECT
+		data/items.hxx
+		data/mobs.hxx
+		data/menus.hxx
+		data/shops.hxx)
+set_target_properties(data_lib PROPERTIES LINKER_LANGUAGE CXX)
+
 
 #Executables start below
+
+#all tests first
 
 #fighters/actors stuff
 add_executable(test_fighters
@@ -105,7 +123,7 @@ add_executable(test_items
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
 		tests/item_test.cpp
-		classes/items/potion.hxx)
+	)
 
 add_executable(test_inventory
 		$<TARGET_OBJECTS:includes_lib>
@@ -113,16 +131,6 @@ add_executable(test_inventory
 		$<TARGET_OBJECTS:inventory_lib>
 		classes/containers/shop_inventory.hxx
 		tests/inventory_test.cpp
-		)
-
-add_executable(inventory_demo
-		$<TARGET_OBJECTS:includes_lib>
-		$<TARGET_OBJECTS:items_lib>
-		$<TARGET_OBJECTS:inventory_lib>
-		classes/containers/shop_inventory.hxx
-		menus/menu.hxx
-		menus/inventory_menu.hxx
-		demos/inventory_demo.cpp
 		)
 
 add_executable(test_shop
@@ -134,6 +142,19 @@ add_executable(test_shop
 		classes/shop_keeper.hxx
 		tests/shop_test.cpp
 		)
+
+
+#demo/build files below here
+add_executable(inventory_demo
+		$<TARGET_OBJECTS:includes_lib>
+		$<TARGET_OBJECTS:items_lib>
+		$<TARGET_OBJECTS:inventory_lib>
+		classes/containers/shop_inventory.hxx
+		menus/menu.hxx
+		menus/inventory_menu.hxx
+		demos/inventory_demo.cpp
+		)
+
 
 add_executable(shop_demo
 		$<TARGET_OBJECTS:includes_lib>
@@ -147,6 +168,7 @@ add_executable(shop_demo
 		demos/shop_demo.cpp
 		)
 
+
 add_executable(tutorial_demo
 		#all the libraries
 		$<TARGET_OBJECTS:includes_lib>
@@ -155,18 +177,9 @@ add_executable(tutorial_demo
 		$<TARGET_OBJECTS:actors_lib>
 		classes/shop_keeper.hxx
 		#all the menus
-		menus/menu.hxx
-		menus/battle.hxx
-		menus/map_movement.hxx
-		menus/shop.hxx
-		menus/inputs.hxx
-		menus/tutorial_menu.hxx
+		$<TARGET_OBJECTS:menu_lib>
 		#data
-		data/mobs.hxx
-		data/maps.hxx
-		data/items.hxx
-		data/shops.hxx
-		data/menus.hxx
+		$<TARGET_OBJECTS:data_lib>
 		#main binary
 		demos/tutorial_demo.cpp
 		)
@@ -177,33 +190,20 @@ add_executable(itp298_capstone
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
 		$<TARGET_OBJECTS:actors_lib>
+		$<TARGET_OBJECTS:menu_lib>
 		classes/shop_keeper.hxx
-		#all the menus
-		menus/menu.hxx
-		menus/battle.hxx
-		menus/map_movement.hxx
-		menus/shop.hxx
-		menus/inputs.hxx
 		#data
-		data/mobs.hxx
-		data/maps.hxx
-		data/items.hxx
-		data/shops.hxx
-		data/menus.hxx
+		$<TARGET_OBJECTS:data_lib>
 		#main binary
 		main.cpp
-		)
+		main.hxx)
 
 add_executable(save_demo
 		$<TARGET_OBJECTS:includes_lib>
 		$<TARGET_OBJECTS:items_lib>
 		$<TARGET_OBJECTS:inventory_lib>
 		$<TARGET_OBJECTS:actors_lib>
-		data/mobs.hxx
-		data/maps.hxx
-		data/items.hxx
-		data/shops.hxx
-		data/menus.hxx
+		$<TARGET_OBJECTS:data_lib>
 		demos/load_save_demo.cpp
 		)
 

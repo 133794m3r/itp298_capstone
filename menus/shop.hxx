@@ -20,7 +20,7 @@ class ShopMenu:public Menu {
 	//same with player
 	Player *player;
 	//some basic properties
-	unsigned int menu = 0;
+	bool menu = 0;
 	static const std::string padding_string;
 	std::string buy_menu_string;
 	std::string sell_menu_string;

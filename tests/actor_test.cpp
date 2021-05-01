@@ -20,7 +20,6 @@ int main(){
 	Player tmp_player("Player");
 	//create a basic mob.
 	Mob tmp_mob("Spawn of Death");
-	unsigned int base_actor_hp = base_actor.get_hp();
 	unsigned int tmp_player_hp = tmp_player.get_hp();
 	unsigned int tmp_mob_hp = tmp_mob.get_hp();
 	//test the first actor build
