@@ -9,13 +9,6 @@
 
 #include "item_base.hxx"
 
-//Private functions
-void Item::generate()
-{
-
-}
-
-
 
 //Constructors / Destructors
 Item::Item(std::string name,

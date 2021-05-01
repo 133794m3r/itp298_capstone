@@ -31,9 +31,9 @@ class Actor {
 	unsigned int base_str_;
 	unsigned int base_def_;
 	//then we store the actual values. Since they may be debuffed or if they're damaged. This way we can have stats reset.
-	unsigned int hp_;
-	unsigned int str_;
-	unsigned int def_;
+	unsigned int hp_{};
+	unsigned int str_{};
+	unsigned int def_{};
 	//level can never be <0 so unsigned value.
 	unsigned short lvl_ = 0;
 
@@ -42,6 +42,7 @@ class Actor {
 	Armor *armor_equipped;
 	//the constructors, public methods, and getters.
   public:
+
 	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0,
 				double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15,
 				unsigned int str = 5, unsigned int def = 3,unsigned short type=0)
@@ -52,6 +53,9 @@ class Actor {
 		this->base_hp_ = hp;
 		this->base_str_ = str;
 		this->base_def_ = def;
+		this->hp_ = hp;
+		this->str_ = str;
+		this->def_ = def;
 		//these are used when leveling up to give a bonus upon that levelup beyond just their level.
 		this->bonus_hp_ = bonus_hp;
 		this->bonus_str_ = bonus_str;
@@ -159,7 +163,7 @@ class Actor {
 	 * @param the target actor to damage. Uses this object's strength.
 	 * @return int the amount of damage carried out.
 	 */
-	unsigned int attack(Actor &target){
+	unsigned int attack(Actor &target) const{
 		return target.damage(this->base_str_);
 	}
 
@@ -169,7 +173,7 @@ class Actor {
 	 */
 	virtual void set_level(unsigned short level){
 
-		int dif = 0;
+		int dif;
 		//if it's the same just do nothing.
 		if(level == this->lvl_)
 			dif = this->lvl_ - 1;
@@ -188,7 +192,7 @@ class Actor {
 	}
 
 	//Check if the actor is still alive. If HP is 0 then it means they're dead.
-	bool is_alive(){
+	bool is_alive() const{
 		return this->hp_ > 0;
 	}
 
@@ -200,6 +204,7 @@ class Actor {
 //	}
 
 	void equip_weapon(Weapon &weapon){
+
 		this->weapon_held = &weapon;
 		this->str_ += weapon.get_damage();
 	}
@@ -219,14 +224,15 @@ class Actor {
 		this->def_ += armor.get_defense();
 	}
 
-	Item *equipped_weapon(){
+	Item *equipped_weapon() const{
 		return this->weapon_held;
 	}
 
-	Item *equipped_armor(){
+	Item *equipped_armor() const{
 		return this->armor_equipped;
 	}
-	virtual operator std::string() const{
+
+	virtual explicit operator std::string() const{
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ << " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/" << this->base_def_;
 		return ss.str();

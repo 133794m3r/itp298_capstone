@@ -6,19 +6,48 @@
 #include "main.hxx"
 int main(int argc, char *argv[]) {
 	clear_and_move_top();
-	redraw_main();
 	unsigned int option;
+	int result;
 	if(argc == 2){
-		load_game(argv[1]);
-		std::cout << "Thanks for playing but the game isn't ready yet.";
+		if(strncmp(argv[1],"-h",2) == 0){
+			std::cout << "\nprogram use " << argv[0];
+			std::cout << " {SAVE_FILE_TO_LOAD}. Or -h to see this message. If no argument is given it'll immediately go into the game loading.\n The game does basic checks to make sure it's loading a valid save file but the rest is up to you.\n\n";
+			return 0;
+		}
+		else {
+			Player player;
+			result = load_game(argv[1], player);
+			if (result != 0) {
+				std::cout << "Thanks for playing but the game isn't ready yet.\n";
+				return 0;
+			}
+			else {
+				return result;
+			}
+		}
 	}
+	redraw_main();
 	std::cout << "\x1b[1mSelection\x1b[22m: ";
 	option = valid_option(1,3);
 	if(option == 1) {
 		std::string player_name;
 		std::cout << "Enter your name: ";
 		std::cin >> player_name;
+		if(player_name.size() > 50){
+			move_and_clear_up(1);
+			while(player_name.size() > 50 && !player_name.empty()){
+				std::cout << "Name is too long! Max is 50 characters\n";
+				std::cout << "Reenter your name: ";
+				std::cin >> player_name;
+				move_and_clear_up(3);
+			}
+		}
+		if(player_name.empty()){
+			exit(0);
+		}
 		Player player(player_name);
+		//make sure they're ready for the fight.
+		player.add_gold(200);
 		InventoryMenu player_inv(&player);
 		TutorialMenu tutorial(player, player_inv);
 		tutorial.enter();
@@ -30,7 +59,8 @@ int main(int argc, char *argv[]) {
 		std::cout << "Enter your character's name: ";
 		std::string filename;
 		std::cin >> filename;
-		load_game(filename+"_save_file.dat");
+		Player player;
+		load_game(filename+"_save_file.dat",player);
 		std::cout << "Your file loaded correctly but the game isn't ready yet, so please try again later!";
 		return 0;
 	}

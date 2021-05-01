@@ -10,6 +10,7 @@
 #define ITP298_CAPSTONE_MAIN_HXX
 #include <iostream>
 #include <string>
+#include <cstring>
 #include "terminal.hxx"
 #include "includes.hxx"
 
@@ -41,6 +42,16 @@ void save_game(const Player &player){
 	//first we get their name, the xp, gold, hp, base hp, base str, base def
 	ss << player.name_ << ',' << player.lvl_ << ',' << player.xp_ << ',' << player.gold_ << ',' << player.hp_
 	   << ',' << player.bonus_hp_ << ',' << player.bonus_str_ << ',' << player.bonus_def_ << ',' << player.current_game_level;
+	ss << ',';
+	if(player.weapon_held == nullptr)
+		ss << "null";
+	else
+		ss << player.weapon_held->get_id();
+	ss << ',';
+	if(player.armor_equipped == nullptr)
+		ss << "null";
+	else
+		ss << player.armor_equipped->get_id();
 	//then we get their inventory it is delmited by a [ to seperate it from the other part of the save file
 	ss << ",[";
 
@@ -70,60 +81,78 @@ void save_game(const Player &player){
  * @param p The player object
  * @param item_tokens the token string representing their inventory
  */
-void __add_items(Player &p, const std::string& item_tokens){
-	size_t split = 0;
-	size_t tok_start = 0;
+void _add_items(Player &p, const std::string& item_tokens){
+	size_t split;
+	size_t tok_start;
 	split = item_tokens.find(',');
 	//find the number of items
-	unsigned short num_items = std::stoul(item_tokens.substr(0,split));
-	if(num_items == 0)
+	unsigned short num_items = static_cast<unsigned short>(std::stoul(item_tokens.substr(0, split)));
+	if(num_items == 0 || num_items > 255)
 		return;
-	unsigned int idx;
+	unsigned long idx;
 	unsigned short item_id;
 	unsigned short item_number;
+	unsigned short current_items=0;
 	std::string item_tuple;
 	tok_start = split+1;
 	split = item_tokens.find(',',split+1);
 	//now iterate over it adding items.
-	while(tok_start != std::string::npos){
+	while(tok_start != std::string::npos || current_items > num_items){
 		item_tuple = item_tokens.substr(tok_start,split-tok_start);
 		idx = item_tuple.find(';');
-		item_id = std::stoul(item_tuple.substr(0,idx));
-		item_number = std::stoul(item_tuple.substr(idx+1));
+		item_id = static_cast<unsigned short>(std::stoul(item_tuple.substr(0, idx)));
+		//bail before we get any real issuses.
+		if(item_id > ALL_ITEMS_.size()){
+			std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID ITEM ID!\n";
+			//the test suite will never attempt this.
+			exit(255);
+		}
+		item_number = static_cast<unsigned short>(std::stoul(item_tuple.substr(idx + 1)));
 		p.add_item(*ALL_ITEMS_[item_id], item_number);
 		tok_start = split;
 		split = item_tokens.find(',',split+1);
+		current_items++;
 	}
 }
 
 /**
  * Load the player's game
  * @param save_file_name The file name that stores it.
- * @return A freshly created player object with all of their data.
+ * @param player The player object to operate on
+ * @return the return code. 0 for everything worked.
  */
-Player load_game(const std::string &save_file_name){
+int load_game(const std::string &save_file_name,Player &player){
+	if(save_file_name.find("_save_file.dat") == std::string::npos){
+		std::cout << "\n\x1b[" << BRIGHT_RED_TXT << "mNOT A VALID SAVE FILE!\x1b[0m\n";
+		return 1;
+	}
 	std::ifstream save_file(save_file_name);
 	//make sure we can read the file.
 	if(!save_file.is_open()){
-		std::cerr << "\x1b[" << BRIGHT_RED_TXT << "mFile doesn't exist" << "\x1b[0m";
-		exit(1);
+		std::cerr << "\n\x1b[" << BRIGHT_RED_TXT << "mFile doesn't exist" << "\x1b[0m\n";
+		return 2;
 	}
 	else if(save_file.fail()){
-		std::cerr << "\x1b[" << BRIGHT_RED_TXT << "mFile can't be read\x1b[0m";
-		exit(2);
+		std::cerr << "\n\x1b[" << BRIGHT_RED_TXT << "mFile can't be read\x1b[0m\n";
+		return 2;
 	}
 	//now we start
 	std::string save_string;
 	std::string token;
 	save_file >> save_string;
-	size_t split = save_string.find(':')+1;
+	size_t split = save_string.find(':');
+	if(split == std::string::npos){
+		std::cerr << "\n\x1b[" << BRIGHT_RED_TXT << "mNO HASH FOUND!\x1b[0m\n";
+		return 5;
+	}
+	split++;
 	//check the hash
 	unsigned long ck_hash = std::stoul(save_string.substr(split),nullptr,16);
 	unsigned long hash = gen_hash(save_string.substr(0,split-1));
 	//bail
 	if(ck_hash != hash){
-		std::cerr << "Invalid checksum. Save file is corrupted. Can't load from this file!\n";
-		exit(1);
+		std::cerr << "\n\x1b[" << BRIGHT_RED_TXT << "mInvalid checksum. Save file is corrupted. Can't load from this file!\x1b[0m\n";
+		return 5;
 	}
 	std::string player_name;
 	unsigned int xp=0;
@@ -139,24 +168,30 @@ Player load_game(const std::string &save_file_name){
 	size_t tok_start = 0;
 	split = save_string.find(',');
 	unsigned int current_idx = 0;
+	Weapon *weapon_held = nullptr;
+	Armor *armor_equip = nullptr;
 	//iterate over all of the options till we get all of the values we need.
 	while(split != std::string::npos){
 		token = save_string.substr(tok_start,split-tok_start);
 		switch(current_idx){
 			case 0:
+				if(split-tok_start > 50){
+					std::cout << "\nName's too long";
+					return 7;
+				}
 				player_name = token;
 				break;
 			case 1:
 				//lvl
-				lvl = std::stoul(token);
+				lvl = static_cast<unsigned short>(std::stoul(token));
 				break;
 			case 2:
 				//xp
-				xp = std::stoul(token);
+				xp = static_cast<unsigned int>(std::stoul(token));
 				break;
 			case 3:
 				//gold
-				gold = std::stoul(token);
+				gold = static_cast<unsigned int>(std::stoul(token));
 				break;
 			case 4:
 				//hp
@@ -176,7 +211,49 @@ Player load_game(const std::string &save_file_name){
 				break;
 			case 8:
 				//current_game_level
-				current_game_level = std::stoul(token);
+				current_game_level = static_cast<unsigned short>(std::stoul(token));
+				break;
+			case 9:
+				//weeapon equipped
+				//if it's the string null then it's blank
+				if(strcmp(token.c_str(),"null") != 0){
+					//get the id
+					unsigned short weapon_id = static_cast<unsigned short>(std::stoul(token));
+					//if it's more than the total items we have die.
+					if(weapon_id > ALL_ITEMS_.size()){
+						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID WEAPON!\n";
+						return 255;
+					}
+					//it's not actually a weapon bail
+					if(ALL_ITEMS_[weapon_id]->get_type() != 1){
+						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID WEAPON\n";
+						return 255;
+					}
+					else {
+						//convert the pointer
+						weapon_held = dynamic_cast<Weapon *>(ALL_ITEMS_[weapon_id]);
+					}
+				}
+				break;
+			case 10:
+				//equipped armor
+				if(strcmp(token.c_str(),"null") != 0){
+					unsigned short weapon_id = static_cast<unsigned short>(std::stoul(token));
+					//id is more than we have time to bail
+					if(weapon_id > ALL_ITEMS_.size()){
+						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID ARMOR!\x1b[0m\n";
+						return 255;
+					}
+					//not actually armor so bail
+					if(ALL_ITEMS_[weapon_id]->get_type() != 2){
+						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID ARMOR\x1b[0m\n";
+						return 255;
+					}
+					else {
+						//convert the pointer to armor type
+						armor_equip = dynamic_cast<Armor *>(ALL_ITEMS_[std::stoul(token)]);
+					}
+				}
 				break;
 			default:
 				//should never get here.
@@ -189,26 +266,45 @@ Player load_game(const std::string &save_file_name){
 		//find next token substring
 		split = save_string.find(',',split+1);
 		//we're done with the normal items.
-		if(current_idx == 9)
+		if(current_idx == 11)
 			break;
 	}
 	//somehow we broke out early
-	if(current_idx != 9){
-		std::cerr << "\x1b[" << BRIGHT_RED_TXT << "mSOMETHING IS BROKEN JIM!\x1b[0m" << std::endl;
-		exit(1);
+	if(current_idx != 11){
+		std::cerr << "\n\x1b[" << BRIGHT_RED_TXT << "mSOMETHING IS BROKEN JIM!\x1b[0m" << std::endl;
+		return 6;
 	}
 	//get the string minus the hash
 	split = save_string.find(':');
-	Player p(player_name, lvl,bonus_hp,bonus_str,bonus_def,xp,gold,current_game_level);
-	if(p.get_hp() > hp){
-		p.damage((hp-p.get_hp())+p.get_def());
+
+	//ugly hack till I implement copy constructor
+	player.bonus_hp_ = bonus_hp;
+	player.bonus_def_ = bonus_def;
+	player.bonus_str_ = bonus_str;
+	player.xp_ = xp;
+	player.gold_ = gold;
+	player.current_game_level = current_game_level;
+	player.set_level(lvl);
+	player.name_ = player_name;
+	//end of ugly hack
+
+	//make sure we are trying to equip something
+	if(weapon_held != nullptr)
+		player.equip_weapon(*weapon_held);
+	if(armor_equip != nullptr)
+		player.equip_armor(*armor_equip);
+
+	//if their current hp is less than what the default is at that level
+	if(player.get_hp() > hp){
+		//remove some.
+		player.damage(static_cast<unsigned int>((hp - player.get_hp()) + player.get_def()));
 	}
 	//get the item token substring
 	token = save_string.substr(tok_start+1,split-tok_start-2);
 	//add the items
-	__add_items(p,token);
+	_add_items(player,token);
 	//return teh player object
-	return p;
+	return 0;
 }
 
 /**

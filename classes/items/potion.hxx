@@ -20,7 +20,7 @@ class Potion:public Item {
 	explicit Potion(std::string name="Junk", unsigned short level=1, unsigned short tier=1):Item(std::move(name)+" Pot",3,tier,level){
 		this->power_ = std::lround((level*16.00)*((tier+1.00)/4.00));
 	}
-	unsigned short get_power(){
+	unsigned short get_power() const{
 		return this->power_;
 	}
 };

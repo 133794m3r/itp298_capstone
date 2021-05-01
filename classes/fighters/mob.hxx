@@ -12,7 +12,7 @@
 struct MobRewards{
 	unsigned int gold = 0;
 	unsigned int xp = 0;
-	std::vector<std::pair<Item *,unsigned int>> items;
+	std::vector<std::pair<Item *,unsigned short>> items;
 };
 
 #include "actor.hxx"
@@ -20,7 +20,7 @@ struct MobRewards{
 class Mob : public Actor {
   private:
 	//the xp to be awarded and gold be awarded upon death.
-	unsigned long xp_;
+	unsigned int xp_;
 	unsigned int gold_;
 	//the tier strings
 	const static std::string tier_str[7];
@@ -48,49 +48,50 @@ class Mob : public Actor {
 	 */
 	void set_gold(){
 		unsigned int dl = this->lvl_ + 1;
-		double gm = 1.9;
+		double gm = 1.90;
 		double glm;
 		double bvm;
 		if(dl < 10){
-			gm = 5.9;
-			glm = 1.9;
-			bvm = 6.8;
+			gm = 5.90;
+			glm = 1.90;
+			bvm = 6.80;
 		}
 		else if(dl < 40){
-			gm = 6.0;
+			gm = 6.00;
 			glm = 1.85;
-			bvm = 7.0;
+			bvm = 7.00;
 		}
 		else if(dl < 91){
 			gm = 1.95;
 			glm = 2.0;
-			bvm = 50;
+			bvm = 50.00;
 		}
 		else if(dl < 151){
-			glm = 2.2;
-			bvm = 70.0;
+			glm = 2.20;
+			bvm = 70.00;
 		}
 		else if(dl < 199){
-			glm = 2.4;
-			bvm = 100.0;
+			glm = 2.40;
+			bvm = 100.00;
 		}
 		else{
-			glm = 4.0;
-			bvm = 120.0;
+			glm = 4.00;
+			bvm = 120.00;
 		}
-		this->gold_ = static_cast<unsigned int>((((this->xp_*glm)-((dl / gm) * bvm))) * 0.5);
+		this->gold_ = static_cast<unsigned int>((this->xp_ * glm - ((dl / gm) * bvm)) * 0.50);
 	}
   public:
 
 	//initialize the Mob class. Explicit since it can be called with just 1 parameter. Also initialize properties with parent class' constructor.
 	explicit Mob(std::string name="Mob",unsigned short tier=1, unsigned short level=1,
 			  double bonus_hp=0.00, double bonus_str=0.0, double bonus_def=0.0)
-			  :Actor(std::move(name),level,bonus_hp+((tier-1.0)/20),
-			bonus_str+((tier-1.0)/100),bonus_def+((tier-1.0)/80),16,6,3,1) {
+			  :Actor(std::move(name),level,bonus_hp+((tier-1.0)/20.00),
+			bonus_str+((tier-1.0)/100.00),bonus_def+((tier-1.0)/80.00),16,6,3,1) {
 		unsigned int tmp = this->lvl_ + 1;
 		//based on other formulas this should make the curve OK.
 		//tier will modify the two formulas below eventually
-		this->xp_ = std::lround( tmp* ((tmp*0.79 )+1.2));
+		this->xp_ = std::lround((tmp * (tmp * 0.79) *(1+ (tier - 1.00 / 3.25))+ 2.00));
+		this->gold_ = 0;
 		this->set_gold();
 		this->tier_ = tier;
 		this->set_level(level);
@@ -111,11 +112,11 @@ class Mob : public Actor {
 			dif = level - this->lvl_;
 		else
 			dif = this->lvl_ - level;
-		dif += (this->tier_-1)/6;
+		dif += (this->tier_-1.00)/6.00;
 		//when they modify the level change the stats to the proper values.
-		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.1*modifier*dif)+(this->tier_-1);
-		this->base_str_ += std::lround( ((this->bonus_str_+1.0)*4.0*modifier*dif)+((this->tier_)*2));
-		this->base_def_ += std::lround( ((this->bonus_def_+1.0)*3.125*modifier*dif)+((this->tier_-1)/3));
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.1*modifier*dif)+(this->tier_-1.00);
+		this->base_str_ += std::lround( ((this->bonus_str_+1.0)*4.0*modifier*dif)+((this->tier_)*2.00));
+		this->base_def_ += std::lround( ((this->bonus_def_+1.0)*3.125*modifier*dif)+((this->tier_-1.00)/3.00));
 		//then set the current stats from the base.
 		this->hp_ = this->base_hp_;
 		this->str_ = this->base_str_;
@@ -171,7 +172,7 @@ class Mob : public Actor {
 	 *
 	 * @return The object stringified.
 	 */
-	operator std::string(){
+	explicit operator std::string(){
 		std::stringstream ss;
 		ss << "id: " << this->id << " " << this->name_ << " hp:" <<this->hp_ << "/" << this->base_hp_ <<
 		   " str:" << this->str_ << "/" << this->base_str_ << " def:" << this->def_ << "/"

@@ -68,8 +68,8 @@ std::string update_potions(std::vector< std::pair<menu_item_data, unsigned short
 	potions = player.get_potions();
 	std::string potions_opt;
 	if(!potions.empty()) {
-		unsigned int max = std::min(potions.size(), static_cast<unsigned long>(4));
-		for (unsigned int i = 0; i < max; i++) {
+		const size_t max = std::min(potions.size(), static_cast<size_t>(4));
+		for (size_t i = 0; i < max; i++) {
 
 			potions_opt +=
 					std::to_string(i+1) + ")" + potions[i].first.item_name + "x" + std::to_string(potions[i].first.item_quantity) +
@@ -103,7 +103,7 @@ bool battle(Player &player,Mob mob){
 		option.append(14-option.size(),' ');
 	}
 	//the forward declaration of the options.
-	unsigned int option = 0;
+	unsigned int option;
 	unsigned int mob_opt;
 	unsigned int dmg;
 
@@ -215,7 +215,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 			//the only other option is 3.
 			case 3:
 				//see if they have any potions to use.
-				if(potions.size() != 0){
+				if(potions.empty()){
 					//if their HP is at max don't let them use one.
 					if(player.get_hp() == player.get_base_hp()){
 						message = "Using a potion now wouldn't do any good!";
@@ -229,7 +229,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 						show_battle_message(potions_opt);
 						//show the prompt
 						std::cout << "\x1b[1mSelection\x1b[22m: ";
-						option = valid_option(1,potions.size()+1);
+						option = valid_option(1, static_cast<unsigned int>(potions.size() + 1));
 						//they want to use a potion
 						if(option <= potions.size()){
 							//make sure they want to use that potion
@@ -239,7 +239,8 @@ If enemy's HP is over 4 digits then we make it be ????.
 							//they do.
 							if(option == 1){
 								//add this much hp
-								unsigned short added = player.add_hp(potions[option-1].first.item_value);
+								unsigned short added = player.add_hp(
+										static_cast<unsigned short>(potions[option - 1].first.item_value));
 								//remove it from their inventory
 								player.remove_item(potions[option-1].second);
 								//redraw the hp UI
@@ -256,6 +257,10 @@ If enemy's HP is over 4 digits then we make it be ????.
 					//can't use what you don't have
 					message = player.get_name() + " doesn't have any potions!";
 				}
+				break;
+			default:
+				message = "It won't ever happen.";
+				break;
 		}
 		//show the message from their turn.
 		show_battle_message(message);

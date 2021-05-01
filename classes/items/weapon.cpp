@@ -5,13 +5,15 @@
  * Date: 4/5/21
  * Purpose: Weapon class for our currently Untitled RPG.This subclass inherits properties from Item in order to produce weapons
 */
+#include <utility>
+
 #include "weapon.hxx"
 
 Weapon::Weapon(
         std::string name,
         unsigned int tier,
         unsigned int level)
-        :Item(name, 1, tier, level) //base item constructor
+        :Item(std::move(name), 1, tier, level) //base item constructor
 {
     unsigned int damage = std::lround((level * 3.00 + level)+(level*((tier-1.00)/4.00)));
     this->damage = damage; //sets max damage value

@@ -37,7 +37,7 @@ template <typename T> std::enable_if_t<std::is_scalar<T>::value,unsigned long> g
 	unsigned long h = 0;
 	unsigned long t = 0;
 	unsigned long i = 0;
-	unsigned long long num = static_cast<unsigned long long>(x);
+	auto num = static_cast<unsigned long long>(x);
 	while(num > 0){
 		h = (h*multiplier + i) % prime;
 		num >>=(t*8);
