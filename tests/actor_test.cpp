@@ -63,7 +63,7 @@ int main(){
 	//attack the base object.
 	tmp_player.attack(tmp_mob);
 	unsigned int expected_hp = tmp_mob_hp - (tmp_player.get_str() - tmp_mob.get_def());
-	std::cout << "Actor targetting mob test ";
+	std::cout << "Actor targeting mob test ";
 	if(tmp_mob.get_hp() != expected_hp ){
 		std::cout << "failed. Mob HP wrong expected " << expected_hp << " but got " << tmp_mob.get_hp() <<'\n';
 		tests_failed++;

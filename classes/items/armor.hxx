@@ -23,14 +23,14 @@ public:
 
 
 
-	virtual ~Armor(); //destructor
+	~Armor() override; //destructor
 
     //accessors
     inline int get_defense() const { return this->defense;}
 
     //functions
     Armor*clone() const; //function to clone armor
-    std::string toString();
+    std::string toString() override;
 };
 
 

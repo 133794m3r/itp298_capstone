@@ -52,12 +52,12 @@ void save_game(const Player &player){
 		ss << "null";
 	else
 		ss << player.armor_equipped->get_id();
-	//then we get their inventory it is delmited by a [ to seperate it from the other part of the save file
+	//then we get their inventory it is delimited by a [ to separate it from the other part of the save file
 	ss << ",[";
 
 	//the first entry is the number of entries we're dealing with
 	ss << player.player_inventory.inventory_quantity() <<',';
-	//if they have mroe than 0 items we iterate over their items
+	//if they have more than 0 items we iterate over their items
 	if(player.player_inventory.inventory_quantity() != 0) {
 		std::deque<unsigned short> item_ids = player.player_inventory.get_item_ids();
 		//then add all of the items based upon their id
@@ -81,12 +81,12 @@ void save_game(const Player &player){
  * @param p The player object
  * @param item_tokens the token string representing their inventory
  */
-void _add_items(Player &p, const std::string& item_tokens){
+void add_items_(Player &p, const std::string& item_tokens){
 	size_t split;
 	size_t tok_start;
 	split = item_tokens.find(',');
 	//find the number of items
-	unsigned short num_items = static_cast<unsigned short>(std::stoul(item_tokens.substr(0, split)));
+	auto num_items = static_cast<unsigned short>(std::stoul(item_tokens.substr(0, split)));
 	if(num_items == 0 || num_items > 255)
 		return;
 	unsigned long idx;
@@ -101,7 +101,7 @@ void _add_items(Player &p, const std::string& item_tokens){
 		item_tuple = item_tokens.substr(tok_start,split-tok_start);
 		idx = item_tuple.find(';');
 		item_id = static_cast<unsigned short>(std::stoul(item_tuple.substr(0, idx)));
-		//bail before we get any real issuses.
+		//bail before we get any real issues.
 		if(item_id > ALL_ITEMS_.size()){
 			std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID ITEM ID!\n";
 			//the test suite will never attempt this.
@@ -214,11 +214,11 @@ int load_game(const std::string &save_file_name,Player &player){
 				current_game_level = static_cast<unsigned short>(std::stoul(token));
 				break;
 			case 9:
-				//weeapon equipped
+				//weapon equipped
 				//if it's the string null then it's blank
 				if(strcmp(token.c_str(),"null") != 0){
 					//get the id
-					unsigned short weapon_id = static_cast<unsigned short>(std::stoul(token));
+					auto weapon_id = static_cast<unsigned short>(std::stoul(token));
 					//if it's more than the total items we have die.
 					if(weapon_id > ALL_ITEMS_.size()){
 						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID WEAPON!\n";
@@ -238,7 +238,7 @@ int load_game(const std::string &save_file_name,Player &player){
 			case 10:
 				//equipped armor
 				if(strcmp(token.c_str(),"null") != 0){
-					unsigned short weapon_id = static_cast<unsigned short>(std::stoul(token));
+					auto weapon_id = static_cast<unsigned short>(std::stoul(token));
 					//id is more than we have time to bail
 					if(weapon_id > ALL_ITEMS_.size()){
 						std::cout << "\x1b[" << BRIGHT_RED_TXT << "mINVALID ARMOR!\x1b[0m\n";
@@ -302,13 +302,13 @@ int load_game(const std::string &save_file_name,Player &player){
 	//get the item token substring
 	token = save_string.substr(tok_start+1,split-tok_start-2);
 	//add the items
-	_add_items(player,token);
+	add_items_(player, token);
 	//return teh player object
 	return 0;
 }
 
 /**
- * Redrwas the main menu for now. Will eventually be a Menu object.
+ * Redraws the main menu for now. Will eventually be a Menu object.
  */
 void redraw_main(){
 	std::cout << "\x1b[" << BRIGHT_WHITE_TXT << ";" << BLACK_BG << "m";

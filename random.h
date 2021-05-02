@@ -49,7 +49,7 @@ template <typename T> T xorshift128(T low=0, T high=0){
 	* Then take s1 xor it with s0.
 	* then take that intermediate value and xor it with the (s1 >> 18)
 	* then take that value and xor it with (s0 >> 5).
-	* finall take that value and set it to the state1.
+	* finally take that value and set it to the state1.
 	* s1 XOR s0 XOR (s1 >> 18) XOR (s0 >> 5)
 	*/
 	XOR_SHIFT_128_STATE[1]=s1 ^ s0 ^ (s1 >> 18) ^ (s0 >> 5);

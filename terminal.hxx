@@ -3,12 +3,12 @@
 * By Macarthur Inbody <admin-contact@transcendental.us> 2020
 * Licensed AGPLv3
 */
-#ifndef _TERMINAL_SETUP_
-#define _TERMINAL_SETUP_
+#ifndef TERMINAL_SETUP_
+#define TERMINAL_SETUP_
 #include <limits>
 
 /**
- * Moves cursor to specififed line(up from current) and clears it all.
+ * Moves cursor to specified line(up from current) and clears it all.
  * @param lines_up How many lines to go up.
  */
 void move_and_clear_up(unsigned int lines_up){
@@ -41,6 +41,7 @@ void clear_lines(unsigned short start_line, unsigned short lines){
 		//windows has the system pause command.
 		void pause(){
 			system("pause");
+			move_and_clear_up(1);
 		}
 		//complained that I wasn't capturing the output. So this is just here for that. Also WINBOOL isn't a type anymore. Still only going to be 1 byte of pointless space and 1 global.
 		bool __unused_test = SetConsoleMode(GetStdHandle(static_cast<DWORD>(-11)), 7);
@@ -122,4 +123,4 @@ template <typename T> int proper_input(T &variable, std::string prefix){
 #else
 //this'll be the C version of the function sometime in the future.
 #endif //__cplusplus
-#endif //_TERMINAL_SETUP_
+#endif //TERMINAL_SETUP_

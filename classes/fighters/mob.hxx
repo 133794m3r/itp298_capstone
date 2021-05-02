@@ -12,7 +12,7 @@
 struct MobRewards{
 	unsigned int gold = 0;
 	unsigned int xp = 0;
-	std::vector<std::pair<Item *,unsigned short>> items;
+	std::vector<std::pair<Item *,unsigned char>> items;
 };
 
 #include "actor.hxx"
@@ -30,7 +30,7 @@ class Mob : public Actor {
 	 * 0 = trash-tier, 1 = normal, 2 = rare, 3 = elite, 4 = rare elite, 5 = mini-boss, 6 = boss
 	 * they get a bonus to all stats based upon their tier(or reduced for trash).
 	 * The stat bonus makes it as if they are of a higher level than they really are like so.
-	 * Bosses use their own rules and thus don't use the normal formula below but isntead start as "boss" number.
+	 * Bosses use their own rules and thus don't use the normal formula below but instead start as "boss" number.
 	 * stats = set_stats(this->lvl_+ (TIER - 1))
 	 * plus the bonuses when creating the mob are modified to gain (TIER-1)*0.1.
 	 * So the bonus_hp_ value would be increased by 1.2 for an elite mob. For a trash mob their
@@ -94,7 +94,26 @@ class Mob : public Actor {
 		this->gold_ = 0;
 		this->set_gold();
 		this->tier_ = tier;
-		this->set_level(level);
+
+		//since C++ bitches about calling a virtual function from constructor recopy the code here.
+		double modifier =  (1 + ( (this->tier_<5)?(this->tier_-1)/29.0:(this->tier_-1)/27.0 ));
+		double dif;
+		//if it's the same just do nothing.
+		if(level == this->lvl_)
+			dif = this->lvl_ - 1;
+		else if(level > this->lvl_)
+			dif = level - this->lvl_;
+		else
+			dif = this->lvl_ - level;
+		dif += (this->tier_-1.00)/6.00;
+		//when they modify the level change the stats to the proper values.
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.1*modifier*dif+(this->tier_-1.00));
+		this->base_str_ += std::lround( ((this->bonus_str_+1.0)*4.0*modifier*dif)+((this->tier_)*2.00));
+		this->base_def_ += std::lround( ((this->bonus_def_+1.0)*3.125*modifier*dif)+((this->tier_-1.00)/3.00));
+		//then set the current stats from the base.
+		this->hp_ = this->base_hp_;
+		this->str_ = this->base_str_;
+		this->def_ = this->base_def_;
 	}
 
 
@@ -114,7 +133,7 @@ class Mob : public Actor {
 			dif = this->lvl_ - level;
 		dif += (this->tier_-1.00)/6.00;
 		//when they modify the level change the stats to the proper values.
-		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.1*modifier*dif)+(this->tier_-1.00);
+		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.1*modifier*dif+(this->tier_-1.00));
 		this->base_str_ += std::lround( ((this->bonus_str_+1.0)*4.0*modifier*dif)+((this->tier_)*2.00));
 		this->base_def_ += std::lround( ((this->bonus_def_+1.0)*3.125*modifier*dif)+((this->tier_-1.00)/3.00));
 		//then set the current stats from the base.
@@ -151,7 +170,7 @@ class Mob : public Actor {
 	 * @param quantity The number for each
 	 * @param chances The chance of each appearing
 	 */
-	void add_items(std::vector<Item *> items, std::vector<unsigned int> quantity, std::vector<double> chances){
+	void add_items(std::vector<Item *> items, std::vector<unsigned char> quantity, std::vector<double> chances){
 		for(unsigned int i=0;i<chances.size();i++){
 			this->loot_table.add_item(*items[i], quantity[i],chances[i]);
 		}
@@ -163,7 +182,7 @@ class Mob : public Actor {
 	 * @param quantity The number to add
 	 * @param chance The chance of rewarding it
 	 */
-	void add_item(Item &item, unsigned int quantity=1, double chance = 1.0){
+	void add_item(Item &item, unsigned char quantity=1, double chance = 1.0){
 		this->loot_table.add_item(item,quantity,chance);
 	}
 

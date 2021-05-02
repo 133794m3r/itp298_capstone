@@ -22,9 +22,9 @@ class LootTable:public Inventory {
 		this->chances = probs;
 	}
 
-	std::vector <std::pair<Item*,unsigned short>> award_items(){
+	std::vector <std::pair<Item*,unsigned char>> award_items(){
 		//create a temporary vector
-		std::vector<std::pair<Item *,unsigned short>> rewards;
+		std::vector<std::pair<Item *,unsigned char>> rewards;
 		double res;
 		unsigned short item_id;
 		//see which items we'll give them
@@ -41,7 +41,7 @@ class LootTable:public Inventory {
 		return rewards;
 	}
 
-	void add_item(Item &item,unsigned short quantity,double probability){
+	void add_item(Item &item,unsigned char quantity,double probability){
 		this->chances.push_back(probability);
 		Inventory::add_item(item,quantity);
 	}

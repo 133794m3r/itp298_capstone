@@ -106,15 +106,15 @@ class Player: public Actor {
 	}
 
 	/**
-	 * Addx XP to the player and levels up if necessary
+	 * Adds XP to the player and levels up if necessary
 	 * @param xp The amount of XP to add.
 	 * @return True if player leveled up false otherwise.
 	 */
 	bool add_xp(unsigned int xp){
 		//might make this just be a one-time calculation and store the value as a property but that's up in the air.
-		auto dl = static_cast<double>(this->lvl_+1);
+		auto dl = this->lvl_ + 1.00;
 		unsigned long mkxp = std::lround((dl * ((dl*0.79)*1.2) ));
-		unsigned int xp_lvl = std::lround( ( (dl*1.125) * mkxp )*1.6);
+		unsigned int xp_lvl = std::lround( ( (dl*1.125)* mkxp)*1.6);
 		this->xp_ += xp;
 		if(this->xp_ > xp_lvl){
 			this->lvl_++;
@@ -149,7 +149,7 @@ class Player: public Actor {
 	}
 
 	//add an item. Has to have an actual item in case it doesn't already exist in inventory.
-	void add_item(Item &item, unsigned short num = 1){
+	void add_item(Item &item, unsigned char num = 1){
 		this->player_inventory.add_item(item,num);
 	}
 
@@ -228,7 +228,7 @@ class Player: public Actor {
 
 	friend void save_game(const Player &);
 	friend int load_game(const std::string& save_file,Player &);
-	friend void _add_items(Player &, const std::string&);
+	friend void add_items_(Player &, const std::string&);
 };
 
 void show_all_stats(Player &player){

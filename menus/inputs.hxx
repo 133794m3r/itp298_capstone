@@ -75,6 +75,7 @@ void print_wrap(const std::string &input, unsigned int position,bool end_line=fa
 	if(input.size() < position)
 		std::cout << input;
 	size_t found;
+
 	while((found = new_string.find_last_of(32,position)) != std::string::npos && position < input.size()){
 		new_string.at(found-2) = '\n';
 		position += found;
@@ -92,14 +93,15 @@ void print_wrap(const std::string &input, unsigned int position,bool end_line=fa
  * @param lines how many lines tall it is.
  */
 void clear_textbox(unsigned short top, unsigned short lines){
+	/*
 	const char blank[54] ={32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
 						32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
 						32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
 						32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
-
+	*/
 	for(unsigned short i=0;i<lines;i++){
 		move_cursor(top+i,2);
-		std::cout << blank;
+		std::cout << "                                                      ";
 	}
 }
 #endif //ITP298_CAPSTONE_INPUTS_HXX

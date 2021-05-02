@@ -43,6 +43,6 @@ int main(){
 		//it didn't work and show the error
 		return 1;
 	}
-	//return 0 for build systme
+	//return 0 for build system
 	return 0;
 }

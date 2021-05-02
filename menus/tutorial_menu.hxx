@@ -35,7 +35,7 @@ class TutorialMenu: public Menu {
 	//constructors
 	//also initializes base class properties.
 	TutorialMenu(Player &player, InventoryMenu &inv):Menu(5,4){
-		//make sure they give us a plyer, their inventory.
+		//make sure they give us a player, their inventory.
 		this->player_ = &player;
 		this->menu_string = "";
 		this->inv_menu = &inv;
@@ -53,11 +53,11 @@ class TutorialMenu: public Menu {
 		pause();
 		//draw menu
 		this->redraw_menu();
-		std::string end_string = "2)Inventory Menu;3)Continue On ;4)Save Game   ;";
+		std::string end_string = "2)Inventory Menu ;3)Continue On ;4)Save Game   ;";
 		std::cout << "Level: Tutorial " << this->player_->get_name() << "'s journey\n";
 		this->redraw_stats();
 		std::cout << "+------------------------------------------------------+\n|                                                      |\n|                                                      |\n+------------------------------------------------------+" << std::endl;
-		this->menu_string = "1)Enter Shop;2)Inventory Menu;3)Continue On  ;4)Save Game    ;";
+		this->menu_string = "1)Enter Shop;2)Inventory Menu ;3)Continue On  ;4)Save Game    ;";
 		/*
 		 * 0 = hasn't bought anything. 1 = bought an item and has equipped it, 2 = fought the first rat,
 		 * 3 = second rat defeated , 4 = third rat defeated , 5 = shop to buy some potions, 6 = rate king area, 7 =  fought rat king
@@ -81,9 +81,13 @@ class TutorialMenu: public Menu {
 					}
 					else if(tut_status >= 2 && tut_status <= 4){
 						player_alive = battle(*this->player_, rat);
+
 						tut_status++;
+						this->redraw_menu();
 						if(tut_status == 5){
 							this->menu_string = "1)Enter Shop;"+end_string;
+							print_wrap("You sense a dark presence before you. It seems extremely powerful. Now seems like a good time to stock up on some Potions.",55);
+							pause();
 						}
 					}
 					else{
@@ -102,6 +106,7 @@ class TutorialMenu: public Menu {
 							this->menu_string = "1)Explore the Darkness;"+end_string;
 							tut_status = 2;
 							clear_and_move_top();
+							this->redraw_menu();
 						}
 						else{
 							this->show_menu_message("You sense an extremely dark presence on the horizon. It's best to gear up before moving on.");
@@ -131,6 +136,7 @@ class TutorialMenu: public Menu {
 			}
 		}
 		clear_and_move_top();
+
 		std::cout << "You've completed the tutorial";
 	}
 };

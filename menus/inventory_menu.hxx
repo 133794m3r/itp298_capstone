@@ -72,7 +72,7 @@ class InventoryMenu: public Menu{
 		clear_and_move_top();
 		this->items = this->player_->show_inventory();
 		this->item_ids = this->player_->player_inventory.get_item_ids();
-		bool item_consumed = true;
+		bool item_consumed;
 		std::cout << "Player Inventory Management\n" << this->player_->get_name() << " HP:"<< this->player_->get_hp() << "/" << this->player_->get_base_hp();
 		std::cout << "\nSelect item to use/equip. Total Items:" << this->items.size() << "\nIf total items is more than the last item then use the next/prev respectively\nYou can only use potions.\n\n\n";
 		std::cout << "+------------------------------------------------------+\n|                                                      |\n|                                                      |\n+------------------------------------------------------+" << std::endl;
@@ -82,7 +82,8 @@ class InventoryMenu: public Menu{
 		unsigned short choice;
 		std::cout << "\x1b[1mSelection\x1b[22m: ";
 		while(true){
-			choice = valid_option(static_cast<unsigned short>(1),this->max_op);
+			item_consumed = true;
+			choice = valid_option(1,this->max_op);
 			if(choice == this->max_op)
 				break;
 
@@ -106,11 +107,12 @@ class InventoryMenu: public Menu{
 				if(this->current_idx > 3)
 					choice += 3;
 				auto *item = this->player_->player_inventory.get_item(this->item_ids[choice]);
-				unsigned short type = static_cast<unsigned short>(item->get_type());
+				auto type = static_cast<unsigned short>(item->get_type());
 				if(type == 1) {
 					auto *weapon = dynamic_cast<Weapon *>(item);
 					this->player_->unequip_weapon();
 					this->player_->equip_weapon(*weapon);
+
 				}
 				else if(type == 2){
 					auto *armor = dynamic_cast<Armor *>(item);

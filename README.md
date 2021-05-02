@@ -1,4 +1,4 @@
-# ITP-298 Capstone Project "Danglign Pointers"
+# ITP-298 Capstone Project "Dangling Pointers"
 This is a simple console-based RPG by [@NathanielMullins](https://github.com/NathanielMullins) and [@133794m3r](https://github.com/133794m3r)
 
 
@@ -10,7 +10,7 @@ It was designed to mimic a real-world project as much as possible through the pl
 ## Technical Features
 - Wrote in C++
   - Targets C++14 or Later
-- Implements OOP/Inheritence
+- Implements OOP/Inheritance
 - Full ANSI escape code use/Partial screen refreshes.
 - uses STL
 - Uses PR/push to master checks.

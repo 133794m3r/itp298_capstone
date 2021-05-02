@@ -5,8 +5,12 @@ set(CMAKE_CXX_STANDARD 14)
 if(MSVC)
 	#Microsoft "Helpfully" defines it's own min/max functions
 	add_compile_definitions(NOMINMAX)
+
+	#if you are compiling with VisualStudio make sure to uncomment the line below.
+	#If you're using CLion or similar that puts the builds in the project directory then the release type. Don't
+	#add_compile_definitions(VISUAL_STUDIO_BUILD)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /O2 /W1")
-	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O3")
+	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS} /std:c++14 /O2 /W1")
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O2 -g3 ")
@@ -241,7 +245,7 @@ if(MSVC)
 			COMMAND test_shop.exe)
 
 	#save system
-	add_test(NAME "Shop_Module"
+	add_test(NAME "Save_System"
 			COMMAND test_save)
 
 else()

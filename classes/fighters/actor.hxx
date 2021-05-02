@@ -15,7 +15,7 @@
 class Actor {
   private:
 	//nothing just for this class atm.
-	static unsigned short __next_id;
+	static unsigned short next_id_;
   //these properties need to be accessible by child classes.
   protected:
 	const unsigned short type;
@@ -46,7 +46,7 @@ class Actor {
 	explicit Actor(std::string name="Actor", unsigned short level=1, double bonus_hp = 0.0,
 				double bonus_str = 0.0, double bonus_def = 0.0,unsigned int hp = 15,
 				unsigned int str = 5, unsigned int def = 3,unsigned short type=0)
-				:type(type),id(__next_id++){
+				:type(type),id(next_id_++){
 		//set all properties.
 		//we're copying once so why not just move it.
 		this->name_ = std::move(name);
@@ -67,7 +67,24 @@ class Actor {
 		this->lvl_ = level;
 
 		if(type == 0){
-			this->set_level(level);
+			int dif;
+			//if it's the same just do nothing.
+			if(level == this->lvl_)
+				dif = this->lvl_ - 1;
+			else if(level > this->lvl_)
+				dif = level - this->lvl_;
+			else
+				dif = this->lvl_ - level;
+			//when they modify the level change the stats to the proper values.
+			this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.0*dif);
+			this->base_str_ += std::lround( (this->bonus_str_+1.0)*4.0*dif);
+			this->base_def_ += std::lround( (this->bonus_def_+1.0)*3.0*dif);
+			//then set the current stats from the base.
+			this->hp_ = this->base_hp_;
+			this->str_ = this->base_str_;
+			this->def_ = this->base_def_;
+
+
 		}
 	}
 
@@ -196,13 +213,6 @@ class Actor {
 		return this->hp_ > 0;
 	}
 
-//	void equip_weapon(Item &weapon){
-//		if(weapon.get_type() !=1)
-//			return;
-//		this->weapon_held = dynamic_cast<Weapon *>(&weapon);
-//		this->str_ += weapon.get_damage();
-//	}
-
 	void equip_weapon(Weapon &weapon){
 
 		this->weapon_held = &weapon;
@@ -243,7 +253,7 @@ class Actor {
 	friend std::ostream &operator<< (std::ostream &, const Actor &);
 };
 
-unsigned short Actor::__next_id = 0;
+unsigned short Actor::next_id_ = 0;
 
 void show_all_stats(Actor &actor){
 	std::cout << "Name:'" << actor.name_ + "' hp:" << actor.base_hp_ << " str: "

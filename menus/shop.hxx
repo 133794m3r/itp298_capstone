@@ -20,7 +20,7 @@ class ShopMenu:public Menu {
 	//same with player
 	Player *player;
 	//some basic properties
-	bool menu = 0;
+	bool menu = true;
 	static const std::string padding_string;
 	std::string buy_menu_string;
 	std::string sell_menu_string;
@@ -124,7 +124,7 @@ class ShopMenu:public Menu {
 	}
 
 	/**
-	 * The menu portiont o be shown when buying items.
+	 * The menu portion o be shown when buying items.
 	 * @return The choice(1-2) saying if we're switching menus or leaving the shop
 	 */
 	unsigned short purchase_menu() {
@@ -137,7 +137,7 @@ class ShopMenu:public Menu {
 			unsigned int choice = valid_option(1, this->shop_items.size()+2, "What'll it be?");
 			//see if it's an item they chose
 			if(choice <= this->shop_items.size()){
-				unsigned int amount;
+				unsigned char amount;
 				//decrease by 1
 				choice--;
 				//move terminal
@@ -302,7 +302,7 @@ class ShopMenu:public Menu {
 			}
 		}
 	}
-	//make sure to remove plyer from teh shop
+	//make sure to remove player from teh shop
 	~ShopMenu(){
 		this->shop_keeper->exit_shop();
 	}

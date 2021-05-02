@@ -53,7 +53,7 @@ class ShopKeeper {
 
 	/**
 	 * utility function to give me ids of all items.
-	 * @return the ids of all items in tehs hop
+	 * @return the ids of all items in the shop
 	 */
 	std::deque<unsigned short> list_inventory() const{
 		return this->shop_inventory_.get_item_ids();
@@ -65,7 +65,7 @@ class ShopKeeper {
 	}
 
 	/**
-	 * Retruns a std::vector of tuples of the Items in the shop's inventory.
+	 * Returns a std::vector of tuples of the Items in the shop's inventory.
 	 * Each tuple is of the order of {Item.get_name(), Item_quantity, Item.get_value()}
 	 * @return The result vector of the shop's inventory.
 	 */
@@ -106,7 +106,7 @@ class ShopKeeper {
 	 * @param amount The amount to sell.
 	 * @return Whether they could or not.
 	 */
-	bool sell_item(unsigned short item_id, unsigned short amount=1){
+	bool sell_item(unsigned short item_id, unsigned char amount=1){
 		//bail
 		if(this->player_ == nullptr)
 			return false;
@@ -120,7 +120,7 @@ class ShopKeeper {
 		unsigned int gold = this->sell_value(item_id,amount);
 		//add the gold
 		this->player_->add_gold(gold);
-		//add the item to teh sho's inventory
+		//add the item to the shop's inventory
 		this->shop_inventory_.add_item(*this->player_->player_inventory.get_item(item_id), amount);
 		//remove the item from player's inventory
 		this->player_->remove_item(item_id,amount);

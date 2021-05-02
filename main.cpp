@@ -7,6 +7,7 @@
 int main(int argc, char *argv[]) {
 	clear_and_move_top();
 	unsigned int option;
+	s_xorshift128();
 	int result;
 	if(argc == 2){
 		if(strncmp(argv[1],"-h",2) == 0){
@@ -48,6 +49,7 @@ int main(int argc, char *argv[]) {
 		Player player(player_name);
 		//make sure they're ready for the fight.
 		player.add_gold(200);
+		player.add_item(basic_potion, 1);
 		InventoryMenu player_inv(&player);
 		TutorialMenu tutorial(player, player_inv);
 		tutorial.enter();
