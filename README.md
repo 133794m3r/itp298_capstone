@@ -7,7 +7,7 @@ I'm done with this repo and the lack of work of my partner. Information below is
 I'll be making a new repo and writing my own item classes and going about it on there as this repo is done.
 
 
-#Who did what.
+# Who did what.
 
 This is a simple console-based RPG by [@NathanielMullins](https://github.com/NathanielMullins) who only did the Item class and procrstinated the entire time. So I'm done with it. [@133794m3r](https://github.com/133794m3r) Who did almost all of the work and is thus restarting on his own.
 
