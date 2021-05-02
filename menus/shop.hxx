@@ -148,7 +148,7 @@ class ShopMenu:public Menu {
 				//make sure they don't try to get more than that.
 				amount = valid_option(0, max_amt);
 				//if it's 0 then they didn't meant to try to buy any.
-				if (amount != 0) {
+				if(amount != 0){
 					clear_textbox(7, 3);
 					move_cursor(7, 3);
 					//menu options
@@ -169,7 +169,7 @@ class ShopMenu:public Menu {
 						move_cursor(7, 3);
 						//they can
 						if (status){
-							std::cout << this->player->get_name() << " purchased " << amount << " " << this->shop_items[choice].item_name
+							std::cout << this->player->get_name() << " purchased " << (short) amount << " " << this->shop_items[choice].item_name
 									  << " for " << this->shop_items[choice].item_value * amount << "g";
 							this->player_items = this->player->show_inventory();
 							this->player_item_ids = this->player->list_inventory();
@@ -188,6 +188,9 @@ class ShopMenu:public Menu {
 						move_and_clear(11);
 						pause();
 					}
+				}
+				else {
+					move_and_clear_up(1);
 				}
 				show_menu_message(this->buy_menu_string);
 			}
@@ -282,7 +285,7 @@ class ShopMenu:public Menu {
 		unsigned short cur_choice;
 		//infinite loop
 		while(true){
-			if(this->menu == 0)
+			if(this->menu)
 				cur_choice = purchase_menu();
 			else
 				cur_choice = sell_menu();

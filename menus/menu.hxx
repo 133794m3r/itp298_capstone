@@ -14,7 +14,7 @@
 
 class Menu {
   private:
-	static void _show_menu_message(const std::string& message,unsigned short start_y,unsigned short num_lines){
+	static void _show_menu_message(const std::string& message,unsigned short start_y,unsigned short num_lines,char delim_char){
 
 		std::string new_str = message;
 		//the padding string we'll use to pad all inputs until the end.
@@ -23,14 +23,17 @@ class Menu {
 		size_t message_len = message.size();
 		//lots of complex text-wrapping ensues.
 		if (message_len < 55) {
-			std::replace(new_str.begin(), new_str.end(), ';', ' ');
+			if (delim_char == ';') 
+				std::replace(new_str.begin(), new_str.end(), ';', ' ');
 			std::cout << new_str << padding.substr(0, 53 - message_len);
 			move_cursor(start_y+1, 3);
 			std::cout << padding;
 		}
 		else {
-			text_wrap(new_str, 53, ';');
-			std::replace(new_str.begin(), new_str.end(), ';', ' ');
+			
+			text_wrap(new_str, 53, delim_char);
+			if(delim_char == ';')
+				std::replace(new_str.begin(), new_str.end(), ';', ' ');
 			size_t new_line = new_str.find('\n');
 			std::cout << new_str.substr(0, new_line - 1) << padding.substr(0, 53 - new_line);
 			move_cursor(start_y+1, 3);
@@ -63,8 +66,8 @@ class Menu {
 	 *
 	 * @param message The message to be displayed.
 	 */
-	void show_menu_message(const std::string& message) const {
-		_show_menu_message(message,this->menu_start, this->menu_lines);
+	void show_menu_message(const std::string& message, const char delim_char=';') const {
+		_show_menu_message(message,this->menu_start, this->menu_lines,delim_char);
 	}
 };
 

@@ -9,10 +9,12 @@ if(MSVC)
 	#if you are compiling with VisualStudio make sure to uncomment the line below.
 	#If you're using CLion or similar that puts the builds in the project directory then the release type. Don't
 	#add_compile_definitions(VISUAL_STUDIO_BUILD)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /O2 /W1")
-	set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS} /std:c++14 /O2 /W1")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /W3")
+	set(CMAKE_CXX_FLAGS_Debug "${CMAKE_CXX_FLAGS} /Od")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} /O2")
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O2 -g3 ")
 	#since CLion decides that you debug from the damn release buildl always instead of from debug and won't let you change that.
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3")

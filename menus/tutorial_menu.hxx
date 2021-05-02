@@ -48,7 +48,9 @@ class TutorialMenu: public Menu {
 		//create shop menu
 		ShopMenu tut_shop_menu(tut_shop);
 		//tell them some basic stuff
-		std::cout << "Welcome to the tutorial " << this->player_->get_name() << ".\n To start off with you need to purchase a weapon and armor from the shop. It's also recommended that you purchase some Potions(always end in Pot) to heal yourself during battle and after them.\nThen you need to equip your new items by entering your inventory. After that you can start the real game.\n";
+		
+		std::cout << "Welcome to the tutorial " << this->player_->get_name() << ".\n";
+		print_wrap("To start off with you need to purchase a weapon and armor from the shop. It's also recommended that you purchase some Potions (always end in Pot) to heal yourself during battle and after them.\nThen you need to equip your new items by entering your inventory. After that you can start the real game.\n",79);
 		//pause
 		pause();
 		//draw menu
@@ -109,7 +111,7 @@ class TutorialMenu: public Menu {
 							this->redraw_menu();
 						}
 						else{
-							this->show_menu_message("You sense an extremely dark presence on the horizon. It's best to gear up before moving on.");
+							this->show_menu_message("You sense an extremely dark presence on the horizon. It's best to gear up before moving on.",' ');
 							pause();
 						}
 					}
@@ -122,7 +124,7 @@ class TutorialMenu: public Menu {
 					}
 					break;
 				case 4:
-					std::cout << "Not Yet implemented";
+					std::cout << "Not Yet implemented\n";
 					pause();
 					break;
 				default:

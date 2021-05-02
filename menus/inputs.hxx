@@ -77,7 +77,7 @@ void print_wrap(const std::string &input, unsigned int position,bool end_line=fa
 	size_t found;
 
 	while((found = new_string.find_last_of(32,position)) != std::string::npos && position < input.size()){
-		new_string.at(found-2) = '\n';
+		new_string.at(found) = '\n';
 		position += found;
 	}
 	std::cout << new_string;
@@ -93,12 +93,6 @@ void print_wrap(const std::string &input, unsigned int position,bool end_line=fa
  * @param lines how many lines tall it is.
  */
 void clear_textbox(unsigned short top, unsigned short lines){
-	/*
-	const char blank[54] ={32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-						32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-						32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-						32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
-	*/
 	for(unsigned short i=0;i<lines;i++){
 		move_cursor(top+i,2);
 		std::cout << "                                                      ";
