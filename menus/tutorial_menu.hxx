@@ -43,14 +43,15 @@ class TutorialMenu: public Menu {
 
 	//enter the tutorial
 	void enter(){
+
 		//basic setup stuff.
 		ShopKeeper tut_shop("Buy something", {&stick, &shirt, &basic_potion}, {1, 1, 10});
 		//create shop menu
 		ShopMenu tut_shop_menu(tut_shop);
 		//tell them some basic stuff
-		
+		clear_and_move_top();
 		std::cout << "Welcome to the tutorial " << this->player_->get_name() << ".\n";
-		print_wrap("To start off with you need to purchase a weapon and armor from the shop. It's also recommended that you purchase some Potions (always end in Pot) to heal yourself during battle and after them.\nThen you need to equip your new items by entering your inventory. After that you can start the real game.\n",79);
+		print_wrap("To start off with you need to purchase a weapon and armor from the shop. It's also recommended that you purchase some Potions (always end in Pot) to heal yourself during battle and after them. Then you need to equip your new items by entering your inventory. After that you can start the real game.\n",75,false);
 		//pause
 		pause();
 		//draw menu

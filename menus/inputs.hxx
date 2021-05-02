@@ -70,16 +70,17 @@ void text_wrap(std::string &input,unsigned int position,char wrap_char=' '){
  * @param position position to search for
  * @param end_line call std::endl at the end or not.
  */
-void print_wrap(const std::string &input, unsigned int position,bool end_line=false){
+void print_wrap(const std::string &input, unsigned int max_width,bool end_line=false){
 	std::string new_string = input;
-	if(input.size() < position)
+	if(input.size() < max_width)
 		std::cout << input;
 	size_t found;
-
+	size_t position = max_width;
 	while((found = new_string.find_last_of(32,position)) != std::string::npos && position < input.size()){
 		new_string.at(found) = '\n';
-		position += found;
+		position = max_width+found;
 	}
+
 	std::cout << new_string;
 
 	if(end_line)
