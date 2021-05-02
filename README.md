@@ -1,6 +1,15 @@
 # ITP-298 Capstone Project "Dangling Pointers"
-This is a simple console-based RPG by [@NathanielMullins](https://github.com/NathanielMullins) and [@133794m3r](https://github.com/133794m3r)
 
+
+# This repo is now dead.
+I'm done with this repo and the lack of work of my partner. Information below is from the original message of the project.
+
+I'll be making a new repo and writing my own item classes and going about it on there as this repo is done.
+
+
+#Who did what.
+
+This is a simple console-based RPG by [@NathanielMullins](https://github.com/NathanielMullins) who only did the Item class and procrstinated the entire time. So I'm done with it. [@133794m3r](https://github.com/133794m3r) Who did almost all of the work and is thus restarting on his own.
 
 ## About
 This project is the capstone for ITP-298. Nathaniel and I discussed via email about what project to do and settled on a text-based RPG wrote in C++. 
