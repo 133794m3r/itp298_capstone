@@ -108,7 +108,7 @@ class Mob : public Actor {
 		dif += (this->tier_-1.00)/6.00;
 		//when they modify the level change the stats to the proper values.
 		this->base_hp_ += std::lround( (this->bonus_hp_+1.0)*13.1*modifier*dif+(this->tier_-1.00));
-		this->base_str_ += std::lround( ((this->bonus_str_+1.0)*4.0*modifier*dif)+((this->tier_)*2.00));
+		this->base_str_ += std::lround( ((this->bonus_str_+1.0)*4.0*modifier*dif)+((this->tier_)*1.50));
 		this->base_def_ += std::lround( ((this->bonus_def_+1.0)*3.125*modifier*dif)+((this->tier_-1.00)/3.00));
 		//then set the current stats from the base.
 		this->hp_ = this->base_hp_;

@@ -128,8 +128,9 @@ class ShopMenu:public Menu {
 	 * @return The choice(1-2) saying if we're switching menus or leaving the shop
 	 */
 	unsigned short purchase_menu() {
+		this->update_shop_text();
 		//show the menu string
-		show_menu_message(this->buy_menu_string);
+		this->show_menu_message(this->buy_menu_string);
 		//infinite loop
 		while(true) {
 			//show prefix
@@ -270,17 +271,13 @@ class ShopMenu:public Menu {
 		//clear the whole screen
 		clear_and_move_top();
 		std::cout << "Welcome to " << this->shop_keeper->get_name() << "'s shop. What'll you have?" << std::endl;
-		//show initial text
-		this->update_shop_text();
-
+		move_cursor(6,1);
 		//draw the text-box.
 		std::cout << "+------------------------------------------------------+"
 				  << '\n' << "|" << ShopMenu::padding_string << "|" << '\n'
 				  << "|" << ShopMenu::padding_string << "|" << '\n'
 				  << "|" << ShopMenu::padding_string << "|"
 				  << '\n' << "+------------------------------------------------------+" << std::endl;
-
-
 
 		unsigned short cur_choice;
 		//infinite loop

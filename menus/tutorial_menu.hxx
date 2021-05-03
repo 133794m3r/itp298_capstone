@@ -89,8 +89,9 @@ class TutorialMenu: public Menu {
 						this->redraw_menu();
 						if(tut_status == 5){
 							this->menu_string = "1)Enter Shop;"+end_string;
-							print_wrap("You sense a dark presence before you. It seems extremely powerful. Now seems like a good time to stock up on some Potions.",55);
+							print_wrap("You sense a dark presence before you. It seems extremely powerful. Now seems like a good time to stock up on some Potions.\n",55);
 							pause();
+							move_and_clear_up(2);
 						}
 					}
 					else{
@@ -118,6 +119,7 @@ class TutorialMenu: public Menu {
 					}
 					else if(tut_status == 4){
 						this->menu_string = "1)Enter Shop;" + end_string;
+						tut_status++;
 					}
 					else if(tut_status == 5){
 						this->menu_string = "1)Fight Giant Rat;" + end_string;
@@ -140,7 +142,8 @@ class TutorialMenu: public Menu {
 		}
 		clear_and_move_top();
 
-		std::cout << "You've completed the tutorial";
+		std::cout << "You've completed the tutorial!\n";
+		pause();
 	}
 };
 

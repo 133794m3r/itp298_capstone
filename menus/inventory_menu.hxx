@@ -61,7 +61,7 @@ class InventoryMenu: public Menu{
 	}
 
   public:
-	explicit InventoryMenu(Player *player):Menu(9,3){
+	explicit InventoryMenu(Player *player):Menu(10,3){
 		this->player_ = player;
 		this->items = this->player_->show_inventory();
 		this->item_ids = this->player_->player_inventory.get_item_ids();

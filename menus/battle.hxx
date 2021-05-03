@@ -266,7 +266,6 @@ If enemy's HP is over 4 digits then we make it be ????.
 		show_battle_message(message);
 		//pause for a turn.
 		pause();
-
 		//mobs can attack for now otherwise they do nothing that turn.
 		//if it's dead time to break out of it as the mob can't act.
 		if(!mob.is_alive())
@@ -285,7 +284,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 		}
 		else{
 			//message is weird due to my not so good text-wrapper function.
-			message = mob.get_name() + " stands; there and seems to ;be thinking of ;something;...";
+			message = mob.get_name() + " stands;there and seems to;be thinking of;something;...";
 		}
 		//show the mob's turn stuff
 		show_battle_message(message);

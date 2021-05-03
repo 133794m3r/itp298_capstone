@@ -10,8 +10,8 @@
 #define ITP298_CAPSTONE_ITEMS_HXX
 //the items below are solely here for the tutorial so their use in the real game is questionable.
 //as you'd not have a junk item of level 2.
-Weapon stick("Sharp Stick",0,1);
-Armor shirt("Thick Shirt",0,1);
+Weapon stick("Sharp Stick",1,1);
+Armor shirt("Thick Shirt",1,1);
 Potion basic_potion("Basic");
 Item paper_crown("Small Paper Crown",4,2);
 //this is a super hack but it'll work for now.
