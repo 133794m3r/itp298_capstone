@@ -14,7 +14,7 @@ int main(){
 	player.add_item(armor);
 	player.add_item(weapon);
 	player.add_item(potion);
-	player.damage(7);
+	//player.damage(7);
 	InventoryMenu inv_menu(&player);
 	inv_menu.enter();
 	return 0;

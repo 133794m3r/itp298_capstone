@@ -192,7 +192,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 	//show the selection prompt
 	std::cout << "\x1b[1mSelection\x1b[22m: ";
 	std::string potions_opt;
-	std::vector<std::pair<menu_item_data, unsigned short >> potions;
+	std::vector<std::pair<menu_item_data, unsigned short >> potions = player.get_potions();
 	potions_opt = update_potions(potions,player);
 	// we only continue the battle as long as both participants are alive
 	while(player.is_alive() && mob.is_alive()) {
@@ -215,7 +215,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 			//the only other option is 3.
 			case 3:
 				//see if they have any potions to use.
-				if(potions.empty()){
+				if(potions.size() != 0){
 					//if their HP is at max don't let them use one.
 					if(player.get_hp() == player.get_base_hp()){
 						message = "Using a potion now wouldn't do any good!";
@@ -266,7 +266,6 @@ If enemy's HP is over 4 digits then we make it be ????.
 		show_battle_message(message);
 		//pause for a turn.
 		pause();
-
 		//mobs can attack for now otherwise they do nothing that turn.
 		//if it's dead time to break out of it as the mob can't act.
 		if(!mob.is_alive())
@@ -285,7 +284,7 @@ If enemy's HP is over 4 digits then we make it be ????.
 		}
 		else{
 			//message is weird due to my not so good text-wrapper function.
-			message = mob.get_name() + " stands; there and seems to ;be thinking of ;something;...";
+			message = mob.get_name() + " stands;there and seems to;be thinking of;something;...";
 		}
 		//show the mob's turn stuff
 		show_battle_message(message);

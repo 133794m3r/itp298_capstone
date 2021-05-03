@@ -26,13 +26,16 @@ class InventoryMenu: public Menu{
 		std::string padding_string(53,' ');
 		size_t end_idx = std::min(this->items.size() - this->current_idx,static_cast<size_t>(3));
 		size_t i =this->current_idx;
+		unsigned short item_type;
 		for(;i<end_idx;i++){
 			std::string tmp = " x" + std::to_string(this->items[i].item_quantity);
-			this->menu_string += std::to_string(i+1) + ')' + this->items[i].item_name + tmp + padding_string.substr(0,
-																													static_cast<unsigned long>(std::floor(
-																															15 -
-																															(this->items[i].item_name.size() +
-																															 tmp.size())))) + ';';
+			this->menu_string += std::to_string(i + 1) + ')';
+			//this is just a hack until I get ANSI wrap enabled.
+			item_type = this->player_->player_inventory.get_item(this->item_ids[i])->get_type();
+			if (item_type == 1 || item_type == 2) {
+				this->menu_string += '+';
+			}
+			this->menu_string += this->items[i].item_name + tmp + padding_string.substr(0,static_cast<unsigned long>(std::floor(15 -(this->items[i].item_name.size() +tmp.size())))) + ';';
 
 		}
 		i++;
@@ -58,7 +61,7 @@ class InventoryMenu: public Menu{
 	}
 
   public:
-	explicit InventoryMenu(Player *player):Menu(9,3){
+	explicit InventoryMenu(Player *player):Menu(10,3){
 		this->player_ = player;
 		this->items = this->player_->show_inventory();
 		this->item_ids = this->player_->player_inventory.get_item_ids();
@@ -74,14 +77,15 @@ class InventoryMenu: public Menu{
 		this->item_ids = this->player_->player_inventory.get_item_ids();
 		bool item_consumed;
 		std::cout << "Player Inventory Management\n" << this->player_->get_name() << " HP:"<< this->player_->get_hp() << "/" << this->player_->get_base_hp();
-		std::cout << "\nSelect item to use/equip. Total Items:" << this->items.size() << "\nIf total items is more than the last item then use the next/prev respectively\nYou can only use potions.\n\n\n";
+		std::cout << "\nSelect item to use/equip. Total Items:" << this->items.size() << "\nIf total items is more than the last item then use the next/prev respectively\n";
+		std::cout<< "You can only use potions. Armor/Weapons have a + before their name denoting that they are equippable.\n\n\n";
 		std::cout << "+------------------------------------------------------+\n|                                                      |\n|                                                      |\n+------------------------------------------------------+" << std::endl;
 		this->current_idx = 0;
 		update_shown_items();
 		this->show_menu_message(this->menu_string);
 		unsigned short choice;
-		std::cout << "\x1b[1mSelection\x1b[22m: ";
 		while(true){
+			std::cout << "\x1b[1mSelection\x1b[22m: ";
 			item_consumed = true;
 			choice = valid_option(1,this->max_op);
 			if(choice == this->max_op)
@@ -142,6 +146,9 @@ class InventoryMenu: public Menu{
 						}
 					}
 					else{
+						std::cout << "Your HP is full, it wouldn't do any good!\n";
+						pause();
+						move_and_clear_up(1);
 						item_consumed = false;
 					}
 				}

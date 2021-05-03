@@ -43,12 +43,15 @@ class TutorialMenu: public Menu {
 
 	//enter the tutorial
 	void enter(){
+
 		//basic setup stuff.
 		ShopKeeper tut_shop("Buy something", {&stick, &shirt, &basic_potion}, {1, 1, 10});
 		//create shop menu
 		ShopMenu tut_shop_menu(tut_shop);
 		//tell them some basic stuff
-		std::cout << "Welcome to the tutorial " << this->player_->get_name() << ".\n To start off with you need to purchase a weapon and armor from the shop. It's also recommended that you purchase some Potions(always end in Pot) to heal yourself during battle and after them.\nThen you need to equip your new items by entering your inventory. After that you can start the real game.\n";
+		clear_and_move_top();
+		std::cout << "Welcome to the tutorial " << this->player_->get_name() << ".\n";
+		print_wrap("To start off with you need to purchase a weapon and armor from the shop. It's also recommended that you purchase some Potions (always end in Pot) to heal yourself during battle and after them. Then you need to equip your new items by entering your inventory. After that you can start the real game.\n",75,false);
 		//pause
 		pause();
 		//draw menu
@@ -86,8 +89,9 @@ class TutorialMenu: public Menu {
 						this->redraw_menu();
 						if(tut_status == 5){
 							this->menu_string = "1)Enter Shop;"+end_string;
-							print_wrap("You sense a dark presence before you. It seems extremely powerful. Now seems like a good time to stock up on some Potions.",55);
+							print_wrap("You sense a dark presence before you. It seems extremely powerful. Now seems like a good time to stock up on some Potions.\n",55);
 							pause();
+							move_and_clear_up(2);
 						}
 					}
 					else{
@@ -109,12 +113,13 @@ class TutorialMenu: public Menu {
 							this->redraw_menu();
 						}
 						else{
-							this->show_menu_message("You sense an extremely dark presence on the horizon. It's best to gear up before moving on.");
+							this->show_menu_message("You sense an extremely dark presence on the horizon. It's best to gear up before moving on.",' ');
 							pause();
 						}
 					}
 					else if(tut_status == 4){
 						this->menu_string = "1)Enter Shop;" + end_string;
+						tut_status++;
 					}
 					else if(tut_status == 5){
 						this->menu_string = "1)Fight Giant Rat;" + end_string;
@@ -122,7 +127,7 @@ class TutorialMenu: public Menu {
 					}
 					break;
 				case 4:
-					std::cout << "Not Yet implemented";
+					std::cout << "Not Yet implemented\n";
 					pause();
 					break;
 				default:
@@ -137,7 +142,8 @@ class TutorialMenu: public Menu {
 		}
 		clear_and_move_top();
 
-		std::cout << "You've completed the tutorial";
+		std::cout << "You've completed the tutorial!\n";
+		pause();
 	}
 };
 
